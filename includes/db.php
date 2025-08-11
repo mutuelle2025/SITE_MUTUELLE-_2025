@@ -20,6 +20,9 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
+// Inclure le système de cache
+require_once __DIR__ . '/cache.php';
+
 // Options PDO
 $pdo_options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -320,40 +323,42 @@ function addDocument($data) {
 }
 
 /**
- * Fonction pour récupérer les statistiques de la banque
+ * Fonction pour récupérer les statistiques de la banque (avec cache)
  */
 function getBankStatistics() {
-    $stats = [];
+    return cache_remember('bank_statistics', function() {
+        $stats = [];
 
-    // Nombre total de documents
-    $sql = "SELECT COUNT(*) FROM documents WHERE active = 1";
-    $stmt = executeQuery($sql);
-    $stats['total_documents'] = $stmt->fetchColumn();
+        // Nombre total de documents
+        $sql = "SELECT COUNT(*) FROM documents WHERE active = 1";
+        $stmt = executeQuery($sql);
+        $stats['total_documents'] = $stmt->fetchColumn();
 
-    // Nombre total de téléchargements
-    $sql = "SELECT SUM(downloads) FROM documents WHERE active = 1";
-    $stmt = executeQuery($sql);
-    $stats['total_downloads'] = $stmt->fetchColumn() ?: 0;
+        // Nombre total de téléchargements
+        $sql = "SELECT SUM(downloads) FROM documents WHERE active = 1";
+        $stmt = executeQuery($sql);
+        $stats['total_downloads'] = $stmt->fetchColumn() ?: 0;
 
-    // Documents les plus téléchargés
-    $sql = "SELECT d.title, d.downloads, d.type_document
-            FROM documents d
-            WHERE d.active = 1
-            ORDER BY d.downloads DESC
-            LIMIT 5";
-    $stmt = executeQuery($sql);
-    $stats['top_downloads'] = $stmt->fetchAll();
+        // Documents les plus téléchargés
+        $sql = "SELECT d.title, d.downloads, d.type_document
+                FROM documents d
+                WHERE d.active = 1
+                ORDER BY d.downloads DESC
+                LIMIT 5";
+        $stmt = executeQuery($sql);
+        $stats['top_downloads'] = $stmt->fetchAll();
 
-    // Répartition par type de document
-    $sql = "SELECT type_document, COUNT(*) as count
-            FROM documents
-            WHERE active = 1
-            GROUP BY type_document
-            ORDER BY count DESC";
-    $stmt = executeQuery($sql);
-    $stats['by_type'] = $stmt->fetchAll();
+        // Répartition par type de document
+        $sql = "SELECT type_document, COUNT(*) as count
+                FROM documents
+                WHERE active = 1
+                GROUP BY type_document
+                ORDER BY count DESC";
+        $stmt = executeQuery($sql);
+        $stats['by_type'] = $stmt->fetchAll();
 
-    return $stats;
+        return $stats;
+    }, 1800); // Cache pendant 30 minutes
 }
 
 /**
@@ -632,7 +637,13 @@ function sendMessage($senderId, $receiverId, $subject, $message, $isPublic = fal
         $isPublic ? 1 : 0
     ];
 
-    return executeQuery($sql, $params);
+    try {
+        $stmt = executeQuery($sql, $params);
+        return $stmt->rowCount() > 0;
+    } catch (Exception $e) {
+        error_log("Erreur sendMessage: " . $e->getMessage());
+        return false;
+    }
 }
 
 /**

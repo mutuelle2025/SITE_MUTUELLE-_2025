@@ -1,0 +1,191 @@
+# Configuration Apache pour la Mutuelle UDM
+# Optimisations de performance et sécurité
+
+# ===== COMPRESSION GZIP =====
+<IfModule mod_deflate.c>
+    # Compresser les fichiers texte
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/ld+json
+    AddOutputFilterByType DEFLATE font/truetype
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ===== MISE EN CACHE =====
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # CSS et JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Polices
+    ExpiresByType font/truetype "access plus 1 year"
+    ExpiresByType font/opentype "access plus 1 year"
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # Documents
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType application/msword "access plus 1 month"
+    ExpiresByType application/vnd.openxmlformats-officedocument.wordprocessingml.document "access plus 1 month"
+    
+    # HTML et PHP (pas de cache)
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/x-httpd-php "access plus 0 seconds"
+</IfModule>
+
+# ===== HEADERS DE CACHE =====
+<IfModule mod_headers.c>
+    # Cache pour les ressources statiques
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|webp|svg|woff|woff2|ttf|eot)$">
+        Header set Cache-Control "public, max-age=2592000"
+        Header set Vary "Accept-Encoding"
+    </FilesMatch>
+    
+    # Pas de cache pour les fichiers dynamiques
+    <FilesMatch "\.(php|html)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+    
+    # Sécurité
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # HSTS (optionnel, pour HTTPS)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# ===== OPTIMISATION DES REQUÊTES =====
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirection vers HTTPS (optionnel)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Suppression du trailing slash pour les fichiers
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^(.+)/$ /$1 [R=301,L]
+    
+    # URLs propres (si nécessaire)
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^([^/]+)/?$ index.php?page=$1 [L,QSA]
+</IfModule>
+
+# ===== SÉCURITÉ =====
+# Bloquer l'accès aux fichiers sensibles
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|conf|bak|backup)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Bloquer l'accès aux dossiers système
+RedirectMatch 404 /\.git
+RedirectMatch 404 /cache/
+RedirectMatch 404 /logs/
+RedirectMatch 404 /config/
+
+# Désactiver l'affichage des répertoires
+Options -Indexes
+
+# Limiter les méthodes HTTP
+<LimitExcept GET POST HEAD>
+    deny from all
+</LimitExcept>
+
+# ===== OPTIMISATION PHP =====
+<IfModule mod_php7.c>
+    # Optimisations PHP
+    php_value memory_limit 128M
+    php_value max_execution_time 30
+    php_value max_input_time 30
+    php_value post_max_size 20M
+    php_value upload_max_filesize 10M
+    php_value max_file_uploads 20
+    
+    # Sessions
+    php_value session.gc_maxlifetime 3600
+    php_value session.cookie_httponly 1
+    php_value session.cookie_secure 0
+    php_value session.use_strict_mode 1
+    
+    # Sécurité
+    php_flag expose_php off
+    php_flag display_errors off
+    php_flag log_errors on
+    php_value error_log logs/php_errors.log
+</IfModule>
+
+# ===== OPTIMISATION DES IMAGES =====
+<IfModule mod_rewrite.c>
+    # Servir WebP si supporté
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    RewriteCond %{REQUEST_FILENAME} \.(jpe?g|png)$
+    RewriteCond %{REQUEST_FILENAME}.webp -f
+    RewriteRule ^(.+)\.(jpe?g|png)$ $1.$2.webp [T=image/webp,E=accept:1]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header append Vary Accept env=REDIRECT_accept
+</IfModule>
+
+# ===== OPTIMISATION DES POLICES =====
+<IfModule mod_headers.c>
+    # Préchargement des polices critiques
+    <FilesMatch "\.(woff|woff2)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>
+
+# ===== GESTION DES ERREURS =====
+ErrorDocument 404 /404.php
+ErrorDocument 403 /403.php
+ErrorDocument 500 /500.php
+
+# ===== OPTIMISATION DE LA BANDE PASSANTE =====
+<IfModule mod_deflate.c>
+    # Exclure les fichiers déjà compressés
+    SetEnvIfNoCase Request_URI \
+        \.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g|mp4|webm|webp|pdf)$ no-gzip dont-vary
+    SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar|7z)$ no-gzip dont-vary
+</IfModule>
+
+# ===== OPTIMISATION DU SERVEUR =====
+<IfModule mod_mime.c>
+    # Types MIME pour les nouvelles extensions
+    AddType image/webp .webp
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType application/vnd.ms-fontobject .eot
+    AddType font/truetype .ttf
+    AddType font/opentype .otf
+</IfModule>

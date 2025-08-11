@@ -307,7 +307,7 @@ include 'includes/header.php';
                             <i class="fas fa-message"></i>
                         </div>
                         <div style="flex: 1;">
-                            <div style="font-weight: 600; color: var(--text-dark);">Message reçu de Ahmed M.</div>
+                            <div style="font-weight: 600; color: var(--text-dark);">Message reçu de Ullrich.W</div>
                             <div style="font-size: 0.9rem; color: var(--text-light);">Question sur le cours de Programmation</div>
                             <div style="font-size: 0.8rem; color: var(--text-light);">Il y a 1 jour</div>
                         </div>
@@ -359,11 +359,11 @@ include 'includes/header.php';
                 Notre équipe de bénévoles est là pour vous accompagner dans votre parcours académique.
             </p>
             <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <a href="mailto:support@mutuelle-udm.ma" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 5px;">
-                    <i class="fas fa-envelope"></i> support@mutuelle-udm.ma
+                <a href="mailto:mutuelledesetudiant.udm2025@gmail.com" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 5px;">
+                    <i class="fas fa-envelope"></i> mutuelledesetudiant.udm2025@gmail.com
                 </a>
-                <a href="tel:+212528123456" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 5px;">
-                    <i class="fas fa-phone"></i> +212 528 12 34 56
+                <a href="tel:+237671162552" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 5px;">
+                    <i class="fas fa-phone"></i> +237 671162552
                 </a>
                 <span style="color: white; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 5px;">
                     <i class="fas fa-clock"></i> Lun-Ven 8h-18h
@@ -442,7 +442,7 @@ function showHelpModal() {
             </ul>
             <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 5px;">
                 <strong>Besoin d'aide personnalisée ?</strong><br>
-                Contactez-nous à support@mutuelle-udm.ma
+                Contactez-nous à mutuelledesetudiant.udm2025@gmail.com
             </div>
         </div>
     `;

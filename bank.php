@@ -8,13 +8,13 @@ $user = checkAuth('view_bank', 'etudiant');
 logAction($_SESSION['user_id'], 'access_bank', 'Accès à la banque d\'épreuves');
 
 // Récupération des filtres
-$filters = [
+$filters = array(
     'search' => trim(isset($_GET['search']) ? $_GET['search'] : ''),
     'filiere' => isset($_GET['filiere']) ? $_GET['filiere'] : '',
     'niveau' => isset($_GET['niveau']) ? $_GET['niveau'] : '',
     'matiere' => isset($_GET['matiere']) ? $_GET['matiere'] : '',
     'type_document' => isset($_GET['type_document']) ? $_GET['type_document'] : ''
-];
+);
 
 // Pagination
 $page = max(1, intval(isset($_GET['page']) ? $_GET['page'] : 1));
@@ -196,7 +196,15 @@ include 'includes/header.php';
                     </h2>
                     <p style="color: var(--text-light); margin: 0.5rem 0 0 0;">
                         <?php echo number_format($total_documents); ?> document(s)
-                        <?php if (!empty(array_filter($filters))): ?>
+                        <?php
+                        $has_filters = false;
+                        foreach ($filters as $filter_value) {
+                            if (!empty($filter_value)) {
+                                $has_filters = true;
+                                break;
+                            }
+                        }
+                        if ($has_filters): ?>
                             correspondant à vos critères
                         <?php else: ?>
                             disponible(s)
@@ -251,14 +259,14 @@ include 'includes/header.php';
                                 <!-- Badge du type -->
                                 <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem; font-weight: bold;">
                                     <?php
-                                    $types = [
+                                    $types = array(
                                         'examen' => 'EXAMEN',
                                         'cours' => 'COURS',
                                         'td' => 'TD',
                                         'tp' => 'TP',
                                         'autre' => 'AUTRE'
-                                    ];
-                                    echo $types[$doc['type_document']] ?? 'DOCUMENT';
+                                    );
+                                    echo isset($types[$doc['type_document']]) ? $types[$doc['type_document']] : 'DOCUMENT';
                                     ?>
                                 </div>
 
@@ -346,14 +354,14 @@ include 'includes/header.php';
                     <div style="margin-top: 3rem; text-align: center;">
                         <div style="display: inline-flex; gap: 0.5rem; background: white; padding: 1rem; border-radius: 10px; box-shadow: var(--shadow);">
                             <?php if ($page > 1): ?>
-                                <a href="?<?php echo http_build_query(array_merge($filters, ['page' => $page - 1])); ?>"
+                                <a href="?<?php echo http_build_query(array_merge($filters, array('page' => $page - 1))); ?>"
                                    class="btn btn-secondary" style="padding: 0.5rem 1rem;">
                                     <i class="fas fa-chevron-left"></i> Précédent
                                 </a>
                             <?php endif; ?>
 
                             <?php for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++): ?>
-                                <a href="?<?php echo http_build_query(array_merge($filters, ['page' => $i])); ?>"
+                                <a href="?<?php echo http_build_query(array_merge($filters, array('page' => $i))); ?>"
                                    class="btn <?php echo $i === $page ? 'btn-primary' : 'btn-secondary'; ?>"
                                    style="padding: 0.5rem 1rem;">
                                     <?php echo $i; ?>
@@ -361,7 +369,7 @@ include 'includes/header.php';
                             <?php endfor; ?>
 
                             <?php if ($page < $total_pages): ?>
-                                <a href="?<?php echo http_build_query(array_merge($filters, ['page' => $page + 1])); ?>"
+                                <a href="?<?php echo http_build_query(array_merge($filters, array('page' => $page + 1))); ?>"
                                    class="btn btn-secondary" style="padding: 0.5rem 1rem;">
                                     Suivant <i class="fas fa-chevron-right"></i>
                                 </a>

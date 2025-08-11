@@ -13,8 +13,8 @@ include 'includes/header.php';
                 <div class="hero-buttons">
                     <a href="register.php" class="btn btn-primary">Rejoindre la mutuelle</a>
                     <a href="bank.php" class="btn btn-secondary">Explorer les ressources</a>
-                    <a href="guide_demarrage.php" class="btn btn-outline">
-                        <i class="fas fa-rocket"></i> Guide de démarrage
+                    <a href="guide_demarrage.php" class="btn btn-outline" style="color: white; border-color: white;">
+                        <i class="fas fa-rocket" style="color: white;"></i> Guide de démarrage
                     </a>
                 </div>
             </div>
@@ -38,16 +38,16 @@ include 'includes/header.php';
         <div class="container">
             <h2 class="section-title">Nos Services</h2>
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card hover-lift">
                     <!-- Image de fond pour la banque d'épreuves -->
                     <div style="height: 150px; background: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80') center/cover; border-radius: 10px 10px 0 0; position: relative; margin: -2rem -2rem 1rem -2rem;">
                         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(46, 125, 50, 0.8), rgba(129, 199, 132, 0.6)); border-radius: 10px 10px 0 0; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-book" style="color: white; font-size: 3rem;"></i>
+                            <i class="fas fa-book icon-animate" style="color: white; font-size: 3rem;"></i>
                         </div>
                     </div>
                     <h3>Banque d'Épreuves</h3>
                     <p>Accédez à une vaste collection d'examens passés et de cours partagés par la communauté étudiante.</p>
-                    <a href="bank.php" class="service-link">Découvrir <i class="fas fa-arrow-right"></i></a>
+                    <a href="bank.php" class="service-link btn-animate">Découvrir <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <div class="service-card">
@@ -95,7 +95,7 @@ include 'includes/header.php';
             <div class="about-content">
                 <div class="about-text">
                     <h2>À propos de la Mutuelle UDM</h2>
-                    <p>La Mutuelle des Étudiants de l'Université Dakhla Maroc est une initiative étudiante visant à créer une communauté solidaire et collaborative.</p>
+                    <p>La Mutuelle des Étudiants de l'<a href="https://maps.app.goo.gl/eL5fGrNhk8p6eCq67" target="_blank" style="color: var(--primary-color); text-decoration: none;">Université des Montagnes</a> est une initiative étudiante visant à créer une communauté solidaire et collaborative.</p>
 
                     <!-- Images illustratives de la vie étudiante -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
@@ -157,8 +157,8 @@ include 'includes/header.php';
                         "Grâce à la mutuelle, j'ai pu accéder à tous les anciens examens de ma filière.
                         Cela m'a énormément aidé à réussir mes partiels !"
                     </p>
-                    <div style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">Fatima Z.</div>
-                    <div style="color: var(--text-light); font-size: 0.9rem;">Étudiante en Informatique L3</div>
+                    <div style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">Uriche.F</div>
+                    <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en pharmacie 6</div>
                     <div style="margin-top: 1rem;">
                         <span style="color: #ffc107;">★★★★★</span>
                     </div>
@@ -178,8 +178,8 @@ include 'includes/header.php';
                         "L'entraide entre étudiants est formidable. J'ai trouvé un groupe d'étude
                         grâce à la messagerie et nous nous soutenons mutuellement."
                     </p>
-                    <div style="color: #2196f3; font-weight: bold; font-size: 1.1rem;">Ahmed M.</div>
-                    <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en Gestion M1</div>
+                    <div style="color: #2196f3; font-weight: bold; font-size: 1.1rem;">Ullrich.W</div>
+                    <div style="color: var(--text-light); font-size: 0.9rem;">Étudiante en Informatique M1</div>
                     <div style="margin-top: 1rem;">
                         <span style="color: #ffc107;">★★★★★</span>
                     </div>
@@ -199,8 +199,8 @@ include 'includes/header.php';
                         "Partager mes cours m'a permis d'aider d'autres étudiants tout en
                         renforçant mes propres connaissances. C'est un cercle vertueux !"
                     </p>
-                    <div style="color: #ff9800; font-weight: bold; font-size: 1.1rem;">Youssef K.</div>
-                    <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en Économie L2</div>
+                    <div style="color: #ff9800; font-weight: bold; font-size: 1.1rem;">Joyce.F</div>
+                    <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en biologie 3</div>
                     <div style="margin-top: 1rem;">
                         <span style="color: #ffc107;">★★★★★</span>
                     </div>

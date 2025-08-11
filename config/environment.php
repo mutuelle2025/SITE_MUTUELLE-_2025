@@ -118,9 +118,9 @@ switch ($environment) {
                 'driver' => 'smtp',
                 'host' => 'smtp.gmail.com',
                 'port' => 587,
-                'username' => 'staging@mutuelle-udm.ma',
+                'username' => 'mutuelledesetudiant.udm2025@gmail.com',
                 'password' => 'staging_mail_password',
-                'from' => 'staging@mutuelle-udm.ma'
+                'from' => 'mutuelledesetudiant.udm2025@gmail.com'
             ],
             'cdn' => [
                 'use_local' => false,
@@ -169,9 +169,9 @@ switch ($environment) {
                 'driver' => 'smtp',
                 'host' => 'smtp.gmail.com',
                 'port' => 587,
-                'username' => 'contact@mutuelle-udm.ma',
+                'username' => 'mutuelledesetudiant.udm2025@gmail.com',
                 'password' => 'production_mail_password',
-                'from' => 'contact@mutuelle-udm.ma'
+                'from' => 'mutuelledesetudiant.udm2025@gmail.com'
             ],
             'cdn' => [
                 'use_local' => false,

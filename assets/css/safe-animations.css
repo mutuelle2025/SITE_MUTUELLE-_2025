@@ -1,0 +1,90 @@
+/* Animations sécurisées - Ne font pas disparaître les éléments */
+
+/* Animation de pulse sécurisée */
+.animate-pulse-safe {
+    animation: pulse-safe 2s infinite;
+}
+
+@keyframes pulse-safe {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Hover effects sécurisés */
+.hover-lift {
+    transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* Animations de boutons sécurisées */
+.btn-animate {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-animate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Animations d'icônes sécurisées */
+.icon-animate {
+    transition: all 0.3s ease;
+}
+
+.icon-animate:hover {
+    transform: scale(1.2) rotate(10deg);
+    color: #2e7d32;
+}
+
+/* Animation de rotation pour les icônes spéciales */
+.icon-rotate:hover {
+    animation: rotate-once 0.5s ease;
+}
+
+@keyframes rotate-once {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Animations d'entrée optionnelles (à utiliser manuellement) */
+.manual-fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.manual-slide-in {
+    animation: slideInLeft 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Désactiver les animations problématiques */
+.card-animate {
+    /* Pas d'opacity: 0 par défaut */
+}
+
+.section-animate {
+    /* Pas d'opacity: 0 par défaut */
+}

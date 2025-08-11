@@ -8,6 +8,9 @@
     <!-- Fichiers de compatibilité -->
     <link rel="stylesheet" href="assets/css/compatibility.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Animations -->
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/safe-animations.css">
 
     <!-- Font Awesome avec fallback -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';">
@@ -69,6 +72,12 @@
                             <span class="nav-text">Accueil</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="https://bzssjmpz.elementor.cloud/" target="_blank" class="nav-link">
+                            <i class="fas fa-university"></i>
+                            <span class="nav-text">Site Université</span>
+                        </a>
+                    </li>
 
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <!-- Menu principal pour utilisateurs connectés -->
@@ -96,6 +105,12 @@
                                     }
                                 }
                                 ?>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="alumni.php" class="nav-link">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span class="nav-text">Alumni</span>
                             </a>
                         </li>
                         <li class="nav-item">

@@ -1,0 +1,257 @@
+/* Styles spécifiques pour la page Alumni */
+
+/* Timeline responsive */
+@media (max-width: 768px) {
+    /* Réorganiser la timeline pour mobile */
+    .timeline-container {
+        position: relative;
+        padding-left: 2rem;
+    }
+    
+    .timeline-container::before {
+        content: '';
+        position: absolute;
+        left: 1rem;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, #ff6b35, #4ecdc4, #45b7d1, #96ceb4);
+    }
+    
+    .timeline-item {
+        display: block !important;
+        margin-bottom: 2rem !important;
+        position: relative;
+    }
+    
+    .timeline-item .timeline-content {
+        flex: none !important;
+        padding: 0 !important;
+        text-align: left !important;
+        margin-left: 2rem;
+    }
+    
+    .timeline-item .timeline-icon {
+        position: absolute !important;
+        left: -2.5rem;
+        top: 1rem;
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 1rem !important;
+        z-index: 2;
+    }
+    
+    .timeline-item .timeline-spacer {
+        display: none !important;
+    }
+}
+
+/* Cartes bureau responsive */
+@media (max-width: 768px) {
+    .bureau-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    
+    .bureau-card {
+        margin: 0 1rem;
+    }
+    
+    .bureau-card h4 {
+        font-size: 1.1rem !important;
+    }
+    
+    .bureau-card .role-icon {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 1.5rem !important;
+    }
+}
+
+/* Statistiques responsive */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem !important;
+    }
+    
+    .stat-card {
+        padding: 1.5rem !important;
+    }
+    
+    .stat-card h3 {
+        font-size: 2rem !important;
+    }
+}
+
+/* Animations pour les cartes */
+.bureau-card {
+    transition: all 0.3s ease;
+}
+
+.bureau-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15) !important;
+}
+
+/* Animation pour les icônes de rôle */
+.role-icon {
+    transition: all 0.3s ease;
+}
+
+.bureau-card:hover .role-icon {
+    transform: scale(1.1);
+}
+
+/* Effet de parallaxe pour les sections */
+.parallax-section {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media (max-width: 768px) {
+    .parallax-section {
+        background-attachment: scroll;
+    }
+}
+
+/* Amélioration des couleurs pour l'accessibilité */
+.bureau-card h4 {
+    color: #2c3e50 !important;
+}
+
+.bureau-card p {
+    color: #5a6c7d !important;
+}
+
+/* Effet de survol pour les statistiques */
+.stat-card {
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.stat-card:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.2) !important;
+}
+
+/* Amélioration de la lisibilité */
+.timeline-content h3 {
+    line-height: 1.4;
+}
+
+.timeline-content p {
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Espacement amélioré pour mobile */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem !important;
+    }
+    
+    section {
+        padding: 2rem 0 !important;
+    }
+    
+    h1 {
+        font-size: 2rem !important;
+    }
+    
+    h2 {
+        font-size: 1.8rem !important;
+    }
+    
+    .bureau-card {
+        margin: 0 0.5rem;
+    }
+}
+
+/* Amélioration des boutons et liens */
+.alumni-cta {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.alumni-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    color: white;
+    text-decoration: none;
+}
+
+/* Indicateurs de progression pour la timeline */
+.timeline-progress {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 4px;
+    background: rgba(255,255,255,0.3);
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.timeline-progress-fill {
+    width: 100%;
+    background: linear-gradient(to bottom, #ff6b35, #4ecdc4, #45b7d1, #96ceb4);
+    transition: height 0.5s ease;
+}
+
+/* Effet de fade-in pour les éléments */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Amélioration des badges de région */
+.region-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+/* Styles pour l'impression */
+@media print {
+    .timeline-item {
+        break-inside: avoid;
+        margin-bottom: 1rem;
+    }
+    
+    .bureau-card {
+        break-inside: avoid;
+        margin-bottom: 1rem;
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+    }
+    
+    .parallax-section {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .stat-card {
+        background: white !important;
+        color: black !important;
+        border: 1px solid #ddd;
+    }
+}

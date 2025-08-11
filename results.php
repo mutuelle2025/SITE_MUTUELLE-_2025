@@ -209,7 +209,7 @@ include 'includes/header.php';
                                                     ?>">
                                                     <?php
                                                     echo $matiere['statut'] === 'admis' ? 'VALIDÉ' :
-                                                         ($matiere['statut'] === 'ajourne' ? 'AJOURNÉ' : 'EN COURS');
+                                                        ($matiere['statut'] === 'ajourne' ? 'AJOURNÉ' : 'EN COURS');
                                                     ?>
                                                 </span>
                                             <?php else: ?>
