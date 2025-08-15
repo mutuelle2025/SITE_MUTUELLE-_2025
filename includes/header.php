@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,8 @@
     <link rel="stylesheet" href="assets/css/safe-animations.css">
 
     <!-- Font Awesome avec fallback -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"
+        onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';">
 
     <!-- Meta tags pour la compatibilité -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,7 +27,7 @@
     <!-- Script de détection des fonctionnalités -->
     <script>
         // Détection basique des fonctionnalités avant le chargement
-        (function() {
+        (function () {
             var html = document.documentElement;
 
             // Ajouter la classe no-js par défaut
@@ -52,6 +54,7 @@
         })();
     </script>
 </head>
+
 <body>
     <header class="header">
         <nav class="navbar">
@@ -113,12 +116,7 @@
                                 <span class="nav-text">Alumni</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="manuel_utilisateur.php" class="nav-link">
-                                <i class="fas fa-question-circle"></i>
-                                <span class="nav-text">Aide</span>
-                            </a>
-                        </li>
+
 
                         <!-- Menu modérateur/admin groupé -->
                         <?php if (function_exists('canAccess') && (canAccess('dashboard') || canAccess('upload') || canAccess('role_management') || canAccess('system_logs'))): ?>
@@ -130,28 +128,33 @@
                                 <ul class="dropdown-menu">
                                     <?php if (canAccess('dashboard')): ?>
                                         <li><a href="dashboard.php" class="dropdown-link">
-                                            <i class="fas fa-tachometer-alt"></i> Tableau de bord
-                                        </a></li>
+                                                <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                                            </a></li>
                                     <?php endif; ?>
 
                                     <?php if (canAccess('upload')): ?>
                                         <li><a href="upload_document.php" class="dropdown-link">
-                                            <i class="fas fa-upload"></i> Upload documents
-                                        </a></li>
+                                                <i class="fas fa-upload"></i> Upload documents
+                                            </a></li>
                                     <?php endif; ?>
+                                    <li class="nav-item">
+                                        <a href="manuel_utilisateur.php" class="dropdown-link">
+                                            <i class="fas fa-question-circle"></i> Aide
+                                        </a>
+                                    </li>
 
                                     <?php if (canAccess('role_management') || canAccess('system_logs')): ?>
                                         <li class="dropdown-divider"></li>
                                         <?php if (canAccess('role_management')): ?>
                                             <li><a href="manage_roles.php" class="dropdown-link">
-                                                <i class="fas fa-users-cog"></i> Gestion des rôles
-                                            </a></li>
+                                                    <i class="fas fa-users-cog"></i> Gestion des rôles
+                                                </a></li>
                                         <?php endif; ?>
 
                                         <?php if (canAccess('system_logs')): ?>
                                             <li><a href="system_logs.php" class="dropdown-link">
-                                                <i class="fas fa-file-alt"></i> Logs système
-                                            </a></li>
+                                                    <i class="fas fa-file-alt"></i> Logs système
+                                                </a></li>
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 </ul>
@@ -172,7 +175,8 @@
                                     ?>
                                 </div>
                                 <span class="nav-text user-info">
-                                    <span class="user-name"><?php echo htmlspecialchars(isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Utilisateur'); ?></span>
+                                    <span
+                                        class="user-name"><?php echo htmlspecialchars(isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Utilisateur'); ?></span>
                                     <?php
                                     if (function_exists('getRoleBadge') && isset($_SESSION['user_role'])) {
                                         echo '<span class="user-role">' . getRoleBadge($_SESSION['user_role']) . '</span>';
@@ -186,8 +190,12 @@
                                         <?php echo $initials ?: 'U'; ?>
                                     </div>
                                     <div class="user-details">
-                                        <div class="user-name"><?php echo htmlspecialchars(isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Utilisateur'); ?></div>
-                                        <div class="user-email"><?php echo htmlspecialchars(isset($_SESSION['user_email']) ? $_SESSION['user_email'] : ''); ?></div>
+                                        <div class="user-name">
+                                            <?php echo htmlspecialchars(isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Utilisateur'); ?>
+                                        </div>
+                                        <div class="user-email">
+                                            <?php echo htmlspecialchars(isset($_SESSION['user_email']) ? $_SESSION['user_email'] : ''); ?>
+                                        </div>
                                         <?php
                                         if (function_exists('getRoleBadge') && isset($_SESSION['user_role'])) {
                                             echo '<div class="user-role-badge">' . getRoleBadge($_SESSION['user_role']) . '</div>';
@@ -197,15 +205,16 @@
                                 </li>
                                 <li class="dropdown-divider"></li>
                                 <li><a href="profile.php" class="dropdown-link">
-                                    <i class="fas fa-user"></i> Mon profil
-                                </a></li>
+                                        <i class="fas fa-user"></i> Mon profil
+                                    </a></li>
                                 <li><a href="settings.php" class="dropdown-link">
-                                    <i class="fas fa-cog"></i> Paramètres
-                                </a></li>
+                                        <i class="fas fa-cog"></i> Paramètres
+                                    </a></li>
                                 <li class="dropdown-divider"></li>
-                                <li><a href="logout.php" class="dropdown-link logout-link" onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
-                                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                                </a></li>
+                                <li><a href="logout.php" class="dropdown-link logout-link"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
+                                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                                    </a></li>
                             </ul>
                         </li>
                     <?php else: ?>
@@ -228,61 +237,61 @@
     </header>
 
     <script>
-    // Gestion du menu mobile
-    function toggleMobileMenu() {
-        const navMenu = document.getElementById('navMenu');
-        navMenu.classList.toggle('active');
-    }
-
-    // Fermer le menu mobile quand on clique ailleurs
-    document.addEventListener('click', function(event) {
-        const navMenu = document.getElementById('navMenu');
-        const toggleButton = document.querySelector('.mobile-menu-toggle');
-
-        if (navMenu && toggleButton && !navMenu.contains(event.target) && !toggleButton.contains(event.target)) {
-            navMenu.classList.remove('active');
+        // Gestion du menu mobile
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
         }
-    });
 
-    // Fermer le menu mobile quand on clique sur un lien
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                const navMenu = document.getElementById('navMenu');
-                if (navMenu) {
-                    navMenu.classList.remove('active');
-                }
+        // Fermer le menu mobile quand on clique ailleurs
+        document.addEventListener('click', function (event) {
+            const navMenu = document.getElementById('navMenu');
+            const toggleButton = document.querySelector('.mobile-menu-toggle');
+
+            if (navMenu && toggleButton && !navMenu.contains(event.target) && !toggleButton.contains(event.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Fermer le menu mobile quand on clique sur un lien
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function () {
+                    const navMenu = document.getElementById('navMenu');
+                    if (navMenu) {
+                        navMenu.classList.remove('active');
+                    }
+                });
             });
         });
-    });
 
-    // Gestion responsive du texte des liens
-    function handleResponsiveNav() {
-        const navTexts = document.querySelectorAll('.nav-text');
-        const userInfo = document.querySelector('.user-info');
+        // Gestion responsive du texte des liens
+        function handleResponsiveNav() {
+            const navTexts = document.querySelectorAll('.nav-text');
+            const userInfo = document.querySelector('.user-info');
 
-        if (window.innerWidth <= 1024) {
-            navTexts.forEach(text => {
-                if (!text.closest('.user-menu') && !text.closest('.dropdown-menu')) {
-                    text.style.display = 'none';
+            if (window.innerWidth <= 1024) {
+                navTexts.forEach(text => {
+                    if (!text.closest('.user-menu') && !text.closest('.dropdown-menu')) {
+                        text.style.display = 'none';
+                    }
+                });
+                if (userInfo && !userInfo.closest('.dropdown-menu')) {
+                    userInfo.style.display = 'none';
                 }
-            });
-            if (userInfo && !userInfo.closest('.dropdown-menu')) {
-                userInfo.style.display = 'none';
-            }
-        } else {
-            navTexts.forEach(text => {
-                text.style.display = 'block';
-            });
-            if (userInfo) {
-                userInfo.style.display = 'flex';
+            } else {
+                navTexts.forEach(text => {
+                    text.style.display = 'block';
+                });
+                if (userInfo) {
+                    userInfo.style.display = 'flex';
+                }
             }
         }
-    }
 
-    // Appliquer au chargement et au redimensionnement
-    window.addEventListener('load', handleResponsiveNav);
-    window.addEventListener('resize', handleResponsiveNav);
+        // Appliquer au chargement et au redimensionnement
+        window.addEventListener('load', handleResponsiveNav);
+        window.addEventListener('resize', handleResponsiveNav);
     </script>
 
     <!-- Scripts de compatibilité -->

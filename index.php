@@ -148,7 +148,7 @@ include 'includes/header.php';
                     <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); border-radius: 50%; opacity: 0.1;"></div>
 
                     <!-- Avatar -->
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: url('https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80') center/cover; margin: 0 auto 1rem; border: 4px solid var(--primary-color);"></div>
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/Uriche.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid var(--primary-color);"></div>
 
                     <div style="color: var(--primary-color); font-size: 2rem; margin-bottom: 1rem;">
                         <i class="fas fa-quote-left"></i>
@@ -169,7 +169,7 @@ include 'includes/header.php';
                     <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #2196f3, #64b5f6); border-radius: 50%; opacity: 0.1;"></div>
 
                     <!-- Avatar -->
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80') center/cover; margin: 0 auto 1rem; border: 4px solid #2196f3;"></div>
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/Ulrich.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #2196f3;"></div>
 
                     <div style="color: #2196f3; font-size: 2rem; margin-bottom: 1rem;">
                         <i class="fas fa-quote-left"></i>
@@ -190,7 +190,7 @@ include 'includes/header.php';
                     <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ff9800, #ffb74d); border-radius: 50%; opacity: 0.1;"></div>
 
                     <!-- Avatar -->
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80') center/cover; margin: 0 auto 1rem; border: 4px solid #ff9800;"></div>
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/Joyce.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #ff9800;"></div>
 
                     <div style="color: #ff9800; font-size: 2rem; margin-bottom: 1rem;">
                         <i class="fas fa-quote-left"></i>
