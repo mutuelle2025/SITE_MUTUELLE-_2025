@@ -195,7 +195,7 @@ body {
 }
 
 .btn-secondary {
-    background-color: transparent;
+    background-color: #2e7d32;;
     color: var(--secondary-color);
     border: 2px solid var(--secondary-color);
 }
@@ -225,7 +225,7 @@ body {
 
 /* Services */
 .services {
-    background-color: #f8f9fa;
+    background-color: #f8faf8;
 }
 
 .services-grid {

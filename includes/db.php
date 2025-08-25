@@ -194,15 +194,31 @@ function getDocuments($filters = [], $page = 1, $limit = 12) {
 
     $where_clause = implode(' AND ', $where_conditions);
 
+    // Gestion du tri (sécurisé par liste blanche)
+    $order_by = 'd.created_at DESC';
+    if (!empty($filters['sort'])) {
+        switch ($filters['sort']) {
+            case 'popular':
+                $order_by = 'd.downloads DESC, d.created_at DESC';
+                break;
+            case 'title':
+                $order_by = 'd.title ASC';
+                break;
+            default:
+                $order_by = 'd.created_at DESC';
+        }
+    }
+
+    // Sécuriser LIMIT/OFFSET (pas de placeholders pour compatibilité MySQL/PDO)
+    $limit = max(1, (int)$limit);
+    $offset = max(0, (int)$offset);
+
     $sql = "SELECT d.*, u.prenom, u.nom
             FROM documents d
             JOIN users u ON d.user_id = u.id
             WHERE $where_clause
-            ORDER BY d.created_at DESC
-            LIMIT ? OFFSET ?";
-
-    $params[] = $limit;
-    $params[] = $offset;
+            ORDER BY $order_by
+            LIMIT $limit OFFSET $offset";
 
     $stmt = executeQuery($sql, $params);
     return $stmt->fetchAll();

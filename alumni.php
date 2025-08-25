@@ -2,6 +2,14 @@
 $page_title = "Alumni - Bureau 2020-2025";
 include 'includes/header.php';
 ?>
+<h1 style="display:flex;align-items:center;gap:.5rem">
+  <!-- Exemple d’icône SVG “graduation hat” -->
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 3L1 8l11 5 9-4.09V17h2V8L12 3zm0 9L4.5 8.75 12 6l7.5 2.75L12 12zm-5 2.5V18c0 1.66 3.13 3 5 3s5-1.34 5-3v-3.5l-5 2.27-5-2.27z"/>
+  </svg>
+  <span><?= htmlspecialchars($page_title) ?></span>
+</h1>
+
 
 <!-- CSS spécifique pour Alumni -->
 <link rel="stylesheet" href="assets/css/alumni.css">

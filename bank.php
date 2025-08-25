@@ -13,7 +13,8 @@ $filters = array(
     'filiere' => isset($_GET['filiere']) ? $_GET['filiere'] : '',
     'niveau' => isset($_GET['niveau']) ? $_GET['niveau'] : '',
     'matiere' => isset($_GET['matiere']) ? $_GET['matiere'] : '',
-    'type_document' => isset($_GET['type_document']) ? $_GET['type_document'] : ''
+    'type_document' => isset($_GET['type_document']) ? $_GET['type_document'] : '',
+    'sort' => isset($_GET['sort']) ? $_GET['sort'] : 'recent'
 );
 
 // Pagination
@@ -46,18 +47,23 @@ include 'includes/header.php';
                 <p style="font-size: 1.2rem; opacity: 0.9;">
                     Accédez à plus de <?php echo number_format($stats['total_documents']); ?> documents partagés par la communauté
                 </p>
+                <div>
+                    <button type="button" class="btn btn-secondary" onclick="refreshStats()" style="background: rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.4); margin-top:0.5rem;">
+                        <i class="fas fa-sync"></i> Rafraîchir les statistiques
+                    </button>
+                </div>
             </div>
 
             <!-- Statistiques rapides -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
                 <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 10px; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">
+                    <div id="stat-total-docs" style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">
                         <?php echo number_format($stats['total_documents']); ?>
                     </div>
                     <div style="opacity: 0.9;">Documents disponibles</div>
                 </div>
                 <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 10px; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">
+                    <div id="stat-total-dl" style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">
                         <?php echo number_format($stats['total_downloads']); ?>
                     </div>
                     <div style="opacity: 0.9;">Téléchargements</div>
@@ -198,8 +204,9 @@ include 'includes/header.php';
                         <?php echo number_format($total_documents); ?> document(s)
                         <?php
                         $has_filters = false;
-                        foreach ($filters as $filter_value) {
-                            if (!empty($filter_value)) {
+                        $filter_keys = array('search', 'filiere', 'niveau', 'matiere', 'type_document');
+                        foreach ($filter_keys as $key) {
+                            if (!empty($filters[$key])) {
                                 $has_filters = true;
                                 break;
                             }
@@ -215,9 +222,9 @@ include 'includes/header.php';
                 <!-- Tri -->
                 <div>
                     <select onchange="changeSorting(this.value)" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 5px;">
-                        <option value="recent">Plus récents</option>
-                        <option value="popular">Plus téléchargés</option>
-                        <option value="title">Par titre</option>
+                        <option value="recent" <?php echo ($filters['sort'] === 'recent') ? 'selected' : ''; ?>>Plus récents</option>
+                        <option value="popular" <?php echo ($filters['sort'] === 'popular') ? 'selected' : ''; ?>>Plus téléchargés</option>
+                        <option value="title" <?php echo ($filters['sort'] === 'title') ? 'selected' : ''; ?>>Par titre</option>
                     </select>
                 </div>
             </div>
@@ -334,15 +341,20 @@ include 'includes/header.php';
                                         <span><i class="fas fa-weight"></i> <?php echo formatFileSize($doc['file_size']); ?></span>
                                     </div>
 
-                                    <?php if (isset($_SESSION['user_id'])): ?>
-                                        <button onclick="downloadDocument(<?php echo $doc['id']; ?>)" class="btn btn-primary" style="padding: 0.5rem 1rem;">
-                                            <i class="fas fa-download"></i> Télécharger
+                                    <div style="display:flex; gap:0.5rem;">
+                                        <button onclick="previewDocument(<?php echo $doc['id']; ?>)" class="btn btn-secondary" style="padding: 0.5rem 1rem;">
+                                            <i class="fas fa-eye"></i> Prévisualiser
                                         </button>
-                                    <?php else: ?>
-                                        <a href="login.php" class="btn btn-secondary" style="padding: 0.5rem 1rem;">
-                                            <i class="fas fa-lock"></i> Se connecter
-                                        </a>
-                                    <?php endif; ?>
+                                        <?php if (isset($_SESSION['user_id'])): ?>
+                                            <button onclick="downloadDocument(<?php echo $doc['id']; ?>)" class="btn btn-primary" style="padding: 0.5rem 1rem;">
+                                                <i class="fas fa-download"></i> Télécharger
+                                            </button>
+                                        <?php else: ?>
+                                            <a href="login.php" class="btn btn-secondary" style="padding: 0.5rem 1rem;">
+                                                <i class="fas fa-lock"></i> Se connecter
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -467,6 +479,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Aperçu
+function previewDocument(documentId) {
+    const width = Math.min(window.innerWidth * 0.9, 1000);
+    const height = Math.min(window.innerHeight * 0.9, 800);
+    const w = window.open('', '_blank', `width=${width},height=${height},resizable=yes,scrollbars=yes`);
+    if (!w) {
+        showNotification("Veuillez autoriser les fenêtres pop-up pour l'aperçu.", 'error');
+        return;
+    }
+    w.document.write('<!doctype html><title>Aperçu</title><style>html,body{height:100%;margin:0}iframe{width:100%;height:100%;border:0}</style><iframe src="about:blank"></iframe>');
+    const iframe = w.document.querySelector('iframe');
+    iframe.src = 'api/preview_content.php?document_id=' + encodeURIComponent(documentId);
+}
+
+// Rafraîchir les stats
+function refreshStats() {
+    fetch('api/refresh_bank_stats.php', { credentials: 'same-origin' })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('stat-total-docs').textContent = new Intl.NumberFormat().format(data.stats.total_documents);
+                document.getElementById('stat-total-dl').textContent = new Intl.NumberFormat().format(data.stats.total_downloads);
+                showNotification('Statistiques mises à jour', 'success');
+            } else {
+                showNotification(data.message || 'Échec de la mise à jour des statistiques', 'error');
+            }
+        })
+        .catch(() => showNotification('Erreur réseau lors de la mise à jour', 'error'));
+}
 
 // Fonction de notification
 function showNotification(message, type = 'info') {
