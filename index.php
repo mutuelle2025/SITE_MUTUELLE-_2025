@@ -119,6 +119,21 @@ include 'includes/header.php';
                         <li><i class="fas fa-check"></i> Suivi personnalisé des résultats</li>
                         <li><i class="fas fa-check"></i> Communication facilitée</li>
                     </ul>
+
+                    <h3 style="margin-top: 1.5rem; color: var(--primary-color);">Activités menées</h3>
+                    <ul class="about-features">
+                        <li><i class="fas fa-users"></i> Séances de révision collectives et tutorat entre promotions</li>
+                        <li><i class="fas fa-chalkboard-teacher"></i> Ateliers thématiques (méthodologie, orientation, stages)</li>
+                        <li><i class="fas fa-hands-helping"></i> Actions de solidarité (prêts d’ouvrages, dons de polycopiés)</li>
+                        <li><i class="fas fa-lightbulb"></i> Groupes d’étude, clubs et projets collaboratifs interdisciplinaires</li>
+                        <li><i class="fas fa-calendar-check"></i> Journées d’intégration et événements communautaires</li>
+                    </ul>
+
+                    <div style="margin-top: 1rem;">
+                        <a href="https://drive.google.com/drive/folders/1pZy_7N-lmJyPmm5G7L-uZPUY_tlnoGRj" target="_blank" class="btn btn-secondary">
+                            <i class="fas fa-external-link-alt"></i> Voir la galerie photo
+                        </a>
+                    </div>
                 </div>
                 <div class="about-stats">
                     <div class="stat-item">

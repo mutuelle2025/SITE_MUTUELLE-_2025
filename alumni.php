@@ -10,7 +10,6 @@ include 'includes/header.php';
   <span><?= htmlspecialchars($page_title) ?></span>
 </h1>
 
-
 <!-- CSS spécifique pour Alumni -->
 <link rel="stylesheet" href="assets/css/alumni.css">
 

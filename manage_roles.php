@@ -85,8 +85,8 @@ include 'includes/header.php';
                     'super_admin' => ['name' => 'Super Admins', 'color' => '#f44336', 'icon' => 'fas fa-user-crown']
                 ];
                 
-                foreach ($roleStats as $stat): 
-                    $config = $roleConfig[$stat['role']] ?? ['name' => $stat['role'], 'color' => '#666', 'icon' => 'fas fa-user'];
+                foreach ($roleStats as $stat):
+                    $config = isset($roleConfig[$stat['role']]) ? $roleConfig[$stat['role']] : ['name' => $stat['role'], 'color' => '#666', 'icon' => 'fas fa-user'];
                 ?>
                     <div style="background: white; padding: 2rem; border-radius: 10px; text-align: center; box-shadow: var(--shadow); border-top: 4px solid <?php echo $config['color']; ?>;">
                         <div style="font-size: 2.5rem; color: <?php echo $config['color']; ?>; margin-bottom: 1rem;">
