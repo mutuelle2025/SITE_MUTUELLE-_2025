@@ -124,7 +124,7 @@ include 'includes/header.php';
                         </div>
                         <div
                             style="position: absolute; bottom: 20px; left: 20px; color: white; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
-                            <i class="fas fa-users"></i> Communauté UDM
+                            <i class="fas fa-users"></i> Burreau 2025
                         </div>
                     </div>
                 </div>
@@ -522,7 +522,7 @@ include 'includes/header.php';
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
                     <div
-                        style="background: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80') center/cover; width: 100%; height: 100%;">
+                        style="background: url('assets/img/amphi.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -538,7 +538,7 @@ include 'includes/header.php';
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
                     <div
-                        style="background: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80') center/cover; width: 100%; height: 100%;">
+                        style="background: url('assets/img/labo.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -552,7 +552,7 @@ include 'includes/header.php';
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
                     <div
-                        style="background: url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80') center/cover; width: 100%; height: 100%;">
+                        style="background: url('assets/img/campus verdoyant.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -567,7 +567,7 @@ include 'includes/header.php';
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
                     <div
-                        style="background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80') center/cover; width: 100%; height: 100%;">
+                        style="background: url('assets/img/collaboration.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -582,12 +582,83 @@ include 'includes/header.php';
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
                     <div
-                        style="background: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80') center/cover; width: 100%; height: 100%;">
+                        style="background: url('assets/img/conference.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
                         <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-calendar-alt"></i> Événements</h4>
                         <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Conférences et activités</p>
+                    </div>
+                </div>
+                
+                <!-- Image 7: stade -->
+                <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-5px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <div
+                        style="background: url('assets/img/stade.jpg') center/cover; width: 100%; height: 100%;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
+                        <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-futbol"></i> Stade Sportif</h4>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Football et activités sportives</p>
+                        <!-- <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Activités sportives</p> -->
+                    </div>
+                </div>
+                <!-- Image 8: diplome -->
+                <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-5px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <div
+                        style="background: url('assets/img/diplome.jpg') center/cover; width: 100%; height: 100%;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
+                        <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-graduation-cap"></i> Diplômes</h4>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Obtenez votre diplome</p>
+                        <!-- <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Activités sportives</p> -->
+                    </div>
+                </div>
+                <!-- Image 9: fst -->
+                <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-5px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <div
+                        style="background: url('assets/img/fst.jpg') center/cover; width: 100%; height: 100%;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
+                        <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-tools"></i> Pratiques étudiantes</h4>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Pratiquez vos compétences</p>
+                        <!-- <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Activités sportives</p> -->
+                    </div>
+                </div>
+                <!-- Image 10: projet d'etude -->
+                <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-5px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <div
+                        style="background: url('assets/img/projet de fin d\'etude.jpg') center/cover; width: 100%; height: 100%;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
+                        <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-project-diagram"></i> Projets d'étude</h4>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Participez à des projets d'etude</p>
+                        <!-- <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Activités sportives</p> -->
+                    </div>
+                </div>
+                <!-- Image 11:patriotisme -->
+                <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-5px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <div
+                        style="background: url('assets/img/patriotisme.jpg') center/cover; width: 100%; height: 100%;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
+                        <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-flag"></i> Patriotisme</h4>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">defiler et autres</p>
+                        <!-- <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Activités sportives</p> -->
                     </div>
                 </div>
             </div>

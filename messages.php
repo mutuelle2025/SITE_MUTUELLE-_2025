@@ -54,6 +54,45 @@ if (!empty($messages) && $contact_id) {
     }));
 }
 
+// Vue "fil de conversation" si un contact est sélectionné: combiner reçus + envoyés
+$thread_messages = [];
+$contact_info = null;
+if ($contact_id) {
+    // Récupérer les deux boîtes
+    $received_all = getUserMessages($user_id, 'received');
+    $sent_all = getUserMessages($user_id, 'sent');
+
+    // Filtrer pour ce contact (hors messages publics)
+    $received_with_contact = array_filter($received_all, function($m) use ($contact_id) {
+        return empty($m['is_public']) && isset($m['sender_id']) && intval($m['sender_id']) === $contact_id;
+    });
+    $sent_with_contact = array_filter($sent_all, function($m) use ($contact_id) {
+        return empty($m['is_public']) && isset($m['receiver_id']) && intval($m['receiver_id']) === $contact_id;
+    });
+
+    // Marquer la direction et fusionner
+    foreach ($received_with_contact as $m) {
+        $m['__direction'] = 'in';
+        $thread_messages[] = $m;
+    }
+    foreach ($sent_with_contact as $m) {
+        $m['__direction'] = 'out';
+        $thread_messages[] = $m;
+    }
+
+    // Trier par date croissante
+    usort($thread_messages, function($a, $b) {
+        return strtotime($a['created_at']) <=> strtotime($b['created_at']);
+    });
+
+    // Trouver les infos du contact via la liste des conversations récentes si disponible
+    if (!empty($recent_conversations)) {
+        foreach ($recent_conversations as $rc) {
+            if (intval($rc['contact_id']) === $contact_id) { $contact_info = $rc; break; }
+        }
+    }
+}
+
 // Si on affiche un message spécifique
 $current_message = null;
 if ($message_id) {
@@ -236,103 +275,149 @@ include 'includes/header.php';
                             </div>
                         </div>
                     <?php else: ?>
-                        <!-- Liste des messages -->
-                        <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color);">
-                            <h2 style="color: var(--primary-color); margin: 0;">
-                                <?php
-                                switch ($view) {
-                                    case 'sent':
-                                        echo '<i class="fas fa-paper-plane"></i> Messages envoyés';
-                                        break;
-                                    case 'public':
-                                        echo '<i class="fas fa-bullhorn"></i> Annonces publiques';
-                                        break;
-                                    default:
-                                        echo '<i class="fas fa-inbox"></i> Boîte de réception';
-                                }
-                                ?>
-                            </h2>
-                        </div>
-
-                        <div style="max-height: 500px; overflow-y: auto;">
-                            <?php if (empty($messages)): ?>
-                                <div style="text-align: center; padding: 3rem; color: var(--text-light);">
-                                    <div style="font-size: 3rem; margin-bottom: 1rem;">
-                                        <i class="fas fa-envelope-open"></i>
-                                    </div>
-                                    <h3>Aucun message</h3>
-                                    <p>
-                                        <?php
-                                        switch ($view) {
-                                            case 'sent':
-                                                echo 'Vous n\'avez encore envoyé aucun message.';
-                                                break;
-                                            case 'public':
-                                                echo 'Aucune annonce publique pour le moment.';
-                                                break;
-                                            default:
-                                                echo 'Votre boîte de réception est vide.';
-                                        }
-                                        ?>
-                                    </p>
+                        <?php if ($contact_id): ?>
+                            <!-- Fil de conversation avec un contact (reçus + envoyés) -->
+                            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                                <h2 style="color: var(--primary-color); margin: 0;">
+                                    <i class="fas fa-user-circle"></i>
+                                    Conversation <?php if ($contact_info) { echo 'avec ' . htmlspecialchars($contact_info['contact_name']); } ?>
+                                </h2>
+                                <div>
+                                    <button class="btn btn-primary" onclick="replyToContact(<?php echo $contact_id; ?>)"><i class="fas fa-reply"></i> Répondre</button>
                                 </div>
-                            <?php else: ?>
-                                <?php foreach ($messages as $message): ?>
-                                    <div class="message-item <?php echo !$message['is_read'] && $message['receiver_id'] == $user_id ? 'unread' : ''; ?>"
-                                         onclick="window.location.href='?view=<?php echo $view; ?>&id=<?php echo $message['id']; ?>'"
-                                         style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.2s;"
-                                         onmouseover="this.style.background='#f8f9fa'"
-                                         onmouseout="this.style.background='white'">
+                            </div>
 
-                                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                                            <div style="flex: 1;">
-                                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                                    <h4 style="margin: 0; color: var(--text-dark); font-size: 1rem;">
-                                                        <?php echo htmlspecialchars($message['subject']); ?>
-                                                    </h4>
-                                                    <?php if (!$message['is_read'] && $message['receiver_id'] == $user_id): ?>
-                                                        <span style="background: #ff9800; color: white; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem;">
-                                                            NOUVEAU
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if ($message['is_public']): ?>
-                                                        <span style="background: #2196f3; color: white; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem;">
-                                                            <i class="fas fa-bullhorn"></i> PUBLIC
-                                                        </span>
-                                                    <?php endif; ?>
+                            <div class="thread-container" style="max-height: 500px; overflow-y: auto; padding: 1rem;">
+                                <?php if (empty($thread_messages)): ?>
+                                    <div style="text-align: center; padding: 2rem; color: var(--text-light);">
+                                        Aucune conversation avec ce contact pour le moment.
+                                    </div>
+                                <?php else: ?>
+                                    <?php foreach ($thread_messages as $m): ?>
+                                        <div class="bubble-row <?php echo $m['__direction'] === 'out' ? 'right' : 'left'; ?>" style="display:flex; margin: 0.5rem 0; <?php echo $m['__direction'] === 'out' ? 'justify-content:flex-end;' : 'justify-content:flex-start;'; ?>">
+                                            <div class="bubble <?php echo $m['__direction'] === 'out' ? 'out' : 'in'; ?>" style="max-width: 70%; padding: 0.75rem 1rem; border-radius: 12px; box-shadow: var(--shadow); <?php echo $m['__direction'] === 'out' ? 'background:#e3f2fd;' : 'background:#f3f4f6;'; ?>">
+                                                <?php if (!empty($m['subject'])): ?>
+                                                    <div style="font-weight:600; color: var(--text-dark); margin-bottom: 0.25rem; font-size:0.95rem;"><?php echo htmlspecialchars($m['subject']); ?></div>
+                                                <?php endif; ?>
+                                                <div style="white-space: pre-wrap; color: var(--text-dark); line-height:1.4;">
+                                                    <?php echo nl2br(htmlspecialchars($m['message'])); ?>
                                                 </div>
-
-                                                <div style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">
-                                                    <?php if ($view === 'sent'): ?>
-                                                        <strong>À :</strong>
-                                                        <?php if ($message['is_public']): ?>
-                                                            Tous les étudiants
-                                                        <?php else: ?>
-                                                            <?php echo htmlspecialchars($message['receiver_prenom'] . ' ' . $message['receiver_nom']); ?>
-                                                        <?php endif; ?>
-                                                    <?php else: ?>
-                                                        <strong>De :</strong>
-                                                        <?php echo htmlspecialchars($message['sender_prenom'] . ' ' . $message['sender_nom']); ?>
-                                                        <span style="background: #e8f5e8; color: #2e7d32; padding: 0.1rem 0.4rem; border-radius: 8px; margin-left: 0.5rem; font-size: 0.8rem;">
-                                                            <?php echo htmlspecialchars($message['sender_filiere']); ?>
-                                                        </span>
-                                                    <?php endif; ?>
+                                                <div style="text-align: right; color: var(--text-light); font-size: 0.8rem; margin-top: 0.25rem;">
+                                                    <?php echo date('d/m/Y H:i', strtotime($m['created_at'])); ?>
                                                 </div>
-
-                                                <div style="color: var(--text-light); font-size: 0.9rem;">
-                                                    <?php echo substr(strip_tags($message['message']), 0, 100) . (strlen($message['message']) > 100 ? '...' : ''); ?>
-                                                </div>
-                                            </div>
-
-                                            <div style="text-align: right; font-size: 0.8rem; color: var(--text-light);">
-                                                <?php echo date('d/m/Y', strtotime($message['created_at'])); ?><br>
-                                                <?php echo date('H:i', strtotime($message['created_at'])); ?>
                                             </div>
                                         </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Répondre rapide dans le fil -->
+                            <div style="border-top: 1px solid var(--border-color); padding: 1rem; display: flex; gap: 0.75rem; align-items: flex-end;">
+                                <textarea id="quickReplyContent" rows="3" placeholder="Votre réponse..." 
+                                          style="flex: 1; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px; resize: vertical;"></textarea>
+                                <button class="btn btn-primary" onclick="sendQuickReply(<?php echo $contact_id; ?>)">
+                                    <i class="fas fa-paper-plane"></i> Envoyer
+                                </button>
+                            </div>
+                        <?php else: ?>
+                            <!-- Liste des messages -->
+                            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color);">
+                                <h2 style="color: var(--primary-color); margin: 0;">
+                                    <?php
+                                    switch ($view) {
+                                        case 'sent':
+                                            echo '<i class="fas fa-paper-plane"></i> Messages envoyés';
+                                            break;
+                                        case 'public':
+                                            echo '<i class="fas fa-bullhorn"></i> Annonces publiques';
+                                            break;
+                                        default:
+                                            echo '<i class="fas fa-inbox"></i> Boîte de réception';
+                                    }
+                                    ?>
+                                </h2>
+                            </div>
+
+                            <div style="max-height: 500px; overflow-y: auto;">
+                                <?php if (empty($messages)): ?>
+                                    <div style="text-align: center; padding: 3rem; color: var(--text-light);">
+                                        <div style="font-size: 3rem; margin-bottom: 1rem;">
+                                            <i class="fas fa-envelope-open"></i>
+                                        </div>
+                                        <h3>Aucun message</h3>
+                                        <p>
+                                            <?php
+                                            switch ($view) {
+                                                case 'sent':
+                                                    echo 'Vous n\'avez encore envoyé aucun message.';
+                                                    break;
+                                                case 'public':
+                                                    echo 'Aucune annonce publique pour le moment.';
+                                                    break;
+                                                default:
+                                                    echo 'Votre boîte de réception est vide.';
+                                            }
+                                            ?>
+                                        </p>
                                     </div>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </div>
+                                <?php else: ?>
+                                    <?php foreach ($messages as $message): ?>
+                                        <div class="message-item <?php echo !$message['is_read'] && $message['receiver_id'] == $user_id ? 'unread' : ''; ?>"
+                                             onclick="window.location.href='?view=<?php echo $view; ?>&id=<?php echo $message['id']; ?>'"
+                                             style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.2s;"
+                                             onmouseover="this.style.background='#f8f9fa'"
+                                             onmouseout="this.style.background='white'">
+
+                                            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                                                <div style="flex: 1;">
+                                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                                        <h4 style="margin: 0; color: var(--text-dark); font-size: 1rem;">
+                                                            <?php echo htmlspecialchars($message['subject']); ?>
+                                                        </h4>
+                                                        <?php if (!$message['is_read'] && $message['receiver_id'] == $user_id): ?>
+                                                            <span style="background: #ff9800; color: white; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem;">
+                                                                NOUVEAU
+                                                            </span>
+                                                        <?php endif; ?>
+                                                        <?php if ($message['is_public']): ?>
+                                                            <span style="background: #2196f3; color: white; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem;">
+                                                                <i class="fas fa-bullhorn"></i> PUBLIC
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </div>
+
+                                                    <div style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">
+                                                        <?php if ($view === 'sent'): ?>
+                                                            <strong>À :</strong>
+                                                            <?php if ($message['is_public']): ?>
+                                                                Tous les étudiants
+                                                            <?php else: ?>
+                                                                <?php echo htmlspecialchars($message['receiver_prenom'] . ' ' . $message['receiver_nom']); ?>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <strong>De :</strong>
+                                                            <?php echo htmlspecialchars($message['sender_prenom'] . ' ' . $message['sender_nom']); ?>
+                                                            <span style="background: #e8f5e8; color: #2e7d32; padding: 0.1rem 0.4rem; border-radius: 8px; margin-left: 0.5rem; font-size: 0.8rem;">
+                                                                <?php echo htmlspecialchars($message['sender_filiere']); ?>
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </div>
+
+                                                    <div style="color: var(--text-light); font-size: 0.9rem;">
+                                                        <?php echo substr(strip_tags($message['message']), 0, 100) . (strlen($message['message']) > 100 ? '...' : ''); ?>
+                                                    </div>
+                                                </div>
+
+                                                <div style="text-align: right; font-size: 0.8rem; color: var(--text-light);">
+                                                    <?php echo date('d/m/Y', strtotime($message['created_at'])); ?><br>
+                                                    <?php echo date('H:i', strtotime($message['created_at'])); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>
@@ -554,12 +639,15 @@ let selectedRecipientId = null;
 
 // Vue courante exposée au JS pour la navigation de filtre
 const currentView = '<?php echo htmlspecialchars($view, ENT_QUOTES); ?>';
+// Contact actif (si fil ouvert)
+const activeContactId = <?php echo $contact_id ? intval($contact_id) : 'null'; ?>;
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
     initializeModals();
     initializeRecipientSearch();
     initializeForms();
+    initializeQuickReply();
 });
 
 // Gestion des modals
@@ -744,6 +832,53 @@ function sendMessage(formData, isPublic) {
 }
 
 // Fonctions utilitaires
+function initializeQuickReply() {
+    // Auto-scroll en bas du fil si présent
+    const thread = document.querySelector('.thread-container');
+    if (thread) {
+        setTimeout(() => { thread.scrollTop = thread.scrollHeight; }, 0);
+    }
+
+    const ta = document.getElementById('quickReplyContent');
+    if (!ta || !activeContactId) return;
+
+    // Ctrl+Enter pour envoyer
+    ta.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            sendQuickReply(activeContactId);
+        }
+    });
+}
+
+function sendQuickReply(contactId) {
+    const ta = document.getElementById('quickReplyContent');
+    if (!ta) return;
+
+    const content = ta.value.trim();
+    if (!content) {
+        showNotification('Veuillez saisir un message', 'error');
+        ta.focus();
+        return;
+    }
+
+    if (!contactId) {
+        showNotification('Aucun contact sélectionné', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('recipient_id', String(contactId));
+    formData.append('subject', 'Re:');
+    formData.append('message', content);
+
+    // Option: désactiver le bouton pour éviter le double envoi
+    const sendBtn = ta.parentElement?.querySelector('button');
+    if (sendBtn) sendBtn.disabled = true;
+
+    sendMessage(formData, false);
+}
+
 function replyToMessage(senderId, originalSubject) {
     showComposeModal();
 
@@ -756,6 +891,35 @@ function replyToMessage(senderId, originalSubject) {
                 if (data.success) {
                     selectRecipient(data.user.id, `${data.user.prenom} ${data.user.nom}`, data.user.filiere);
                     document.getElementById('messageSubject').value = `Re: ${originalSubject}`;
+                }
+            });
+    }, 100);
+}
+
+// Répondre directement depuis le fil de conversation d'un contact
+function replyToContact(contactId) {
+    showComposeModal();
+
+    // Pré-sélectionner le destinataire
+    setTimeout(() => {
+        fetch(`api/get_user.php?id=${contactId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    selectRecipient(data.user.id, `${data.user.prenom} ${data.user.nom}`, data.user.filiere);
+                    // Préfixer le sujet si vide
+                    const subjectInput = document.getElementById('messageSubject');
+                    if (subjectInput && !subjectInput.value) {
+                        subjectInput.value = 'Re:';
+                    }
+
+                    // Focus automatique sur la zone de texte et curseur en fin
+                    const textarea = document.getElementById('messageContent');
+                    if (textarea) {
+                        textarea.focus();
+                        const len = textarea.value.length;
+                        textarea.setSelectionRange(len, len);
+                    }
                 }
             });
     }, 100);
