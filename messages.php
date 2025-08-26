@@ -10,6 +10,7 @@ logAction($_SESSION['user_id'], 'access_messaging', 'Accès à la messagerie');
 // Récupération des paramètres
 $view = isset($_GET['view']) ? $_GET['view'] : 'inbox';
 $message_id = isset($_GET['id']) ? $_GET['id'] : null;
+$contact_id = isset($_GET['contact']) ? intval($_GET['contact']) : null;
 
 // Récupération des données
 $user_id = $_SESSION['user_id'];
@@ -28,6 +29,29 @@ switch ($view) {
     default:
         $messages = getUserMessages($user_id, 'received');
         break;
+}
+
+// Filtrage par contact si demandé (sans modifier les fonctions DB existantes)
+if (!empty($messages) && $contact_id) {
+    $messages = array_values(array_filter($messages, function($m) use ($view, $contact_id, $user_id) {
+        // Protection: s'assurer que les clés existent
+        $sender = isset($m['sender_id']) ? intval($m['sender_id']) : null;
+        $receiver = isset($m['receiver_id']) ? intval($m['receiver_id']) : null;
+        $is_public = !empty($m['is_public']);
+
+        switch ($view) {
+            case 'sent':
+                // Messages envoyés: on filtre par destinataire
+                return !$is_public && $receiver === $contact_id;
+            case 'public':
+                // Annonces publiques: filtre par auteur si pertinent
+                return $is_public && $sender === $contact_id;
+            case 'inbox':
+            default:
+                // Réception: on filtre par expéditeur
+                return !$is_public && $sender === $contact_id;
+        }
+    }));
 }
 
 // Si on affiche un message spécifique
@@ -528,6 +552,9 @@ include 'includes/header.php';
 let recipientSearchTimeout;
 let selectedRecipientId = null;
 
+// Vue courante exposée au JS pour la navigation de filtre
+const currentView = '<?php echo htmlspecialchars($view, ENT_QUOTES); ?>';
+
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
     initializeModals();
@@ -760,8 +787,13 @@ function deleteMessage(messageId) {
 }
 
 function filterByContact(contactId) {
-    // TODO: Implémenter le filtrage par contact
-    showNotification('Fonctionnalité en cours de développement', 'info');
+    // Naviguer avec le paramètre de filtre contact, en conservant la vue actuelle
+    const params = new URLSearchParams(window.location.search);
+    params.set('view', currentView || 'inbox');
+    params.set('contact', String(contactId));
+    // Retirer l'id de message si présent pour rester en liste
+    params.delete('id');
+    window.location.href = `messages.php?${params.toString()}`;
 }
 
 // Fonction de notification

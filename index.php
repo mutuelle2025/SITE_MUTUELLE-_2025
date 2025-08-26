@@ -381,7 +381,7 @@ include 'includes/header.php';
                             "Le système mis en place a réellement facilité la communication. Il a ouvert un espace d’échange plus accessible et dynamique."
                         </p>
                         <div style="color: #ff9800; font-weight: bold; font-size: 1.1rem;">Ivan.N</div>
-                        <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en biologie 3</div>
+                        <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en Den 6</div>
                         <div style="margin-top: 1rem;">
                             <span style="color: #ffc107;">★★★★</span>★
                         </div>
@@ -484,7 +484,7 @@ include 'includes/header.php';
                             "Le système mis en place a réellement facilité la communication. Il a ouvert un espace d’échange plus accessible et dynamique."
                         </p>
                         <div style="color: #ff9800; font-weight: bold; font-size: 1.1rem;">Ivan.N</div>
-                        <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en biologie 3</div>
+                        <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en Den 6</div>
                         <div style="margin-top: 1rem;">
                             <span style="color: #ffc107;">★★★★</span>★
                         </div>
