@@ -80,9 +80,17 @@ if ($contact_id) {
         $thread_messages[] = $m;
     }
 
-    // Trier par date croissante
-    usort($thread_messages, function($a, $b) {
-        return strtotime($a['created_at']) <=> strtotime($b['created_at']);
+    // Trier par date croissante (compatible toutes versions PHP, sans <=>)
+    usort($thread_messages, function ($a, $b) {
+        $ta = isset($a['created_at']) ? strtotime($a['created_at']) : false;
+        $tb = isset($b['created_at']) ? strtotime($b['created_at']) : false;
+
+        // Si date invalide, pousser à la fin
+        $ta = ($ta !== false) ? $ta : (defined('PHP_INT_MAX') ? PHP_INT_MAX : 2147483647);
+        $tb = ($tb !== false) ? $tb : (defined('PHP_INT_MAX') ? PHP_INT_MAX : 2147483647);
+
+        if ($ta == $tb) return 0;
+        return ($ta < $tb) ? -1 : 1;
     });
 
     // Trouver les infos du contact via la liste des conversations récentes si disponible
