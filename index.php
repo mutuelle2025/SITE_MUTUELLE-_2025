@@ -675,6 +675,67 @@ include 'includes/header.php';
             </div>
         </div>
     </section>
+
+    <!-- Section Sponsors -->
+    <section class="sponsors" style="padding: 3rem 0; background: #f8f9fa; border-top: 1px solid var(--border-color);">
+        <div class="container">
+            <h2 class="section-title" style="margin-bottom: 1.5rem;">Nos Sponsors</h2>
+            <p style="text-align:center; color: var(--text-light); margin-bottom: 2rem;">Ils soutiennent notre communauté</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; align-items: center;">
+                <!-- YABA -->
+                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <img src="assets/img/YABA.png" alt="YABA" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Yaba-In</div>
+                </div>
+
+                <!-- Les Different Global -->
+                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <!-- Remplacer par: assets/img/les-different-global.png -->
+                    <img src="assets/img/global connect consulting.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Global connect consulting</div>
+                </div>
+                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <!-- Remplacer par: assets/img/les-different-global.png -->
+                    <img src="assets/img/global connect food.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Global connect food</div>
+                </div>
+                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <!-- Remplacer par: assets/img/les-different-global.png -->
+                    <img src="assets/img/global connect sarl.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Global connect sarl</div>
+                </div>
+
+                <!-- Moussa -->
+                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <!-- Remplacer par: assets/img/moussa.png -->
+                    <img src="assets/img/mousan.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Mousan</div>
+                </div>
+
+                <!-- Your's -->
+                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <!-- Remplacer par: assets/img/yours.png -->
+                    <img src="assets/img/your's.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Your's</div>
+                </div>
+
+                <!-- TK-MEX -->
+                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <!-- Remplacer par: assets/img/tk-mex.png -->
+                    <img src="assets/img/tk-mex.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">TK-MEX</div>
+                </div>
+
+                <!-- UDM -->
+                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <img src="assets/img/udm.jpg" alt="UDM" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">UDM</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </main>
 
 <?php include 'includes/footer.php'; ?>
