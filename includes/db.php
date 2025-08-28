@@ -102,8 +102,8 @@ function getUserById($id) {
  * Fonction pour créer un nouvel utilisateur
  */
 function createUser($data) {
-    $sql = "INSERT INTO users (nom, prenom, email, numero_etudiant, filiere, niveau, password_hash, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+    $sql = "INSERT INTO users (nom, prenom, email, numero_etudiant, filiere, niveau, password_hash, security_question, security_answer_hash, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
     $params = [
         $data['nom'],
@@ -112,7 +112,9 @@ function createUser($data) {
         $data['numero_etudiant'],
         $data['filiere'],
         $data['niveau'],
-        password_hash($data['password'], PASSWORD_DEFAULT)
+        password_hash($data['password'], PASSWORD_DEFAULT),
+        $data['security_question'],
+        password_hash(strtolower(trim($data['security_answer'])), PASSWORD_DEFAULT)
     ];
 
     return executeQuery($sql, $params);
@@ -149,6 +151,62 @@ function verifyPassword($password, $hash) {
 function updateLastLogin($userId) {
     $sql = "UPDATE users SET last_login = NOW() WHERE id = ?";
     return executeQuery($sql, [$userId]);
+}
+
+/**
+ * FONCTIONS POUR LES QUESTIONS DE SÉCURITÉ
+ */
+
+/**
+ * Fonction pour récupérer la question de sécurité d'un utilisateur
+ */
+function getSecurityQuestion($email) {
+    $sql = "SELECT security_question FROM users WHERE email = ? AND active = 1";
+    $stmt = executeQuery($sql, [$email]);
+    $result = $stmt->fetch();
+    return $result ? $result['security_question'] : null;
+}
+
+/**
+ * Fonction pour vérifier la réponse à la question de sécurité
+ */
+function verifySecurityAnswer($email, $answer) {
+    $sql = "SELECT security_answer_hash FROM users WHERE email = ? AND active = 1";
+    $stmt = executeQuery($sql, [$email]);
+    $result = $stmt->fetch();
+    
+    if (!$result) {
+        return false;
+    }
+    
+    return password_verify(strtolower(trim($answer)), $result['security_answer_hash']);
+}
+
+/**
+ * Fonction pour réinitialiser le mot de passe après vérification de la question de sécurité
+ */
+function resetPasswordWithSecurity($email, $newPassword) {
+    $sql = "UPDATE users SET password_hash = ? WHERE email = ? AND active = 1";
+    $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+    return executeQuery($sql, [$newPasswordHash, $email]);
+}
+
+/**
+ * Fonction pour obtenir les questions de sécurité prédéfinies
+ */
+function getSecurityQuestions() {
+    return [
+        "Quel est le nom de votre premier animal de compagnie ?",
+        "Dans quelle ville êtes-vous né(e) ?",
+        "Quel est le nom de jeune fille de votre mère ?",
+        "Quel était le nom de votre école primaire ?",
+        "Quel est votre plat préféré ?",
+        "Quel est le nom de votre meilleur ami d'enfance ?",
+        "Quelle est votre couleur préférée ?",
+        "Quel est le nom de votre premier professeur ?",
+        "Dans quelle rue avez-vous grandi ?",
+        "Quel est votre livre préféré ?"
+    ];
 }
 
 /**

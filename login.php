@@ -232,22 +232,82 @@ include 'includes/header.php';
             <span class="modal-close">&times;</span>
         </div>
         <div class="modal-body">
-            <p>Entrez votre adresse email pour recevoir un lien de réinitialisation :</p>
+            <p>Récupérez votre mot de passe en répondant à votre question de sécurité</p>
             <form id="forgotPasswordForm">
-                <div class="form-group">
-                    <label for="reset_email" class="form-label">Email</label>
-                    <input
-                        type="email"
-                        id="reset_email"
-                        name="reset_email"
-                        class="form-input"
-                        required
-                        placeholder="votre.email@exemple.com"
-                    >
+                <!-- Étape 1: Saisie de l'email -->
+                <div id="step1" class="reset-step">
+                    <div class="form-group">
+                        <label for="reset_email" class="form-label">Email</label>
+                        <input
+                            type="email"
+                            id="reset_email"
+                            name="reset_email"
+                            class="form-input"
+                            required
+                            placeholder="votre.email@exemple.com"
+                        >
+                    </div>
+                    <button type="button" id="checkEmailBtn" class="form-submit">
+                        <i class="fas fa-search"></i> Vérifier l'email
+                    </button>
                 </div>
-                <button type="submit" class="form-submit">
-                    <i class="fas fa-paper-plane"></i> Envoyer le lien
-                </button>
+
+                <!-- Étape 2: Question de sécurité -->
+                <div id="step2" class="reset-step" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Question de sécurité</label>
+                        <div id="securityQuestionText" style="padding: 0.75rem; background: #f8f9fa; border-radius: 5px; margin-bottom: 1rem; font-style: italic;"></div>
+                        <label for="security_answer" class="form-label">Votre réponse</label>
+                        <input
+                            type="text"
+                            id="security_answer"
+                            name="security_answer"
+                            class="form-input"
+                            required
+                            placeholder="Tapez votre réponse"
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button type="button" id="verifyAnswerBtn" class="form-submit">
+                        <i class="fas fa-check"></i> Vérifier la réponse
+                    </button>
+                    <button type="button" id="backToEmailBtn" class="btn btn-secondary" style="margin-top: 0.5rem;">
+                        <i class="fas fa-arrow-left"></i> Retour
+                    </button>
+                </div>
+
+                <!-- Étape 3: Nouveau mot de passe -->
+                <div id="step3" class="reset-step" style="display: none;">
+                    <div class="form-group">
+                        <label for="new_password" class="form-label">Nouveau mot de passe</label>
+                        <input
+                            type="password"
+                            id="new_password"
+                            name="new_password"
+                            class="form-input"
+                            required
+                            placeholder="Minimum 8 caractères"
+                            minlength="8"
+                        >
+                        <small style="color: var(--text-light); font-size: 0.8rem;">
+                            Au moins 8 caractères avec une minuscule, une majuscule et un chiffre.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_new_password" class="form-label">Confirmer le mot de passe</label>
+                        <input
+                            type="password"
+                            id="confirm_new_password"
+                            name="confirm_new_password"
+                            class="form-input"
+                            required
+                            placeholder="Répétez le nouveau mot de passe"
+                        >
+                    </div>
+                    <button type="submit" id="resetPasswordBtn" class="form-submit">
+                        <i class="fas fa-save"></i> Réinitialiser le mot de passe
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -290,16 +350,171 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Traitement du formulaire de réinitialisation
+    // Variables pour le processus de réinitialisation
+    let currentEmail = '';
+    let resetSteps = {
+        step1: document.getElementById('step1'),
+        step2: document.getElementById('step2'),
+        step3: document.getElementById('step3')
+    };
+
+    // Boutons du processus de réinitialisation
+    const checkEmailBtn = document.getElementById('checkEmailBtn');
+    const verifyAnswerBtn = document.getElementById('verifyAnswerBtn');
+    const backToEmailBtn = document.getElementById('backToEmailBtn');
+    const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+
+    // Étape 1: Vérifier l'email
+    checkEmailBtn.addEventListener('click', function() {
+        const email = document.getElementById('reset_email').value;
+        if (!email) {
+            showNotification('Veuillez saisir votre email', 'error');
+            return;
+        }
+
+        // Appel AJAX pour récupérer la question de sécurité
+        fetch('api/get_security_question.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                currentEmail = email;
+                document.getElementById('securityQuestionText').textContent = data.question;
+                showStep('step2');
+            } else {
+                showNotification(data.message || 'Email non trouvé', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Erreur de connexion', 'error');
+        });
+    });
+
+    // Étape 2: Vérifier la réponse
+    verifyAnswerBtn.addEventListener('click', function() {
+        const answer = document.getElementById('security_answer').value;
+        if (!answer) {
+            showNotification('Veuillez saisir votre réponse', 'error');
+            return;
+        }
+
+        // Appel AJAX pour vérifier la réponse
+        fetch('api/verify_security_answer.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                email: currentEmail,
+                answer: answer 
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showStep('step3');
+                showNotification('Réponse correcte ! Définissez votre nouveau mot de passe', 'success');
+            } else {
+                showNotification(data.message || 'Réponse incorrecte', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Erreur de connexion', 'error');
+        });
+    });
+
+    // Retour à l'étape 1
+    backToEmailBtn.addEventListener('click', function() {
+        showStep('step1');
+        document.getElementById('security_answer').value = '';
+    });
+
+    // Étape 3: Réinitialiser le mot de passe
     forgotPasswordForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const email = document.getElementById('reset_email').value;
+        const newPassword = document.getElementById('new_password').value;
+        const confirmPassword = document.getElementById('confirm_new_password').value;
 
-        if (email) {
-            // TODO: Envoyer la demande de réinitialisation
-            showNotification('Un email de réinitialisation a été envoyé à ' + email, 'success');
+        // Validation côté client
+        if (!newPassword || !confirmPassword) {
+            showNotification('Veuillez remplir tous les champs', 'error');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            showNotification('Les mots de passe ne correspondent pas', 'error');
+            return;
+        }
+
+        if (newPassword.length < 8) {
+            showNotification('Le mot de passe doit contenir au moins 8 caractères', 'error');
+            return;
+        }
+
+        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
+            showNotification('Le mot de passe doit contenir une minuscule, une majuscule et un chiffre', 'error');
+            return;
+        }
+
+        // Appel AJAX pour réinitialiser le mot de passe
+        fetch('api/reset_password.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                email: currentEmail,
+                new_password: newPassword 
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Mot de passe réinitialisé avec succès !', 'success');
+                forgotPasswordModal.style.display = 'none';
+                resetForm();
+            } else {
+                showNotification(data.message || 'Erreur lors de la réinitialisation', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Erreur de connexion', 'error');
+        });
+    });
+
+    // Fonction pour afficher une étape
+    function showStep(stepId) {
+        Object.keys(resetSteps).forEach(key => {
+            resetSteps[key].style.display = 'none';
+        });
+        resetSteps[stepId].style.display = 'block';
+    }
+
+    // Fonction pour réinitialiser le formulaire
+    function resetForm() {
+        showStep('step1');
+        document.getElementById('reset_email').value = '';
+        document.getElementById('security_answer').value = '';
+        document.getElementById('new_password').value = '';
+        document.getElementById('confirm_new_password').value = '';
+        currentEmail = '';
+    }
+
+    // Réinitialiser le formulaire quand on ferme le modal
+    modalClose.addEventListener('click', function() {
+        forgotPasswordModal.style.display = 'none';
+        resetForm();
+    });
+
+    window.addEventListener('click', function(e) {
+        if (e.target === forgotPasswordModal) {
             forgotPasswordModal.style.display = 'none';
-            document.getElementById('reset_email').value = '';
+            resetForm();
         }
     });
 });

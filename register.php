@@ -26,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $niveau = trim(isset($_POST['niveau']) ? $_POST['niveau'] : '');
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $confirm_password = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
+    $security_question = trim(isset($_POST['security_question']) ? $_POST['security_question'] : '');
+    $security_answer = trim(isset($_POST['security_answer']) ? $_POST['security_answer'] : '');
     $terms = isset($_POST['terms']);
 
     // Validation des champs
@@ -81,6 +83,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['confirm_password'] = 'Les mots de passe ne correspondent pas';
     }
 
+    if (empty($security_question)) {
+        $errors['security_question'] = 'La question de sécurité est requise';
+    }
+
+    if (empty($security_answer)) {
+        $errors['security_answer'] = 'La réponse à la question de sécurité est requise';
+    } elseif (strlen($security_answer) < 2) {
+        $errors['security_answer'] = 'La réponse doit contenir au moins 2 caractères';
+    }
+
     if (!$terms) {
         $errors['terms'] = 'Vous devez accepter les conditions d\'utilisation';
     }
@@ -96,7 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'numero_etudiant' => $numero_etudiant,
                 'filiere' => $filiere,
                 'niveau' => $niveau,
-                'password' => $password
+                'password' => $password,
+                'security_question' => $security_question,
+                'security_answer' => $security_answer
             ];
 
             createUser($userData);
@@ -306,6 +320,58 @@ include 'includes/header.php';
                         <div class="form-error <?php echo isset($errors['confirm_password']) ? 'show' : ''; ?>">
                             <?php echo isset($errors['confirm_password']) ? $errors['confirm_password'] : ''; ?>
                         </div>
+                    </div>
+
+                    <!-- Question de sécurité -->
+                    <div class="form-group">
+                        <label for="security_question" class="form-label">
+                            <i class="fas fa-shield-alt"></i> Question de sécurité *
+                        </label>
+                        <select
+                            id="security_question"
+                            name="security_question"
+                            class="form-select <?php echo isset($errors['security_question']) ? 'error' : ''; ?>"
+                            required
+                        >
+                            <option value="">Choisissez une question de sécurité</option>
+                            <?php 
+                            $questions = getSecurityQuestions();
+                            foreach ($questions as $question): 
+                            ?>
+                                <option value="<?php echo htmlspecialchars($question); ?>" 
+                                    <?php echo (isset($security_question) && $security_question === $question) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($question); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div class="form-error <?php echo isset($errors['security_question']) ? 'show' : ''; ?>">
+                            <?php echo isset($errors['security_question']) ? $errors['security_question'] : ''; ?>
+                        </div>
+                        <small style="color: var(--text-light); font-size: 0.8rem;">
+                            Cette question vous permettra de récupérer votre mot de passe en cas d'oubli.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="security_answer" class="form-label">
+                            <i class="fas fa-key"></i> Réponse à la question de sécurité *
+                        </label>
+                        <input
+                            type="text"
+                            id="security_answer"
+                            name="security_answer"
+                            class="form-input <?php echo isset($errors['security_answer']) ? 'error' : ''; ?>"
+                            value="<?php echo htmlspecialchars(isset($security_answer) ? $security_answer : ''); ?>"
+                            required
+                            placeholder="Votre réponse (sensible à la casse)"
+                            autocomplete="off"
+                        >
+                        <div class="form-error <?php echo isset($errors['security_answer']) ? 'show' : ''; ?>">
+                            <?php echo isset($errors['security_answer']) ? $errors['security_answer'] : ''; ?>
+                        </div>
+                        <small style="color: var(--text-light); font-size: 0.8rem;">
+                            Mémorisez bien cette réponse, elle vous sera demandée pour récupérer votre mot de passe.
+                        </small>
                     </div>
 
                     <!-- Conditions d'utilisation -->
