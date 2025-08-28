@@ -300,8 +300,13 @@ include 'includes/header.php';
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
-                            "Grâce à la mutuelle, j'ai pu accéder à tous les anciens examens de ma filière.
-                            Cela m'a énormément aidé à réussir mes partiels !"
+                            "Être étudiant, c’est affronter des défis, mais c’est aussi croire que chaque effort, chaque sacrifice, nous rapproche de la réussite. La mutuelle est là pour que personne ne marche seul, pour que chacun trouve une main tendue, une oreille attentive et un appui sincère.
+
+✨ Aujourd’hui, je vous invite à garder confiance en vous, à cultiver la discipline et le courage. Continuons à bâtir une communauté où l’entraide est une richesse, la solidarité une fierté, et le savoir notre plus grande arme.
+
+🔑 N’oublions jamais :
+
+Seul, on va plus vite. Ensemble, on va plus loin."
                         </p>
                         <div style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">Uriche.F
                         </div>
@@ -403,8 +408,13 @@ include 'includes/header.php';
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
-                            "Grâce à la mutuelle, j'ai pu accéder à tous les anciens examens de ma filière.
-                            Cela m'a énormément aidé à réussir mes partiels !"
+                            "Être étudiant, c’est affronter des défis, mais c’est aussi croire que chaque effort, chaque sacrifice, nous rapproche de la réussite. La mutuelle est là pour que personne ne marche seul, pour que chacun trouve une main tendue, une oreille attentive et un appui sincère.
+
+✨ Aujourd’hui, je vous invite à garder confiance en vous, à cultiver la discipline et le courage. Continuons à bâtir une communauté où l’entraide est une richesse, la solidarité une fierté, et le savoir notre plus grande arme.
+
+🔑 N’oublions jamais :
+
+Seul, on va plus vite. Ensemble, on va plus loin."
                         </p>
                         <div style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">Uriche.F
                         </div>
