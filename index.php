@@ -92,6 +92,42 @@ include 'includes/header.php';
             padding: 1rem;
         }
     }
+    /* About section responsive layout and tiles */
+    .about .about-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        align-items: start;
+    }
+    @media (max-width: 900px) {
+        .about .about-content { grid-template-columns: 1fr; }
+        .about .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    }
+    /* Make image tiles responsive with hover */
+    .about .about-text > div[style*='position: relative'] {
+        height: auto !important;
+        aspect-ratio: 16/9;
+        min-height: 120px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: transform .25s ease;
+    }
+    .about .about-text > div[style*='position: relative']:hover {
+        transform: translateY(-4px);
+    }
+    .about .about-text > div > div[style*='background: url'] {
+        transition: transform .3s ease;
+        will-change: transform;
+        /* Show full image without cropping */
+        background-size: contain !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-color: #fff;
+    }
+    .about .about-text > div:hover > div[style*='background: url'] {
+        transform: scale(1.05);
+    }
 </style>
 
 <main class="main-content">
@@ -209,10 +245,10 @@ include 'includes/header.php';
                         collaborative.</p>
 
                     <!-- Images illustratives de la vie étudiante -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin: 1.5rem 0; align-items: stretch;">
                         <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
                             <div
-                                style="background: url('assets/img/Art oratoire et éloquence.jpg') center/cover; width: 100%; height: 100%;">
+                                style="background: url('assets/img/Art oratoire et éloquence.jpg') top/cover; width: 100%; height: 100%;">
                             </div>
                             <div
                                 style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
@@ -226,6 +262,93 @@ include 'includes/header.php';
                             <div
                                 style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
                                 <i class="fas fa-book-open"></i> Foire interculturelle
+                            </div>
+                        </div>
+                        <!-- Partenaria solide -->
+                        <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
+                            <div
+                                style="background: url('assets/img/partenaria solide.jpg') top/cover; width: 100%; height: 100%;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
+                                <i class="fas fa-handshake"></i> Partenaria solide
+                            </div>
+                        </div>
+
+                        <!-- La voix des montagnes -->
+                        <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
+                            <div
+                                style="background: url('assets/img/la voix des montagnes.jpg') top/cover; width: 100%; height: 100%;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
+                                <i class="fas fa-microphone"></i> La voix des montagnes
+                            </div>
+                        </div>
+
+                        <!-- Arc cullinais udmois -->
+                        <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
+                            <div
+                                style="background: url('assets/img/arc cullinais udmois.jpg') top/cover; width: 100%; height: 100%;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
+                                <i class="fas fa-archway"></i> Arc cullinais udmois
+                            </div>
+                        </div>
+
+                        <!-- Les compétions -->
+                        <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
+                            <div
+                                style="background: url('assets/img/les compétions.jpg') top/cover; width: 100%; height: 100%;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
+                                <i class="fas fa-trophy"></i> Les compétions
+                            </div>
+                        </div>
+
+                        <!-- La starmania -->
+                        <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
+                            <div
+                                style="background: url('assets/img/la starmania.jpg') top/cover; width: 100%; height: 100%;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
+                                <i class="fas fa-star"></i> La starmania
+                            </div>
+                        </div>
+
+                        <!-- Profetionalisme -->
+                        <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
+                            <div
+                                style="background: url('assets/img/profetionalisme.jpg') top/cover; width: 100%; height: 100%;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
+                                <i class="fas fa-user-tie"></i> Profetionalisme
+                            </div>
+                        </div>
+
+                        <!-- Cultural -->
+                        <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
+                            <div
+                                style="background: url('assets/img/cultural.jpg') top/cover; width: 100%; height: 100%;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;">
+                                <i class="fas fa-theater-masks"></i> Cultural
+                            </div>
+                        </div>
+
+                        <!-- L'éloquence -->
+                        <div style='position: relative; height: 120px; border-radius: 10px; overflow: hidden;'>
+                            <div
+                                style="background: url('assets/img/l\'éloquence.jpg') top/cover; width: 100%; height: 100%;">
+                            </div>
+                            <div
+                                style='position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 0.5rem; font-size: 0.9rem; font-weight: bold;'>
+                                <i class="fas fa-comments"></i> L'éloquence
                             </div>
                         </div>
                     </div>
@@ -300,13 +423,8 @@ include 'includes/header.php';
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
-                            "Être étudiant, c’est affronter des défis, mais c’est aussi croire que chaque effort, chaque sacrifice, nous rapproche de la réussite. La mutuelle est là pour que personne ne marche seul, pour que chacun trouve une main tendue, une oreille attentive et un appui sincère.
-
-✨ Aujourd’hui, je vous invite à garder confiance en vous, à cultiver la discipline et le courage. Continuons à bâtir une communauté où l’entraide est une richesse, la solidarité une fierté, et le savoir notre plus grande arme.
-
-🔑 N’oublions jamais :
-
-Seul, on va plus vite. Ensemble, on va plus loin."
+                            "Grâce à la mutuelle, j'ai pu accéder à tous les anciens examens de ma filière.
+                            Cela m'a énormément aidé à réussir mes partiels !"
                         </p>
                         <div style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">Uriche.F
                         </div>
@@ -408,13 +526,8 @@ Seul, on va plus vite. Ensemble, on va plus loin."
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
-                            "Être étudiant, c’est affronter des défis, mais c’est aussi croire que chaque effort, chaque sacrifice, nous rapproche de la réussite. La mutuelle est là pour que personne ne marche seul, pour que chacun trouve une main tendue, une oreille attentive et un appui sincère.
-
-✨ Aujourd’hui, je vous invite à garder confiance en vous, à cultiver la discipline et le courage. Continuons à bâtir une communauté où l’entraide est une richesse, la solidarité une fierté, et le savoir notre plus grande arme.
-
-🔑 N’oublions jamais :
-
-Seul, on va plus vite. Ensemble, on va plus loin."
+                            "Grâce à la mutuelle, j'ai pu accéder à tous les anciens examens de ma filière.
+                            Cela m'a énormément aidé à réussir mes partiels !"
                         </p>
                         <div style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">Uriche.F
                         </div>
