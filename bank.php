@@ -14,6 +14,7 @@ $filters = array(
     'niveau' => isset($_GET['niveau']) ? $_GET['niveau'] : '',
     'matiere' => isset($_GET['matiere']) ? $_GET['matiere'] : '',
     'type_document' => isset($_GET['type_document']) ? $_GET['type_document'] : '',
+    'exclude_information' => true, // Exclure les documents d'information
     'sort' => isset($_GET['sort']) ? $_GET['sort'] : 'recent'
 );
 
@@ -47,11 +48,13 @@ include 'includes/header.php';
                 <p style="font-size: 1.2rem; opacity: 0.9;">
                     Accédez à plus de <?php echo number_format($stats['total_documents']); ?> documents partagés par la communauté
                 </p>
+                <?php if (isset($_SESSION['user_id']) && (hasPermission($_SESSION['user_id'], 'view_system_logs') || hasRole($_SESSION['user_id'], 'moderateur'))): ?>
                 <div>
                     <button type="button" class="btn btn-secondary" onclick="refreshStats()" style="background: rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.4); margin-top:0.5rem;">
                         <i class="fas fa-sync"></i> Rafraîchir les statistiques
                     </button>
                 </div>
+                <?php endif; ?>
             </div>
 
             <!-- Statistiques rapides -->
@@ -174,7 +177,7 @@ include 'includes/header.php';
                             </a>
                         </div>
 
-                        <?php if (isset($_SESSION['user_id'])): ?>
+                        <?php if (isset($_SESSION['user_id']) && hasPermission($_SESSION['user_id'], 'upload_documents')): ?>
                             <button type="button" class="btn btn-primary" onclick="showUploadModal()" style="background-color: #ff9800;">
                                 <i class="fas fa-plus"></i> Ajouter un document
                             </button>

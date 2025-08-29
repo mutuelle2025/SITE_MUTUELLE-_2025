@@ -23,28 +23,49 @@ try {
     if (!$document) {
         http_response_code(404);
         echo 'Document non trouvé';
-        exit;
-    }
-
-    // Chemin vers le fichier
-    $file_path = '../uploads/' . $document['filename'];
-    if (!file_exists($file_path)) {
-        // Pour les documents d'exemple, créer un fichier PDF temporaire
-        if ($document['type_document'] === 'information') {
-            createSamplePDF($file_path, $document['title'], $document['description']);
-        } else {
-            http_response_code(404);
-            echo 'Fichier introuvable';
-            exit;
+        // Chemin vers le fichier
+        $file_path = '../uploads/' . $document['filename'];
+        if (!file_exists($file_path)) {
+            // Pour les documents d'exemple, créer un fichier PDF temporaire
+            if ($document['type_document'] === 'information') {
+                createSamplePDF($file_path, $document['title'], $document['description']);
+            } else {
+                http_response_code(404);
+                echo 'Fichier introuvable';
+                exit;
+            }
         }
-    }
 
-    // Déterminer le type MIME en fonction de l'extension enregistrée
-    $ext = strtolower($document['file_type']);
-    $mime = 'application/octet-stream';
-    switch ($ext) {
+        // Déterminer le type MIME en fonction de l'extension enregistrée
+        $ext = strtolower($document['file_type']);
+        $mime = 'application/octet-stream';
+        switch ($ext) {
+            case 'pdf':
+                $mime = 'application/pdf';
+                break;
+            case 'jpg':
+            case 'jpeg':
+                $mime = 'image/jpeg';
+                break;
+            case 'png':
+                $mime = 'image/png';
+                break;
+            case 'gif':
+                $mime = 'image/gif';
+                break;
+            case 'webp':
+                $mime = 'image/webp';
+                break;
+            default:
+                // Aperçu non pris en charge
+                http_response_code(415);
+                echo 'Aperçu non disponible pour ce type de fichier';
+                exit;
+        }
+
+        $file_size = filesize($file_path);
+        $file_name = $document['original_filename'];
         case 'pdf':
-        case 'application/pdf':
             $mime = 'application/pdf';
             break;
         case 'jpg':
@@ -106,101 +127,3 @@ try {
     exit;
 }
 
-/**
- * Fonction pour créer un PDF d'exemple pour les documents d'information
- */
-function createSamplePDF($file_path, $title, $description) {
-    // Créer un PDF simple
-    $pdf_content = "%PDF-1.4
-1 0 obj
-<<
-/Type /Catalog
-/Pages 2 0 R
->>
-endobj
-
-2 0 obj
-<<
-/Type /Pages
-/Kids [3 0 R]
-/Count 1
->>
-endobj
-
-3 0 obj
-<<
-/Type /Page
-/Parent 2 0 R
-/MediaBox [0 0 612 792]
-/Contents 4 0 R
-/Resources <<
-/Font <<
-/F1 5 0 R
->>
->>
->>
-endobj
-
-4 0 obj
-<<
-/Length 400
->>
-stream
-BT
-/F1 16 Tf
-50 750 Td
-(" . substr($title, 0, 50) . ") Tj
-0 -30 Td
-/F1 12 Tf
-(Universite des Montagnes - UDM) Tj
-0 -20 Td
-(Document d'information) Tj
-0 -40 Td
-(" . substr($description, 0, 200) . "...) Tj
-0 -30 Td
-(Genere automatiquement le " . date('d/m/Y H:i') . ") Tj
-0 -40 Td
-(Pour plus d'informations:) Tj
-0 -20 Td
-(Email: admissions@udm.edu.cm) Tj
-0 -20 Td
-(Site web: www.udm.edu.cm) Tj
-ET
-endstream
-endobj
-
-5 0 obj
-<<
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
-endobj
-
-xref
-0 6
-0000000000 65535 f 
-0000000009 00000 n 
-0000000058 00000 n 
-0000000115 00000 n 
-0000000274 00000 n 
-0000000726 00000 n 
-trailer
-<<
-/Size 6
-/Root 1 0 R
->>
-startxref
-823
-%%EOF";
-    
-    // Créer le répertoire si nécessaire
-    $dir = dirname($file_path);
-    if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
-    }
-    
-    // Écrire le PDF
-    file_put_contents($file_path, $pdf_content);
-}
-?>

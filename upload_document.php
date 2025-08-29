@@ -139,6 +139,30 @@ include 'includes/header.php';
                 <form method="POST" action="" enctype="multipart/form-data" id="uploadForm">
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                     
+                    <!-- Type de document -->
+                    <div class="form-group">
+                        <label for="type_document" class="form-label">
+                            <i class="fas fa-file-alt"></i> Type de document *
+                        </label>
+                        <select 
+                            id="type_document" 
+                            name="type_document" 
+                            class="form-select <?php echo isset($errors['type_document']) ? 'error' : ''; ?>"
+                            required
+                        >
+                            <option value="">Choisissez un type</option>
+                            <option value="examen" <?php echo (isset($type_document) ? $type_document : '') === 'examen' ? 'selected' : ''; ?>>Examen</option>
+                            <option value="cours" <?php echo (isset($type_document) ? $type_document : '') === 'cours' ? 'selected' : ''; ?>>Cours</option>
+                            <option value="td" <?php echo (isset($type_document) ? $type_document : '') === 'td' ? 'selected' : ''; ?>>TD (Travaux Dirigés)</option>
+                            <option value="tp" <?php echo (isset($type_document) ? $type_document : '') === 'tp' ? 'selected' : ''; ?>>TP (Travaux Pratiques)</option>
+                            <option value="information" <?php echo (isset($type_document) ? $type_document : '') === 'information' ? 'selected' : ''; ?>>Information (Filières/Admissions)</option>
+                            <option value="autre" <?php echo (isset($type_document) ? $type_document : '') === 'autre' ? 'selected' : ''; ?>>Autre</option>
+                        </select>
+                        <div class="form-error <?php echo isset($errors['type_document']) ? 'show' : ''; ?>">
+                            <?php echo isset($errors['type_document']) ? $errors['type_document'] : ''; ?>
+                        </div>
+                    </div>
+
                     <!-- Titre -->
                     <div class="form-group">
                         <label for="title" class="form-label">
@@ -176,7 +200,7 @@ include 'includes/header.php';
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="form-group">
                             <label for="filiere" class="form-label">
-                                <i class="fas fa-graduation-cap"></i> Filière *
+                                <i class="fas fa-graduation-cap"></i> <span id="filiere-label">Filière *</span>
                             </label>
                             <select 
                                 id="filiere" 
@@ -193,15 +217,18 @@ include 'includes/header.php';
                                 <option value="ingenierie" <?php echo (isset($filiere) ? $filiere : '') === 'ingenierie' ? 'selected' : ''; ?>>Ingénierie</option>
                                 <option value="lettres" <?php echo (isset($filiere) ? $filiere : '') === 'lettres' ? 'selected' : ''; ?>>Lettres et Sciences Humaines</option>
                                 <option value="sciences" <?php echo (isset($filiere) ? $filiere : '') === 'sciences' ? 'selected' : ''; ?>>Sciences</option>
+                                <!-- Options pour documents d'information -->
+                                <option value="toutes" <?php echo (isset($filiere) ? $filiere : '') === 'toutes' ? 'selected' : ''; ?>>Toutes filières</option>
+                                <option value="general" <?php echo (isset($filiere) ? $filiere : '') === 'general' ? 'selected' : ''; ?>>Information générale</option>
                             </select>
                             <div class="form-error <?php echo isset($errors['filiere']) ? 'show' : ''; ?>">
                                 <?php echo isset($errors['filiere']) ? $errors['filiere'] : ''; ?>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="niveau-group">
                             <label for="niveau" class="form-label">
-                                <i class="fas fa-layer-group"></i> Niveau *
+                                <i class="fas fa-layer-group"></i> <span id="niveau-label">Niveau *</span>
                             </label>
                             <select 
                                 id="niveau" 
@@ -216,6 +243,10 @@ include 'includes/header.php';
                                 <option value="M1" <?php echo (isset($niveau) ? $niveau : '') === 'M1' ? 'selected' : ''; ?>>Master 1ère année (M1)</option>
                                 <option value="M2" <?php echo (isset($niveau) ? $niveau : '') === 'M2' ? 'selected' : ''; ?>>Master 2ème année (M2)</option>
                                 <option value="Doctorat" <?php echo (isset($niveau) ? $niveau : '') === 'Doctorat' ? 'selected' : ''; ?>>Doctorat</option>
+                                <!-- Options pour documents d'information -->
+                                <option value="Admission" <?php echo (isset($niveau) ? $niveau : '') === 'Admission' ? 'selected' : ''; ?>>Admission</option>
+                                <option value="Orientation" <?php echo (isset($niveau) ? $niveau : '') === 'Orientation' ? 'selected' : ''; ?>>Orientation</option>
+                                <option value="General" <?php echo (isset($niveau) ? $niveau : '') === 'General' ? 'selected' : ''; ?>>Général</option>
                             </select>
                             <div class="form-error <?php echo isset($errors['niveau']) ? 'show' : ''; ?>">
                                 <?php echo isset($errors['niveau']) ? $errors['niveau'] : ''; ?>
@@ -223,42 +254,19 @@ include 'includes/header.php';
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label for="matiere" class="form-label">
-                                <i class="fas fa-book"></i> Matière
-                            </label>
-                            <input 
-                                type="text" 
-                                id="matiere" 
-                                name="matiere" 
-                                class="form-input"
-                                value="<?php echo htmlspecialchars(isset($matiere) ? $matiere : ''); ?>"
-                                placeholder="Ex: Mathématiques, Algorithmique..."
-                            >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="type_document" class="form-label">
-                                <i class="fas fa-file-alt"></i> Type de document *
-                            </label>
-                            <select 
-                                id="type_document" 
-                                name="type_document" 
-                                class="form-select <?php echo isset($errors['type_document']) ? 'error' : ''; ?>"
-                                required
-                            >
-                                <option value="">Choisissez un type</option>
-                                <option value="examen" <?php echo (isset($type_document) ? $type_document : '') === 'examen' ? 'selected' : ''; ?>>Examen</option>
-                                <option value="cours" <?php echo (isset($type_document) ? $type_document : '') === 'cours' ? 'selected' : ''; ?>>Cours</option>
-                                <option value="td" <?php echo (isset($type_document) ? $type_document : '') === 'td' ? 'selected' : ''; ?>>TD (Travaux Dirigés)</option>
-                                <option value="tp" <?php echo (isset($type_document) ? $type_document : '') === 'tp' ? 'selected' : ''; ?>>TP (Travaux Pratiques)</option>
-                                <option value="autre" <?php echo (isset($type_document) ? $type_document : '') === 'autre' ? 'selected' : ''; ?>>Autre</option>
-                            </select>
-                            <div class="form-error <?php echo isset($errors['type_document']) ? 'show' : ''; ?>">
-                                <?php echo isset($errors['type_document']) ? $errors['type_document'] : ''; ?>
-                            </div>
-                        </div>
+                    <!-- Matière/Sujet -->
+                    <div class="form-group" id="matiere-group">
+                        <label for="matiere" class="form-label">
+                            <i class="fas fa-book"></i> <span id="matiere-label">Matière</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="matiere" 
+                            name="matiere" 
+                            class="form-input"
+                            value="<?php echo htmlspecialchars(isset($matiere) ? $matiere : ''); ?>"
+                            placeholder="Ex: Mathématiques, Algorithmique..."
+                        >
                     </div>
 
                     <!-- Upload de fichier -->
@@ -320,11 +328,89 @@ include 'includes/header.php';
             </div>
         </div>
     </div>
-</main>
+    </main>
 
-<?php include 'includes/footer.php'; ?>
+    <script>
+    // Adaptation des champs selon le type de document
+    document.getElementById('type_document').addEventListener('change', function() {
+        const typeDocument = this.value;
+        const niveauLabel = document.getElementById('niveau-label');
+        const matiereLabel = document.getElementById('matiere-label');
+        const matiereInput = document.getElementById('matiere');
+        const niveauSelect = document.getElementById('niveau');
+        
+        if (typeDocument === 'information') {
+            // Pour les documents d'information
+            const filiereLabel = document.getElementById('filiere-label');
+            const filiereSelect = document.getElementById('filiere');
+            
+            filiereLabel.textContent = 'Portée *';
+            niveauLabel.textContent = 'Catégorie *';
+            matiereLabel.textContent = 'Sujet *';
+            matiereInput.placeholder = 'Ex: Conditions d\'admission, Programmes disponibles, Bourses...';
+            
+            // Masquer les filières spécifiques et afficher les options générales
+            const specificFilieres = filiereSelect.querySelectorAll('option[value="informatique"], option[value="gestion"], option[value="economie"], option[value="droit"], option[value="medecine"], option[value="ingenierie"], option[value="lettres"], option[value="sciences"]');
+            const generalFilieres = filiereSelect.querySelectorAll('option[value="toutes"], option[value="general"]');
+            
+            specificFilieres.forEach(option => option.style.display = 'none');
+            generalFilieres.forEach(option => option.style.display = 'block');
+            
+            // Masquer les options académiques et afficher les options d'information
+            const academicOptions = niveauSelect.querySelectorAll('option[value="L1"], option[value="L2"], option[value="L3"], option[value="M1"], option[value="M2"], option[value="Doctorat"]');
+            const infoOptions = niveauSelect.querySelectorAll('option[value="Admission"], option[value="Orientation"], option[value="General"]');
+            
+            academicOptions.forEach(option => option.style.display = 'none');
+            infoOptions.forEach(option => option.style.display = 'block');
+            
+        } else {
+            // Pour les autres types de documents
+            const filiereLabel = document.getElementById('filiere-label');
+            const filiereSelect = document.getElementById('filiere');
+            
+            filiereLabel.textContent = 'Filière *';
+            niveauLabel.textContent = 'Niveau *';
+            matiereLabel.textContent = 'Matière *';
+            matiereInput.placeholder = 'Ex: Mathématiques, Programmation, Histoire...';
+            
+            // Afficher les filières spécifiques et masquer les options générales
+            const specificFilieres = filiereSelect.querySelectorAll('option[value="informatique"], option[value="gestion"], option[value="economie"], option[value="droit"], option[value="medecine"], option[value="ingenierie"], option[value="lettres"], option[value="sciences"]');
+            const generalFilieres = filiereSelect.querySelectorAll('option[value="toutes"], option[value="general"]');
+            
+            specificFilieres.forEach(option => option.style.display = 'block');
+            generalFilieres.forEach(option => option.style.display = 'none');
+            
+            // Afficher les options académiques et masquer les options d'information
+            const academicOptions = niveauSelect.querySelectorAll('option[value="L1"], option[value="L2"], option[value="L3"], option[value="M1"], option[value="M2"], option[value="Doctorat"]');
+            const infoOptions = niveauSelect.querySelectorAll('option[value="Admission"], option[value="Orientation"], option[value="General"]');
+            
+            academicOptions.forEach(option => option.style.display = 'block');
+            infoOptions.forEach(option => option.style.display = 'none');
+        }
+        
+        // Réinitialiser les sélections si elles ne sont plus valides
+        if (typeDocument === 'information') {
+            if (['informatique', 'gestion', 'economie', 'droit', 'medecine', 'ingenierie', 'lettres', 'sciences'].includes(filiereSelect.value)) {
+                filiereSelect.value = '';
+            }
+            if (['L1', 'L2', 'L3', 'M1', 'M2', 'Doctorat'].includes(niveauSelect.value)) {
+                niveauSelect.value = '';
+            }
+        } else {
+            if (['toutes', 'general'].includes(filiereSelect.value)) {
+                filiereSelect.value = '';
+            }
+            if (['Admission', 'Orientation', 'General'].includes(niveauSelect.value)) {
+                niveauSelect.value = '';
+            }
+        }
+    });
 
-<script>
+    // Initialiser l'état au chargement de la page
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('type_document').dispatchEvent(new Event('change'));
+    });
+
 function updateFileName(input) {
     const fileInfo = document.getElementById('file-info');
     const fileName = document.getElementById('file-name');

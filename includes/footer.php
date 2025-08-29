@@ -19,7 +19,7 @@
                     <h4>Services</h4>
                     <ul>
                         <li><a href="bank.php">Banque d'épreuves</a></li>
-                        <li><a href="results.php">Consultation des résultats</a></li>
+                        <li><a href="results.php">A propos des filieres et admission a l'université des montagnes</a></li>
                         <li><a href="messages.php">Messagerie</a></li>
                         <li><a href="alumni.php"><i class="fas fa-graduation-cap"></i> Alumni - Bureau 2020-2025</a></li>
                         <li><a href="dashboard.php">Espace membre</a></li>

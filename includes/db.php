@@ -250,6 +250,10 @@ function getDocuments($filters = [], $page = 1, $limit = 12) {
         $params[] = $filters['type_document'];
     }
 
+    if (!empty($filters['exclude_information'])) {
+        $where_conditions[] = "d.type_document != 'information'";
+    }
+
     $where_clause = implode(' AND ', $where_conditions);
 
     // Gestion du tri (sécurisé par liste blanche)
@@ -316,6 +320,10 @@ function countDocuments($filters = []) {
     if (!empty($filters['type_document'])) {
         $where_conditions[] = "d.type_document = ?";
         $params[] = $filters['type_document'];
+    }
+
+    if (!empty($filters['exclude_information'])) {
+        $where_conditions[] = "d.type_document != 'information'";
     }
 
     $where_clause = implode(' AND ', $where_conditions);
@@ -403,20 +411,20 @@ function getBankStatistics() {
     return cache_remember('bank_statistics', function() {
         $stats = [];
 
-        // Nombre total de documents
-        $sql = "SELECT COUNT(*) FROM documents WHERE active = 1";
+        // Nombre total de documents (exclure les documents d'information)
+        $sql = "SELECT COUNT(*) FROM documents WHERE active = 1 AND type_document != 'information'";
         $stmt = executeQuery($sql);
         $stats['total_documents'] = $stmt->fetchColumn();
 
-        // Nombre total de téléchargements
-        $sql = "SELECT SUM(downloads) FROM documents WHERE active = 1";
+        // Nombre total de téléchargements (exclure les documents d'information)
+        $sql = "SELECT SUM(downloads) FROM documents WHERE active = 1 AND type_document != 'information'";
         $stmt = executeQuery($sql);
         $stats['total_downloads'] = $stmt->fetchColumn() ?: 0;
 
         // Documents les plus téléchargés
         $sql = "SELECT d.title, d.downloads, d.type_document
                 FROM documents d
-                WHERE d.active = 1
+                WHERE d.active = 1 AND d.type_document != 'information'
                 ORDER BY d.downloads DESC
                 LIMIT 5";
         $stmt = executeQuery($sql);
@@ -1099,7 +1107,7 @@ function createTables() {
         filiere VARCHAR(100) NOT NULL,
         niveau VARCHAR(10) NOT NULL,
         matiere VARCHAR(100),
-        type_document ENUM('examen', 'cours', 'td', 'tp', 'autre') DEFAULT 'autre',
+        type_document ENUM('examen', 'cours', 'td', 'tp', 'information', 'autre') DEFAULT 'autre',
         downloads INT DEFAULT 0,
         active TINYINT(1) DEFAULT 1,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

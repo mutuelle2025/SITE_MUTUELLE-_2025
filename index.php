@@ -197,7 +197,7 @@ include 'includes/header.php';
                             <i class="fas fa-chart-line" style="color: white; font-size: 3rem;"></i>
                         </div>
                     </div>
-                    <h3>Consultation des Résultats</h3>
+                    <h3>A propos des filieres et admission a l'université des montagnes</h3>
                     <p>Consultez vos résultats académiques de manière sécurisée et suivez votre progression.</p>
                     <a href="results.php" class="service-link">Consulter <i class="fas fa-arrow-right"></i></a>
                 </div>

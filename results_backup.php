@@ -7,11 +7,11 @@ $user = checkAuth('view_bank', 'etudiant');
 // Logger l'accès aux informations sur les filières
 logAction($_SESSION['user_id'], 'access_filieres_info', 'Accès aux informations filières et admissions');
 
-// Récupération des filtres pour les documents
+// Récupération des filtres pour les documents d'information
 $filters = array(
     'search' => trim(isset($_GET['search']) ? $_GET['search'] : ''),
     'filiere' => isset($_GET['filiere']) ? $_GET['filiere'] : '',
-    'type_document' => 'information', 
+    'type_document' => 'information', // Filtrer uniquement les documents d'information
     'sort' => isset($_GET['sort']) ? $_GET['sort'] : 'recent'
 );
 
@@ -45,26 +45,10 @@ include 'includes/header.php';
                 </p>
             </div>
 
-            <!-- Actions et boutons -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <div>
-                    <button type="button" class="btn btn-secondary" onclick="refreshStats()" style="background: rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.4);">
-                        <i class="fas fa-sync"></i> Rafraîchir les statistiques
-                    </button>
-                </div>
-                <?php if (isset($_SESSION['user_id']) && hasPermission($_SESSION['user_id'], 'upload_documents')): ?>
-                <div>
-                    <button type="button" class="btn btn-primary" onclick="showUploadModal()" style="background: rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.4);">
-                        <i class="fas fa-plus"></i> Ajouter un document
-                    </button>
-                </div>
-                <?php endif; ?>
-            </div>
-
             <!-- Statistiques rapides -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
                 <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 10px; text-align: center;">
-                    <div id="stat-total-docs" style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">
+                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">
                         <?php echo number_format($total_documents); ?>
                     </div>
                     <div style="opacity: 0.9;">Documents d'information</div>
@@ -76,7 +60,7 @@ include 'includes/header.php';
                     <div style="opacity: 0.9;">Filières disponibles</div>
                 </div>
                 <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 10px; text-align: center;">
-                    <div id="stat-total-dl" style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">
+                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">
                         <?php echo number_format($stats['total_downloads']); ?>
                     </div>
                     <div style="opacity: 0.9;">Téléchargements</div>
@@ -133,7 +117,7 @@ include 'includes/header.php';
 
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: var(--text-dark);">Trier par</label>
-                            <select name="sort" onchange="changeSorting(this.value)" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 5px;">
+                            <select name="sort" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 5px;">
                                 <option value="recent" <?php echo $filters['sort'] === 'recent' ? 'selected' : ''; ?>>Plus récent</option>
                                 <option value="popular" <?php echo $filters['sort'] === 'popular' ? 'selected' : ''; ?>>Plus téléchargé</option>
                                 <option value="title" <?php echo $filters['sort'] === 'title' ? 'selected' : ''; ?>>Titre A-Z</option>
@@ -180,7 +164,9 @@ include 'includes/header.php';
                 <!-- Grille des documents -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
                     <?php foreach ($documents as $document): ?>
-                        <div class="document-card" style="background: white; border-radius: 15px; box-shadow: var(--shadow); overflow: hidden; transition: var(--transition);">
+                        <div style="background: white; border-radius: 15px; box-shadow: var(--shadow); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;" 
+                             onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)';"
+                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow)';">
                             
                             <!-- En-tête du document -->
                             <div style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white; padding: 1.5rem; position: relative;">
@@ -243,7 +229,7 @@ include 'includes/header.php';
                                        class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none;">
                                         <i class="fas fa-download"></i> Télécharger
                                     </a>
-                                    <button onclick="previewDocument(<?php echo $document['id']; ?>)" 
+                                    <button onclick="showDocumentPreview(<?php echo $document['id']; ?>)" 
                                             class="btn btn-secondary" style="padding: 0.75rem;">
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -305,49 +291,45 @@ include 'includes/header.php';
 <?php include 'includes/footer.php'; ?>
 
 <script>
-// Aperçu des documents (utilise la même méthode que bank.php)
-function previewDocument(documentId) {
-    const width = Math.min(window.innerWidth * 0.9, 1000);
-    const height = Math.min(window.innerHeight * 0.9, 800);
-    const w = window.open('', '_blank', `width=${width},height=${height},resizable=yes,scrollbars=yes`);
-    if (!w) {
-        showNotification("Veuillez autoriser les fenêtres pop-up pour l'aperçu.", 'error');
-        return;
-    }
-    w.document.write('<!doctype html><title>Aperçu</title><style>html,body{height:100%;margin:0}iframe{width:100%;height:100%;border:0}</style><iframe src="about:blank"></iframe>');
-    const iframe = w.document.querySelector('iframe');
-    iframe.src = 'api/preview_content.php?document_id=' + encodeURIComponent(documentId);
+// Fonction pour prévisualiser un document
+function showDocumentPreview(documentId) {
+    const modal = document.getElementById('previewModal');
+    const modalBody = document.getElementById('previewModalBody');
+
+    // Afficher un loader
+    modalBody.innerHTML = '<div style="text-align: center; padding: 2rem;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-color);"></i><br><br>Chargement de l\'aperçu...</div>';
+    modal.style.display = 'flex';
+
+    // Charger l'aperçu via AJAX
+    fetch(`api/get_document_preview.php?id=${documentId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                modalBody.innerHTML = data.html;
+            } else {
+                modalBody.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-light);">Aperçu non disponible pour ce document.</div>';
+            }
+        })
+        .catch(error => {
+            modalBody.innerHTML = '<div style="text-align: center; padding: 2rem; color: #f44336;">Erreur lors du chargement de l\'aperçu.</div>';
+        });
 }
 
-// Fonction pour changer le tri
-function changeSorting(sortBy) {
-    const url = new URL(window.location);
-    url.searchParams.set('sort', sortBy);
-    url.searchParams.delete('page'); // Reset pagination
-    window.location.href = url.toString();
-}
-
-// Auto-submit du formulaire de filtre quand on change les sélections
+// Gestion des modals
 document.addEventListener('DOMContentLoaded', function() {
-    const selects = document.querySelectorAll('#filterForm select');
-    selects.forEach(select => {
-        select.addEventListener('change', function() {
-            document.getElementById('filterForm').submit();
-        });
-    });
+    const modal = document.getElementById('previewModal');
+    const closeButton = document.querySelector('.modal-close');
 
-    // Effet hover sur les cartes de documents
-    const cards = document.querySelectorAll('[style*="background: white"][style*="border-radius: 15px"]');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            modal.style.display = 'none';
         });
+    }
 
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = 'var(--shadow)';
-        });
+    window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
     });
 
     // Animation des cartes au scroll
@@ -365,35 +347,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
 
-    // Observer toutes les cartes de documents avec animation d'entrée
-    cards.forEach(card => {
+    // Observer toutes les cartes de documents
+    document.querySelectorAll('[style*="background: white"][style*="border-radius: 15px"]').forEach(card => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
         card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(card);
     });
 });
-
-// Rafraîchir les stats
-function refreshStats() {
-    fetch('api/refresh_bank_stats.php', { credentials: 'same-origin' })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('stat-total-docs').textContent = new Intl.NumberFormat().format(data.stats.total_documents);
-                document.getElementById('stat-total-dl').textContent = new Intl.NumberFormat().format(data.stats.total_downloads);
-                showNotification('Statistiques mises à jour', 'success');
-            } else {
-                showNotification(data.message || 'Échec de la mise à jour des statistiques', 'error');
-            }
-        })
-        .catch(() => showNotification('Erreur réseau lors de la mise à jour', 'error'));
-}
-
-// Fonction pour afficher la modal d'upload
-function showUploadModal() {
-    window.location.href = 'upload_document.php';
-}
 
 // Fonction de notification
 function showNotification(message, type = 'info') {
@@ -424,6 +385,148 @@ function showNotification(message, type = 'info') {
     setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
         setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+</script>
+                                                    EN COURS
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <!-- Progression visuelle -->
+                                        <div style="width: 60px;">
+                                            <?php if ($matiere['moyenne_matiere']): ?>
+                                                <div style="background: #e0e0e0; height: 8px; border-radius: 4px; overflow: hidden;">
+                                                    <div style="background: <?php echo $matiere['moyenne_matiere'] >= 10 ? '#4caf50' : '#f44336'; ?>;
+                                                                height: 100%; width: <?php echo min(100, ($matiere['moyenne_matiere'] / 20) * 100); ?>%;
+                                                                transition: width 0.3s ease;"></div>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <!-- Actions -->
+                                        <div>
+                                            <button onclick="showDetailedNotes(<?php echo $matiere['inscription_id']; ?>)"
+                                                    class="btn btn-secondary" style="padding: 0.5rem;">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </section>
+</main>
+
+<!-- Modal pour les notes détaillées -->
+<div id="notesModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header">
+            <h3><i class="fas fa-list-alt"></i> Notes détaillées</h3>
+            <span class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body" id="notesModalBody">
+            <!-- Contenu chargé dynamiquement -->
+        </div>
+    </div>
+</div>
+
+<?php include 'includes/footer.php'; ?>
+
+<script>
+// Fonction pour filtrer par semestre
+function filterBySemestre(semestreId) {
+    const url = new URL(window.location);
+    if (semestreId) {
+        url.searchParams.set('semestre', semestreId);
+    } else {
+        url.searchParams.delete('semestre');
+    }
+    window.location.href = url.toString();
+}
+
+// Fonction pour exporter en PDF
+function exportResults() {
+    // TODO: Implémenter l'export PDF
+    showNotification('Fonctionnalité d\'export PDF en cours de développement', 'info');
+}
+
+// Fonction pour afficher les notes détaillées
+function showDetailedNotes(inscriptionId) {
+    const modal = document.getElementById('notesModal');
+    const modalBody = document.getElementById('notesModalBody');
+
+    // Afficher un loader
+    modalBody.innerHTML = '<div style="text-align: center; padding: 2rem;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-color);"></i><br><br>Chargement des notes...</div>';
+    modal.style.display = 'flex';
+
+    // Charger les notes via AJAX
+    fetch(`api/get_detailed_notes.php?inscription_id=${inscriptionId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                modalBody.innerHTML = data.html;
+            } else {
+                modalBody.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-light);">Aucune note disponible pour cette matière.</div>';
+            }
+        })
+        .catch(error => {
+            modalBody.innerHTML = '<div style="text-align: center; padding: 2rem; color: #f44336;">Erreur lors du chargement des notes.</div>';
+        });
+}
+
+// Gestion des modals
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('notesModal');
+    const closeButton = document.querySelector('.modal-close');
+
+    closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+// Fonction de notification
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        background-color: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'};
+        color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    `;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            {{ ... }}
             document.body.removeChild(notification);
         }, 300);
     }, 3000);
