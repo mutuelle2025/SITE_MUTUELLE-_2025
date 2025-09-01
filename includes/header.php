@@ -24,6 +24,12 @@
     <!-- Préchargement des polices critiques -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
+    <!-- Favicon / Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/logo.png" style="border-radius: 50%;">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/logo.png" style="border-radius: 50%;">
+    <link rel="apple-touch-icon" href="assets/img/logo.png" style="border-radius: 50%;">
+    <link rel="shortcut icon" href="assets/img/logo.png" style="border-radius: 50%;">
+
     <!-- Script de détection des fonctionnalités -->
     <script>
         // Détection basique des fonctionnalités avant le chargement
@@ -269,10 +275,22 @@
         function handleResponsiveNav() {
             const navTexts = document.querySelectorAll('.nav-text');
             const userInfo = document.querySelector('.user-info');
+            const navMenu = document.getElementById('navMenu');
 
-            if (window.innerWidth <= 1024) {
+            if (window.innerWidth <= 768) {
+                // Mode mobile : afficher le texte dans le menu déroulant
                 navTexts.forEach(text => {
-                    if (!text.closest('.user-menu') && !text.closest('.dropdown-menu')) {
+                    text.style.display = 'block';
+                });
+                if (userInfo) {
+                    userInfo.style.display = 'flex';
+                }
+            } else if (window.innerWidth <= 1024) {
+                // Mode tablette : cacher le texte sauf dans les dropdowns
+                navTexts.forEach(text => {
+                    if (text.closest('.dropdown-menu')) {
+                        text.style.display = 'block';
+                    } else if (!text.closest('.user-menu')) {
                         text.style.display = 'none';
                     }
                 });
@@ -280,6 +298,7 @@
                     userInfo.style.display = 'none';
                 }
             } else {
+                // Mode desktop : tout afficher
                 navTexts.forEach(text => {
                     text.style.display = 'block';
                 });

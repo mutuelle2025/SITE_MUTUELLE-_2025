@@ -1,5 +1,5 @@
 <?php
-$page_title = "Alumni - Bureau 2020-2025";
+$page_title = "Alumni - Bureau 2024-2025";
 include 'includes/header.php';
 ?>
 <h1 style="display:flex;align-items:center;gap:.5rem">
@@ -25,7 +25,7 @@ include 'includes/header.php';
                     Présentation du Bureau de la Mutuelle des Étudiants de l'Université des Montagnes
                 </p>
                 <div style="background: rgba(255,255,255,0.1); padding: 1rem 2rem; border-radius: 50px; display: inline-block;">
-                    <strong style="font-size: 1.2rem;">Mandat 2020 - 2025</strong>
+                    <strong style="font-size: 1.2rem;">Mandat 2024 - 2025</strong>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@ include 'includes/header.php';
     <section style="padding: 4rem 0; background: #f8f9fa;">
         <div class="container">
             <h2 style="text-align: center; color: #1e3c72; margin-bottom: 3rem; font-size: 2.5rem;">
-                <i class="fas fa-users"></i> Bureau Exécutif 2020-2025
+                <i class="fas fa-users"></i> Bureau Exécutif 2024-2025
             </h2>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">

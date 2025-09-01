@@ -1196,7 +1196,7 @@ body {
 
 /* Responsive */
 @media (max-width: 1024px) {
-    .nav-text {
+    .nav-text:not(.dropdown-menu .nav-text):not(.user-menu .nav-text) {
         display: none;
     }
 
@@ -1209,8 +1209,14 @@ body {
         min-width: auto;
     }
 
-    .user-info {
+    .user-info:not(.dropdown-menu .user-info) {
         display: none;
+    }
+
+    /* Assurer que les dropdowns restent visibles */
+    .dropdown-menu .nav-text,
+    .dropdown-menu .user-info {
+        display: block !important;
     }
 }
 

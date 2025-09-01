@@ -248,24 +248,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // ===== ANIMATIONS AU SCROLL DE LA PAGE =====
     
-    let lastScrollTop = 0;
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    // let lastScrollTop = 0;
+    // window.addEventListener('scroll', function() {
+    //     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         
-        // Animation de la navbar au scroll
-        const navbar = document.querySelector('.navbar');
-        if (navbar) {
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Scroll vers le bas
-                navbar.style.transform = 'translateY(-100%)';
-            } else {
-                // Scroll vers le haut
-                navbar.style.transform = 'translateY(0)';
-            }
-        }
+    //     // Animation de la navbar au scroll
+    //     const navbar = document.querySelector('.navbar');
+    //     if (navbar) {
+    //         if (scrollTop > lastScrollTop && scrollTop > 100) {
+    //             // Scroll vers le bas
+    //             navbar.style.transform = 'translateY(-100%)';
+    //         } else {
+    //             // Scroll vers le haut
+    //             navbar.style.transform = 'translateY(0)';
+    //         }
+    //     }
         
-        lastScrollTop = scrollTop;
-    });
+    //     lastScrollTop = scrollTop;
+    // });
     
     // ===== ANIMATIONS PARALLAX =====
     
