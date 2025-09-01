@@ -826,7 +826,7 @@ include 'includes/header.php';
                 <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
                     <!-- Remplacer par: assets/img/les-different-global.png -->
                     <img src="assets/img/global connect sarl.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Global connect sarl</div>
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;"> AUTO École universitaire</div>
                 </div>
 
                 <!-- Moussa -->
