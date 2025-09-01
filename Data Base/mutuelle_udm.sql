@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 05, 2025 at 12:41 PM
+-- Generation Time: Sep 01, 2025 at 12:39 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,7 +39,7 @@ CREATE TABLE `documents` (
   `filiere` varchar(100) NOT NULL,
   `niveau` varchar(10) NOT NULL,
   `matiere` varchar(100) DEFAULT NULL,
-  `type_document` enum('examen','cours','td','tp','autre') DEFAULT 'autre',
+  `type_document` enum('examen','cours','td','tp','information','autre') DEFAULT 'autre',
   `downloads` int(11) DEFAULT 0,
   `active` tinyint(1) DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -51,7 +51,15 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`id`, `user_id`, `title`, `description`, `filename`, `original_filename`, `file_size`, `file_type`, `filiere`, `niveau`, `matiere`, `type_document`, `downloads`, `active`, `created_at`, `updated_at`) VALUES
-(14, 6, 'Gshsh', 'Yeyeh', '6883f18fcfc6d_1753477519.pdf', 'Calendrier-des-examens-2025 (2).pdf', 4583254, 'pdf', 'gestion', 'L2', 'Majak', 'cours', 0, 1, '2025-07-25 21:05:19', '2025-07-25 21:05:19');
+(14, 6, 'Gshsh', 'Yeyeh', '6883f18fcfc6d_1753477519.pdf', 'Calendrier-des-examens-2025 (2).pdf', 4583254, 'pdf', 'gestion', 'L2', 'Majak', 'cours', 0, 1, '2025-07-25 21:05:19', '2025-07-25 21:05:19'),
+(15, 10, 'COURS MICROCONTROLEUR', 'COURS MICROCONTROLEUR EN FST UDM', '68ae702210abf_1756262434.pdf', 'IRT2_Contrôle continu Microcontroleur 2023-2024[1].pdf', 310598, 'pdf', 'informatique', 'L2', 'MICROCONTROLEUR', 'cours', 0, 1, '2025-08-27 02:40:34', '2025-08-27 02:40:34'),
+(16, 10, 'IRT2_Contrôle continu Microcontroleur 2023-2024[1]', 'IRT2_Contrôle continu Microcontroleur 2023-2024[1]', '68ae707e63de7_1756262526.pdf', 'IRT2_Contrôle continu Microcontroleur 2023-2024[1].pdf', 310598, 'pdf', 'informatique', 'L2', 'MICROCONTROLEUR', 'examen', 0, 1, '2025-08-27 02:42:06', '2025-08-27 02:42:06'),
+(17, 10, 'rapport de stage WABA ulrich YABA-IN', 'rapport de stage WABA ulrich YABA-IN', '68ae712fafb10_1756262703.docx', 'rapport de stage WABA ulrich YABA-IN.docx', 1053550, 'docx', 'informatique', 'L2', 'rapport de stage WABA ulrich YABA-IN', 'autre', 1, 1, '2025-08-27 02:45:03', '2025-08-29 09:22:46'),
+(18, 7, 'Guide d\'admission en Informatique', 'Document détaillant les procédures d\'admission, les prérequis et les débouchés de la filière Informatique à l\'UDM.', 'guide_admission_informatique.pdf', 'Guide Admission Informatique.pdf', 2048576, 'application/pdf', 'informatique', 'L1', NULL, 'information', 77, 1, '2025-09-01 10:36:32', '2025-09-01 10:36:32'),
+(19, 7, 'Présentation de la filière Médecine', 'Brochure complète sur la formation médicale, les spécialisations disponibles et les conditions d\'accès.', 'presentation_medecine.pdf', 'Présentation Médecine UDM.pdf', 3145728, 'application/pdf', 'medecine', 'L1', NULL, 'information', 18, 1, '2025-09-01 10:36:32', '2025-09-01 10:36:32'),
+(20, 7, 'Calendrier académique 2024-2025', 'Calendrier officiel des cours, examens et vacances pour l\'année académique en cours.', 'calendrier_2024_2025.pdf', 'Calendrier Académique 2024-2025.pdf', 1048576, 'application/pdf', 'generale', 'L1', NULL, 'information', 49, 1, '2025-09-01 10:36:32', '2025-09-01 10:36:32'),
+(21, 7, 'Procédures d\'inscription Droit', 'Guide complet des démarches d\'inscription en première année de Droit, documents requis et délais.', 'inscription_droit.pdf', 'Procédures Inscription Droit.pdf', 1572864, 'application/pdf', 'droit', 'L1', NULL, 'information', 83, 1, '2025-09-01 10:36:32', '2025-09-01 10:36:32'),
+(22, 7, 'Bourses et aides financières', 'Information sur les différentes bourses disponibles, critères d\'éligibilité et procédures de demande.', 'bourses_aides.pdf', 'Bourses et Aides Financières.pdf', 2097152, 'application/pdf', 'generale', 'L1', NULL, 'information', 56, 1, '2025-09-01 10:36:32', '2025-09-01 10:36:32');
 
 -- --------------------------------------------------------
 
@@ -157,7 +165,12 @@ CREATE TABLE `messages` (
 
 INSERT INTO `messages` (`id`, `sender_id`, `receiver_id`, `subject`, `message`, `is_read`, `is_public`, `created_at`) VALUES
 (11, 7, 6, 'test', 'test test', 0, 0, '2025-07-28 07:42:06'),
-(12, 7, NULL, 'test', 'test', 0, 1, '2025-07-28 08:03:32');
+(12, 7, NULL, 'test', 'test', 0, 1, '2025-07-28 08:03:32'),
+(13, 10, NULL, 'cc inopiné', 'mr WABA Ul', 0, 1, '2025-08-27 02:17:34'),
+(14, 10, 6, 'test de la messagerie', 'yqsblhioqsbclquboqsdcvliusdbcfui', 0, 0, '2025-08-27 02:19:40'),
+(15, 11, 10, 'test de cimmunication avec letudient waba ulrich', '👍  qwerty 11221', 0, 0, '2025-08-27 02:34:55'),
+(16, 10, 11, 'Re:', 'OK COMENT TU VAS', 1, 0, '2025-08-27 02:35:53'),
+(17, 11, 10, 'Re:', 'POSER EHH', 0, 0, '2025-08-27 02:36:40');
 
 -- --------------------------------------------------------
 
@@ -194,7 +207,7 @@ CREATE TABLE `notes` (
   `validee` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -238,6 +251,8 @@ CREATE TABLE `users` (
   `niveau` varchar(10) NOT NULL,
   `role` enum('etudiant','moderateur','admin','super_admin') DEFAULT 'etudiant',
   `password_hash` varchar(255) NOT NULL,
+  `security_question` varchar(255) DEFAULT NULL,
+  `security_answer_hash` varchar(255) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1,
   `email_verified` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -249,11 +264,12 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `nom`, `prenom`, `email`, `numero_etudiant`, `filiere`, `niveau`, `role`, `password_hash`, `active`, `email_verified`, `created_at`, `updated_at`, `last_login`) VALUES
-(6, 'NONO', 'Boris', 'boris@gmail.com', '2024000006', 'gestion', 'L3', 'admin', '$2y$10$aaFqLsU3Zr.DEgj6DxukWeyC4EzhA4PaWThgQKdDQktm6ltfDF0xe', 1, 0, '2025-07-25 13:10:29', '2025-07-28 10:21:43', '2025-07-28 10:21:43'),
-(7, 'Admin', 'Super', 'admin@udm.ma', 'ADMIN001', 'administration', 'ADMIN', 'moderateur', '$2y$10$GlkRqHXbCE04QjVmdH.bn.RSlSK2pogbY2x4sGugHONYAhFoJQHK.', 1, 0, '2025-07-25 14:29:20', '2025-08-05 09:32:19', '2025-08-05 09:30:54'),
-(9, 'WABA KENNE', 'Mejest ULRICH', 'ulrich@gmail.com', '202212345', 'ingenierie', 'L1', 'etudiant', '$2y$10$yG754DdC//SkopWoUeYgW.PJJlOYQoYrW4wi4v1lql4v6FSuj/hrq', 1, 0, '2025-07-25 16:03:48', '2025-07-25 16:04:11', '2025-07-25 16:04:11'),
-(10, 'Mutuelle', 'Des Etudiants', 'mutuelledesetudiant.udm2025@gmail.com', '20242025', 'autre', 'Doctorat', 'super_admin', '$2y$10$847KQDY9UhP4jnEWSEt/cOkzvcmxOz0VXS9YLmv5xtelW/3d9f7Va', 1, 0, '2025-08-05 09:29:52', '2025-08-05 09:32:08', '2025-08-05 09:32:08');
+INSERT INTO `users` (`id`, `nom`, `prenom`, `email`, `numero_etudiant`, `filiere`, `niveau`, `role`, `password_hash`, `security_question`, `security_answer_hash`, `active`, `email_verified`, `created_at`, `updated_at`, `last_login`) VALUES
+(6, 'NONO', 'Boris', 'boris@gmail.com', '2024000006', 'gestion', 'L3', 'admin', '$2y$10$aaFqLsU3Zr.DEgj6DxukWeyC4EzhA4PaWThgQKdDQktm6ltfDF0xe', NULL, NULL, 1, 0, '2025-07-25 13:10:29', '2025-07-28 10:21:43', '2025-07-28 10:21:43'),
+(7, 'Admin', 'Super', 'admin@udm.ma', 'ADMIN001', 'administration', 'ADMIN', 'moderateur', '$2y$10$GlkRqHXbCE04QjVmdH.bn.RSlSK2pogbY2x4sGugHONYAhFoJQHK.', NULL, NULL, 1, 0, '2025-07-25 14:29:20', '2025-08-05 09:32:19', '2025-08-05 09:30:54'),
+(10, 'Mutuelle', 'Des Etudiants', 'mutuelledesetudiant.udm2025@gmail.com', '20242025', 'autre', 'Doctorat', 'super_admin', '$2y$10$847KQDY9UhP4jnEWSEt/cOkzvcmxOz0VXS9YLmv5xtelW/3d9f7Va', NULL, NULL, 1, 0, '2025-08-05 09:29:52', '2025-08-29 16:30:44', '2025-08-29 16:30:44'),
+(11, 'WABA  KENNE', 'MEJEST ULRICH', 'wabaulrich1234@gmail.com', '212131130', 'informatique', 'M1', 'super_admin', '$2y$10$dojThBmB0ODL4AsqEl78E.JHgyxkaMiPbmumy8cigMTPBP4z07Kx.', NULL, NULL, 1, 0, '2025-08-27 02:25:42', '2025-08-27 02:31:28', '2025-08-27 02:26:33'),
+(12, 'test', 'test', 'test@gmail.com', '20252026', 'ingenierie', 'L1', 'etudiant', '$2y$10$fv/EGXGBmgNyGlAFOaEJMuqnlDTPXUpGZEIEdcZbhaIIhdXh2hnQy', 'Quel est votre livre préféré ?', '$2y$10$EYINH4vlA.M0cMekiQeW.ONo/EG/y1t7jZWR8hefBYPANs4lrKtGe', 1, 0, '2025-09-01 10:38:54', '2025-09-01 10:39:03', '2025-09-01 10:39:03');
 
 -- --------------------------------------------------------
 
@@ -362,7 +378,8 @@ ALTER TABLE `users`
   ADD KEY `idx_numero_etudiant` (`numero_etudiant`),
   ADD KEY `idx_filiere` (`filiere`),
   ADD KEY `idx_niveau` (`niveau`),
-  ADD KEY `idx_role` (`role`);
+  ADD KEY `idx_role` (`role`),
+  ADD KEY `idx_security_question` (`security_question`);
 
 --
 -- Indexes for table `user_sessions`
@@ -382,7 +399,7 @@ ALTER TABLE `user_sessions`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `evaluations`
@@ -394,7 +411,7 @@ ALTER TABLE `evaluations`
 -- AUTO_INCREMENT for table `inscriptions`
 --
 ALTER TABLE `inscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `matieres`
@@ -406,13 +423,13 @@ ALTER TABLE `matieres`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `moyennes`
 --
 ALTER TABLE `moyennes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `notes`
@@ -430,7 +447,7 @@ ALTER TABLE `semestres`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user_sessions`
@@ -468,13 +485,6 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `moyennes`
   ADD CONSTRAINT `moyennes_ibfk_1` FOREIGN KEY (`inscription_id`) REFERENCES `inscriptions` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `notes`
---
-ALTER TABLE `notes`
-  ADD CONSTRAINT `notes_ibfk_1` FOREIGN KEY (`inscription_id`) REFERENCES `inscriptions` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `notes_ibfk_2` FOREIGN KEY (`evaluation_id`) REFERENCES `evaluations` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_sessions`
