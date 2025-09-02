@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = trim(isset($_POST['nom']) ? $_POST['nom'] : '');
     $prenom = trim(isset($_POST['prenom']) ? $_POST['prenom'] : '');
     $email = trim(isset($_POST['email']) ? $_POST['email'] : '');
-    $numero_etudiant = trim(isset($_POST['numero_etudiant']) ? $_POST['numero_etudiant'] : '');
+    $matricule = trim(isset($_POST['matricule']) ? $_POST['matricule'] : '');
     $filiere = trim(isset($_POST['filiere']) ? $_POST['filiere'] : '');
     $niveau = trim(isset($_POST['niveau']) ? $_POST['niveau'] : '');
     $password = isset($_POST['password']) ? $_POST['password'] : '';
@@ -53,12 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['email'] = 'Cet email est déjà utilisé';
     }
 
-    if (empty($numero_etudiant)) {
-        $errors['numero_etudiant'] = 'Le numéro étudiant est requis';
-    } elseif (!preg_match('/^[0-9]{8,12}$/', $numero_etudiant)) {
-        $errors['numero_etudiant'] = 'Le numéro étudiant doit contenir entre 8 et 12 chiffres';
-    } elseif (numeroEtudiantExists($numero_etudiant)) {
-        $errors['numero_etudiant'] = 'Ce numéro étudiant est déjà utilisé';
+    if (empty($matricule)) {
+        $errors['matricule'] = 'Le matricule étudiant est requis';
+    } elseif (!preg_match('/^[0-9]{2}[a-zA-Z][0-9]{3}$/', $matricule)) {
+        $errors['matricule'] = 'Le matricule doit suivre le format: 2 chiffres + 1 lettre + 3 chiffres (ex: 22c031)';
+    } elseif (matriculeExists($matricule)) {
+        $errors['matricule'] = 'Ce matricule est déjà utilisé';
     }
 
     if (empty($filiere)) {
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'nom' => $nom,
                 'prenom' => $prenom,
                 'email' => $email,
-                'numero_etudiant' => $numero_etudiant,
+                'matricule' => $matricule,
                 'filiere' => $filiere,
                 'niveau' => $niveau,
                 'password' => $password,
@@ -216,22 +216,26 @@ include 'includes/header.php';
 
                     <!-- Informations académiques -->
                     <div class="form-group">
-                        <label for="numero_etudiant" class="form-label">
-                            <i class="fas fa-id-card"></i> Numéro étudiant *
+                        <label for="matricule" class="form-label">
+                            <i class="fas fa-id-card"></i> Matricule étudiant *
                         </label>
                         <input
                             type="text"
-                            id="numero_etudiant"
-                            name="numero_etudiant"
-                            class="form-input <?php echo isset($errors['numero_etudiant']) ? 'error' : ''; ?>"
-                            value="<?php echo htmlspecialchars(isset($numero_etudiant) ? $numero_etudiant : ''); ?>"
+                            id="matricule"
+                            name="matricule"
+                            class="form-input <?php echo isset($errors['matricule']) ? 'error' : ''; ?>"
+                            value="<?php echo htmlspecialchars(isset($matricule) ? $matricule : ''); ?>"
                             required
-                            placeholder="Ex: 20240001234"
-                            pattern="[0-9]{8,12}"
+                            placeholder="Ex: 22c031"
+                            pattern="[0-9]{2}[a-zA-Z][0-9]{3}"
+                            maxlength="6"
                         >
-                        <div class="form-error <?php echo isset($errors['numero_etudiant']) ? 'show' : ''; ?>">
-                            <?php echo isset($errors['numero_etudiant']) ? $errors['numero_etudiant'] : ''; ?>
+                        <div class="form-error <?php echo isset($errors['matricule']) ? 'show' : ''; ?>">
+                            <?php echo isset($errors['matricule']) ? $errors['matricule'] : ''; ?>
                         </div>
+                        <small style="color: var(--text-light); font-size: 0.8rem;">
+                            Format: 2 chiffres + 1 lettre + 3 chiffres (ex: 22c031)
+                        </small>
                     </div>
 
                     <div class="form-group">
@@ -438,10 +442,10 @@ document.addEventListener('DOMContentLoaded', function() {
         this.classList.toggle('success', isValid);
     });
 
-    // Validation du numéro étudiant
-    document.getElementById('numero_etudiant').addEventListener('input', function() {
-        const value = this.value;
-        const isValid = /^[0-9]{8,12}$/.test(value);
+    // Validation du matricule étudiant
+    document.getElementById('matricule').addEventListener('input', function() {
+        const value = this.value.toLowerCase();
+        const isValid = /^[0-9]{2}[a-zA-Z][0-9]{3}$/.test(value);
 
         this.classList.toggle('error', !isValid && value.length > 0);
         this.classList.toggle('success', isValid);

@@ -109,7 +109,7 @@ function createUser($data) {
         $data['nom'],
         $data['prenom'],
         $data['email'],
-        $data['numero_etudiant'],
+        isset($data['matricule']) ? $data['matricule'] : $data['numero_etudiant'],
         $data['filiere'],
         $data['niveau'],
         password_hash($data['password'], PASSWORD_DEFAULT),
@@ -130,12 +130,19 @@ function emailExists($email) {
 }
 
 /**
- * Fonction pour vérifier si un numéro étudiant existe déjà
+ * Fonction pour vérifier si un matricule étudiant existe déjà
+ */
+function matriculeExists($matricule) {
+    $sql = "SELECT COUNT(*) FROM users WHERE numero_etudiant = ?";
+    $stmt = executeQuery($sql, [$matricule]);
+    return $stmt->fetchColumn() > 0;
+}
+
+/**
+ * Fonction pour vérifier si un numéro étudiant existe déjà (compatibilité)
  */
 function numeroEtudiantExists($numero) {
-    $sql = "SELECT COUNT(*) FROM users WHERE numero_etudiant = ?";
-    $stmt = executeQuery($sql, [$numero]);
-    return $stmt->fetchColumn() > 0;
+    return matriculeExists($numero);
 }
 
 /**

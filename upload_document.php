@@ -44,6 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['type_document'] = 'Le type de document est requis';
     }
     
+    // Validation conditionnelle de la matière (requise sauf pour les documents d'information)
+    if ($type_document !== 'information' && empty($matiere)) {
+        $errors['matiere'] = 'La matière est requise pour ce type de document';
+    }
+    
     // Validation du fichier
     if (!isset($_FILES['documents']) || $_FILES['documents']['error'] !== UPLOAD_ERR_OK) {
         $errors['file'] = 'Veuillez sélectionner un fichier valide';
@@ -200,7 +205,7 @@ include 'includes/header.php';
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="form-group">
                             <label for="filiere" class="form-label">
-                                <i class="fas fa-graduation-cap"></i> <span id="filiere-label">Filière *</span>
+                                <i class="fas fa-graduation-cap"></i> Filière *
                             </label>
                             <select 
                                 id="filiere" 
@@ -217,7 +222,6 @@ include 'includes/header.php';
                                 <option value="ingenierie" <?php echo (isset($filiere) ? $filiere : '') === 'ingenierie' ? 'selected' : ''; ?>>Ingénierie</option>
                                 <option value="lettres" <?php echo (isset($filiere) ? $filiere : '') === 'lettres' ? 'selected' : ''; ?>>Lettres et Sciences Humaines</option>
                                 <option value="sciences" <?php echo (isset($filiere) ? $filiere : '') === 'sciences' ? 'selected' : ''; ?>>Sciences</option>
-                                <!-- Options pour documents d'information -->
                                 <option value="toutes" <?php echo (isset($filiere) ? $filiere : '') === 'toutes' ? 'selected' : ''; ?>>Toutes filières</option>
                                 <option value="general" <?php echo (isset($filiere) ? $filiere : '') === 'general' ? 'selected' : ''; ?>>Information générale</option>
                             </select>
@@ -226,9 +230,9 @@ include 'includes/header.php';
                             </div>
                         </div>
 
-                        <div class="form-group" id="niveau-group">
+                        <div class="form-group">
                             <label for="niveau" class="form-label">
-                                <i class="fas fa-layer-group"></i> <span id="niveau-label">Niveau *</span>
+                                <i class="fas fa-layer-group"></i> Niveau *
                             </label>
                             <select 
                                 id="niveau" 
@@ -243,7 +247,6 @@ include 'includes/header.php';
                                 <option value="M1" <?php echo (isset($niveau) ? $niveau : '') === 'M1' ? 'selected' : ''; ?>>Master 1ère année (M1)</option>
                                 <option value="M2" <?php echo (isset($niveau) ? $niveau : '') === 'M2' ? 'selected' : ''; ?>>Master 2ème année (M2)</option>
                                 <option value="Doctorat" <?php echo (isset($niveau) ? $niveau : '') === 'Doctorat' ? 'selected' : ''; ?>>Doctorat</option>
-                                <!-- Options pour documents d'information -->
                                 <option value="Admission" <?php echo (isset($niveau) ? $niveau : '') === 'Admission' ? 'selected' : ''; ?>>Admission</option>
                                 <option value="Orientation" <?php echo (isset($niveau) ? $niveau : '') === 'Orientation' ? 'selected' : ''; ?>>Orientation</option>
                                 <option value="General" <?php echo (isset($niveau) ? $niveau : '') === 'General' ? 'selected' : ''; ?>>Général</option>
@@ -257,7 +260,7 @@ include 'includes/header.php';
                     <!-- Matière/Sujet -->
                     <div class="form-group" id="matiere-group">
                         <label for="matiere" class="form-label">
-                            <i class="fas fa-book"></i> <span id="matiere-label">Matière</span>
+                            <i class="fas fa-book"></i> Matière
                         </label>
                         <input 
                             type="text" 
@@ -334,20 +337,15 @@ include 'includes/header.php';
     // Adaptation des champs selon le type de document
     document.getElementById('type_document').addEventListener('change', function() {
         const typeDocument = this.value;
-        const niveauLabel = document.getElementById('niveau-label');
-        const matiereLabel = document.getElementById('matiere-label');
+        const matiereGroup = document.getElementById('matiere-group');
         const matiereInput = document.getElementById('matiere');
+        const filiereSelect = document.getElementById('filiere');
         const niveauSelect = document.getElementById('niveau');
         
         if (typeDocument === 'information') {
-            // Pour les documents d'information
-            const filiereLabel = document.getElementById('filiere-label');
-            const filiereSelect = document.getElementById('filiere');
-            
-            filiereLabel.textContent = 'Portée *';
-            niveauLabel.textContent = 'Catégorie *';
-            matiereLabel.textContent = 'Sujet *';
-            matiereInput.placeholder = 'Ex: Conditions d\'admission, Programmes disponibles, Bourses...';
+            // Masquer le champ matière pour les documents d'information
+            matiereGroup.style.display = 'none';
+            matiereInput.removeAttribute('required');
             
             // Masquer les filières spécifiques et afficher les options générales
             const specificFilieres = filiereSelect.querySelectorAll('option[value="informatique"], option[value="gestion"], option[value="economie"], option[value="droit"], option[value="medecine"], option[value="ingenierie"], option[value="lettres"], option[value="sciences"]');
@@ -364,14 +362,9 @@ include 'includes/header.php';
             infoOptions.forEach(option => option.style.display = 'block');
             
         } else {
-            // Pour les autres types de documents
-            const filiereLabel = document.getElementById('filiere-label');
-            const filiereSelect = document.getElementById('filiere');
-            
-            filiereLabel.textContent = 'Filière *';
-            niveauLabel.textContent = 'Niveau *';
-            matiereLabel.textContent = 'Matière *';
-            matiereInput.placeholder = 'Ex: Mathématiques, Programmation, Histoire...';
+            // Afficher le champ matière pour les autres types de documents
+            matiereGroup.style.display = 'block';
+            matiereInput.setAttribute('required', 'required');
             
             // Afficher les filières spécifiques et masquer les options générales
             const specificFilieres = filiereSelect.querySelectorAll('option[value="informatique"], option[value="gestion"], option[value="economie"], option[value="droit"], option[value="medecine"], option[value="ingenierie"], option[value="lettres"], option[value="sciences"]');
