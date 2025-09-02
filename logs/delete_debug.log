@@ -1,0 +1,17 @@
+[2025-09-02 18:03:49] Session: Array
+(
+    [csrf_token] => 2df41bf74f59b6f93c8721cb8ad75f58d6902ebe0a1e8d211f6abe232a5ed62d
+    [user_id] => 10
+    [user_email] => mutuelledesetudiant.udm2025@gmail.com
+    [user_name] => Des Etudiants Mutuelle
+    [user_filiere] => autre
+    [user_niveau] => Doctorat
+    [user_role] => super_admin
+)
+
+
+[2025-09-02 18:03:49] Données reçues: Array
+(
+    [document_id] => 21
+)
+

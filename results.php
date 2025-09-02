@@ -180,78 +180,127 @@ include 'includes/header.php';
                 <!-- Grille des documents -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
                     <?php foreach ($documents as $document): ?>
-                        <div class="document-card" style="background: white; border-radius: 15px; box-shadow: var(--shadow); overflow: hidden; transition: var(--transition);">
+                        <div class="document-card" style="background: white; border-radius: 15px; box-shadow: var(--shadow); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column;">
                             
-                            <!-- En-tête du document -->
-                            <div style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white; padding: 1.5rem; position: relative;">
-                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                    <div style="flex: 1;">
-                                        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; line-height: 1.3;">
-                                            <?php echo htmlspecialchars($document['title']); ?>
-                                        </h3>
-                                        <div style="opacity: 0.9; font-size: 0.9rem;">
-                                            <i class="fas fa-user"></i> <?php echo htmlspecialchars($document['prenom'] . ' ' . $document['nom']); ?>
-                                        </div>
-                                    </div>
-                                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 50%; margin-left: 1rem;">
-                                        <i class="fas fa-file-alt" style="font-size: 1.5rem;"></i>
-                                    </div>
+                            <!-- En-tête avec dégradé -->
+                            <div style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white; padding: 1.5rem; position: relative; text-align: center;">
+                                <!-- Badge type document -->
+                                <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem; font-weight: bold;">
+                                    <?php
+                                    $types = array(
+                                        'examen' => 'EXAMEN',
+                                        'cours' => 'COURS',
+                                        'td' => 'TD',
+                                        'tp' => 'TP',
+                                        'information' => 'INFO',
+                                        'autre' => 'AUTRE'
+                                    );
+                                    echo isset($types[$document['type_document']]) ? $types[$document['type_document']] : 'DOCUMENT';
+                                    ?>
                                 </div>
-                                
-                                <!-- Badges -->
-                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                    <span style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem;">
-                                        <i class="fas fa-graduation-cap"></i> <?php echo htmlspecialchars(ucfirst($document['filiere'])); ?>
-                                    </span>
-                                    <?php if ($document['niveau']): ?>
-                                        <span style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem;">
-                                            <i class="fas fa-layer-group"></i> <?php echo htmlspecialchars($document['niveau']); ?>
-                                        </span>
-                                    <?php endif; ?>
+
+                                <!-- Icône du type -->
+                                <div style="font-size: 2.5rem; margin-bottom: 1rem;">
+                                    <?php
+                                    switch($document['type_document']) {
+                                        case 'examen': echo '<i class="fas fa-file-alt"></i>'; break;
+                                        case 'cours': echo '<i class="fas fa-book-open"></i>'; break;
+                                        case 'td': echo '<i class="fas fa-tasks"></i>'; break;
+                                        case 'tp': echo '<i class="fas fa-flask"></i>'; break;
+                                        case 'information': echo '<i class="fas fa-info-circle"></i>'; break;
+                                        default: echo '<i class="fas fa-file"></i>'; break;
+                                    }
+                                    ?>
                                 </div>
+
+                                <!-- Titre -->
+                                <h3 style="margin: 0; font-size: 1.2rem; line-height: 1.3;">
+                                    <?php echo htmlspecialchars($document['title']); ?>
+                                </h3>
                             </div>
 
                             <!-- Contenu du document -->
                             <div style="padding: 1.5rem;">
-                                <p style="color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.95rem;">
-                                    <?php echo htmlspecialchars(substr($document['description'], 0, 120)) . (strlen($document['description']) > 120 ? '...' : ''); ?>
-                                </p>
+                                <!-- Informations académiques -->
+                                <div style="display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.9rem;">
+                                    <span style="background: #e3f2fd; color: #1565c0; padding: 0.25rem 0.75rem; border-radius: 15px;">
+                                        <i class="fas fa-graduation-cap"></i> <?php echo htmlspecialchars($document['filiere']); ?>
+                                    </span>
+                                    <?php if (!empty($document['niveau'])): ?>
+                                        <span style="background: #e8f5e8; color: #2e7d32; padding: 0.25rem 0.75rem; border-radius: 15px;">
+                                            <i class="fas fa-layer-group"></i> <?php echo htmlspecialchars($document['niveau']); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+
+                                <?php if (!empty($document['matiere'])): ?>
+                                    <div style="margin-bottom: 1rem;">
+                                        <span style="background: #fff3e0; color: #f57c00; padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.9rem;">
+                                            <i class="fas fa-book"></i> <?php echo htmlspecialchars($document['matiere']); ?>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+
+                                <!-- Description -->
+                                <?php if (!empty($document['description'])): ?>
+                                    <p style="color: var(--text-light); margin-bottom: 1rem; line-height: 1.5;">
+                                        <?php echo htmlspecialchars(substr($document['description'], 0, 120)) . (strlen($document['description']) > 120 ? '...' : ''); ?>
+                                    </p>
+                                <?php endif; ?>
 
                                 <!-- Métadonnées -->
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
-                                    <div style="text-align: center;">
-                                        <div style="font-weight: bold; color: var(--primary-color); font-size: 1.1rem;">
-                                            <?php echo number_format($document['downloads']); ?>
-                                        </div>
-                                        <div style="font-size: 0.8rem; color: var(--text-light);">
-                                            <i class="fas fa-download"></i> Téléchargements
-                                        </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-light);">
+                                    <div>
+                                        <i class="fas fa-user"></i> <?php echo htmlspecialchars($document['prenom'] . ' ' . substr($document['nom'], 0, 1) . '.'); ?>
                                     </div>
-                                    <div style="text-align: center;">
-                                        <div style="font-weight: bold; color: var(--primary-color); font-size: 1.1rem;">
-                                            <?php echo number_format($document['file_size'] / 1024 / 1024, 1); ?> MB
-                                        </div>
-                                        <div style="font-size: 0.8rem; color: var(--text-light);">
-                                            <i class="fas fa-file"></i> Taille
-                                        </div>
+                                    <div>
+                                        <i class="fas fa-calendar"></i> <?php echo date('d/m/Y', strtotime($document['created_at'])); ?>
                                     </div>
                                 </div>
 
-                                <!-- Actions -->
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <a href="api/download_document.php?id=<?php echo $document['id']; ?>" 
-                                       class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none;">
-                                        <i class="fas fa-download"></i> Télécharger
-                                    </a>
-                                    <button onclick="previewDocument(<?php echo $document['id']; ?>)" 
-                                            class="btn btn-secondary" style="padding: 0.75rem;">
-                                        <i class="fas fa-eye"></i>
+                                <!-- Statistiques -->
+                                <div style="display: flex; gap: 1rem; font-size: 0.9rem; color: var(--text-light); margin-bottom: 1.5rem;">
+                                    <span><i class="fas fa-download"></i> <?php echo number_format($document['downloads']); ?></span>
+                                    <span><i class="fas fa-file"></i> <?php echo strtoupper($document['file_type']); ?></span>
+                                    <span><i class="fas fa-weight"></i> <?php echo formatFileSize($document['file_size']); ?></span>
+                                </div>
+                            </div>
+
+                            <!-- Actions en bas de carte -->
+                            <div style="padding: 0 1.5rem 1.5rem 1.5rem; border-top: 1px solid #eee; margin-top: auto;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; padding-top: 1rem;">
+                                    <button onclick="previewDocument(<?php echo $document['id']; ?>)" class="btn btn-secondary" style="padding: 0.5rem 1rem;" title="Prévisualiser">
+                                        <i class="fas fa-eye"></i> Prévisualiser
                                     </button>
-                                </div>
-
-                                <!-- Date -->
-                                <div style="text-align: center; margin-top: 1rem; font-size: 0.8rem; color: var(--text-light);">
-                                    <i class="fas fa-calendar"></i> Ajouté le <?php echo date('d/m/Y', strtotime($document['created_at'])); ?>
+                                    <?php if (isset($_SESSION['user_id'])): ?>
+                                        <button onclick="downloadDocument(<?php echo $document['id']; ?>)" class="btn btn-primary" style="padding: 0.5rem 1rem;" title="Télécharger">
+                                            <i class="fas fa-download"></i> Télécharger
+                                        </button>
+                                        <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] !== 'etudiant'): ?>
+                                            <?php if ($_SESSION['user_role'] === 'moderateur'): ?>
+                                                <?php if ($document['user_id'] == $_SESSION['user_id']): ?>
+                                                    <button onclick="deleteDocument(<?php echo $document['id']; ?>, this.closest('.document-card'))" 
+                                                            class="btn btn-danger" 
+                                                            style="padding: 0.5rem 1rem;"
+                                                            title="Supprimer">
+                                                        <i class="fas fa-trash"></i> Supprimer
+                                                    </button>
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <!-- Admin et super_admin peuvent supprimer tous les documents -->
+                                                <button onclick="deleteDocument(<?php echo $document['id']; ?>, this.closest('.document-card'))" 
+                                                        class="btn btn-danger" 
+                                                        style="padding: 0.5rem 1rem;"
+                                                        title="Supprimer">
+                                                    <i class="fas fa-trash"></i> Supprimer
+                                                </button>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <a href="login.php" class="btn btn-secondary" style="padding: 0.5rem 1rem;" title="Se connecter">
+                                            <i class="fas fa-lock"></i> Se connecter
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -303,6 +352,21 @@ include 'includes/header.php';
 </div>
 
 <?php include 'includes/footer.php'; ?>
+
+<?php
+// Fonction helper pour formater la taille des fichiers
+function formatFileSize($bytes) {
+    if ($bytes >= 1073741824) {
+        return number_format($bytes / 1073741824, 2) . ' GB';
+    } elseif ($bytes >= 1048576) {
+        return number_format($bytes / 1048576, 2) . ' MB';
+    } elseif ($bytes >= 1024) {
+        return number_format($bytes / 1024, 2) . ' KB';
+    } else {
+        return $bytes . ' B';
+    }
+}
+?>
 
 <script>
 // Aperçu des documents (utilise la même méthode que bank.php)
@@ -393,6 +457,70 @@ function refreshStats() {
 // Fonction pour afficher la modal d'upload
 function showUploadModal() {
     window.location.href = 'upload_document.php';
+}
+
+
+// Fonction pour supprimer un document
+function deleteDocument(documentId, cardElement) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce document ? Cette action est irréversible.')) {
+        return;
+    }
+
+    // Désactiver le bouton pendant la suppression
+    const deleteBtn = cardElement.querySelector('button[onclick*="deleteDocument"]');
+    if (deleteBtn) {
+        deleteBtn.disabled = true;
+        deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Suppression...';
+    }
+
+    fetch('api/delete_document.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            document_id: documentId
+        }),
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Animation de suppression
+            cardElement.style.transition = 'all 0.3s ease';
+            cardElement.style.opacity = '0';
+            cardElement.style.transform = 'translateX(100%)';
+            
+            setTimeout(() => {
+                cardElement.remove();
+                showNotification('Document supprimé avec succès', 'success');
+                
+                // Vérifier s'il reste des documents
+                const container = document.querySelector('[style*="grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))"]');
+                if (container && container.children.length === 0) {
+                    location.reload(); // Recharger pour afficher le message "aucun document"
+                }
+            }, 300);
+        } else {
+            throw new Error(data.message || 'Erreur lors de la suppression');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur suppression:', error);
+        showNotification('Erreur: ' + error.message, 'error');
+        
+        // Réactiver le bouton en cas d'erreur
+        if (deleteBtn) {
+            deleteBtn.disabled = false;
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        }
+    });
 }
 
 // Fonction de notification

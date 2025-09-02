@@ -128,6 +128,71 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
+// Supprimer un document
+function deleteDocument(documentId, cardElement) {
+    console.log('Fonction deleteDocument appelée avec ID:', documentId);
+    
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce document ? Cette action est irréversible.')) {
+        console.log('Suppression annulée par l\'utilisateur');
+        return;
+    }
+
+    const apiUrl = '/SITE_MUTUELLE-_2025/api/delete_document.php';
+    const requestData = {
+        document_id: documentId
+    };
+    
+    console.log('Envoi de la requête à:', apiUrl, 'avec les données:', requestData);
+    
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify(requestData),
+        credentials: 'same-origin' // Important pour envoyer les cookies de session
+    })
+    .then(response => {
+        console.log('Réponse reçue - Status:', response.status);
+        if (!response.ok) {
+            console.error('Erreur HTTP:', response.status);
+            return response.text().then(text => {
+                console.error('Réponse d\'erreur:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    throw new Error(text || 'Erreur inconnue');
+                }
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Supprimer la carte du DOM avec une animation
+            cardElement.style.opacity = '0';
+            cardElement.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                cardElement.remove();
+                showNotification('Document supprimé avec succès', 'success');
+                
+                // Vérifier s'il reste des documents
+                const container = document.querySelector('.documents-container') || document.querySelector('.bank-documents');
+                if (container && container.children.length === 0) {
+                    container.innerHTML = '<p class="no-documents">Aucun document disponible</p>';
+                }
+            }, 300);
+        } else {
+            throw new Error(data.error || 'Erreur lors de la suppression du document');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors de la suppression:', error);
+        showNotification('Erreur lors de la suppression: ' + (error.message || 'Erreur inconnue'), 'error');
+    });
+}
+
 // Utilitaires
 const Utils = {
     // Debounce function pour optimiser les événements

@@ -336,28 +336,49 @@ include 'includes/header.php';
                                     </div>
                                 </div>
 
-                                <!-- Statistiques et actions -->
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div style="display: flex; gap: 1rem; font-size: 0.9rem; color: var(--text-light);">
-                                        <span><i class="fas fa-download"></i> <?php echo number_format($doc['downloads']); ?></span>
-                                        <span><i class="fas fa-file"></i> <?php echo strtoupper($doc['file_type']); ?></span>
-                                        <span><i class="fas fa-weight"></i> <?php echo formatFileSize($doc['file_size']); ?></span>
-                                    </div>
+                                <!-- Statistiques -->
+                                <div style="display: flex; gap: 1rem; font-size: 0.9rem; color: var(--text-light); margin-bottom: 1.5rem;">
+                                    <span><i class="fas fa-download"></i> <?php echo number_format($doc['downloads']); ?></span>
+                                    <span><i class="fas fa-file"></i> <?php echo strtoupper($doc['file_type']); ?></span>
+                                    <span><i class="fas fa-weight"></i> <?php echo formatFileSize($doc['file_size']); ?></span>
+                                </div>
+                            </div>
 
-                                    <div style="display:flex; gap:0.5rem;">
-                                        <button onclick="previewDocument(<?php echo $doc['id']; ?>)" class="btn btn-secondary" style="padding: 0.5rem 1rem;">
-                                            <i class="fas fa-eye"></i> Prévisualiser
+                            <!-- Actions en bas de carte -->
+                            <div style="padding: 0 1.5rem 1.5rem 1.5rem; border-top: 1px solid #eee; margin-top: auto;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; padding-top: 1rem;">
+                                    <button onclick="previewDocument(<?php echo $doc['id']; ?>)" class="btn btn-secondary" style="padding: 0.5rem 1rem;" title="Prévisualiser">
+                                        <i class="fas fa-eye"></i> Prévisualiser
+                                    </button>
+                                    <?php if (isset($_SESSION['user_id'])): ?>
+                                        <button onclick="downloadDocument(<?php echo $doc['id']; ?>)" class="btn btn-primary" style="padding: 0.5rem 1rem;" title="Télécharger">
+                                            <i class="fas fa-download"></i> Télécharger
                                         </button>
-                                        <?php if (isset($_SESSION['user_id'])): ?>
-                                            <button onclick="downloadDocument(<?php echo $doc['id']; ?>)" class="btn btn-primary" style="padding: 0.5rem 1rem;">
-                                                <i class="fas fa-download"></i> Télécharger
-                                            </button>
-                                        <?php else: ?>
-                                            <a href="login.php" class="btn btn-secondary" style="padding: 0.5rem 1rem;">
-                                                <i class="fas fa-lock"></i> Se connecter
-                                            </a>
+                                        <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] !== 'etudiant'): ?>
+                                            <?php if ($_SESSION['user_role'] === 'moderateur'): ?>
+                                                <?php if ($doc['user_id'] == $_SESSION['user_id']): ?>
+                                                    <button onclick="deleteDocument(<?php echo $doc['id']; ?>, this.closest('.document-card'))" 
+                                                            class="btn btn-danger" 
+                                                            style="padding: 0.5rem 1rem;"
+                                                            title="Supprimer">
+                                                        <i class="fas fa-trash"></i> Supprimer
+                                                    </button>
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <!-- Admin et super_admin peuvent supprimer tous les documents -->
+                                                <button onclick="deleteDocument(<?php echo $doc['id']; ?>, this.closest('.document-card'))" 
+                                                        class="btn btn-danger" 
+                                                        style="padding: 0.5rem 1rem;"
+                                                        title="Supprimer">
+                                                    <i class="fas fa-trash"></i> Supprimer
+                                                </button>
+                                            <?php endif; ?>
                                         <?php endif; ?>
-                                    </div>
+                                    <?php else: ?>
+                                        <a href="login.php" class="btn btn-secondary" style="padding: 0.5rem 1rem;" title="Se connecter">
+                                            <i class="fas fa-lock"></i> Se connecter
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -511,6 +532,69 @@ function refreshStats() {
             }
         })
         .catch(() => showNotification('Erreur réseau lors de la mise à jour', 'error'));
+}
+
+// Fonction pour supprimer un document
+function deleteDocument(documentId, cardElement) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce document ? Cette action est irréversible.')) {
+        return;
+    }
+
+    // Désactiver le bouton pendant la suppression
+    const deleteBtn = cardElement.querySelector('button[onclick*="deleteDocument"]');
+    if (deleteBtn) {
+        deleteBtn.disabled = true;
+        deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Suppression...';
+    }
+
+    fetch('api/delete_document.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            document_id: documentId
+        }),
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Animation de suppression
+            cardElement.style.transition = 'all 0.3s ease';
+            cardElement.style.opacity = '0';
+            cardElement.style.transform = 'translateX(100%)';
+            
+            setTimeout(() => {
+                cardElement.remove();
+                showNotification('Document supprimé avec succès', 'success');
+                
+                // Vérifier s'il reste des documents
+                const container = document.querySelector('[style*="grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))"]');
+                if (container && container.children.length === 0) {
+                    location.reload(); // Recharger pour afficher le message "aucun document"
+                }
+            }, 300);
+        } else {
+            throw new Error(data.message || 'Erreur lors de la suppression');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur suppression:', error);
+        showNotification('Erreur: ' + error.message, 'error');
+        
+        // Réactiver le bouton en cas d'erreur
+        if (deleteBtn) {
+            deleteBtn.disabled = false;
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Supprimer';
+        }
+    });
 }
 
 // Fonction de notification

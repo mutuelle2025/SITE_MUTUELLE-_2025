@@ -30,6 +30,32 @@
     <link rel="apple-touch-icon" href="assets/img/logo.png" style="border-radius: 50%;">
     <link rel="shortcut icon" href="assets/img/logo.png" style="border-radius: 50%;">
 
+    <!-- Fichier JavaScript principal -->
+    <script>
+        // Script de débogage pour vérifier le chargement de main.js
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM entièrement chargé et analysé');
+            
+            // Vérifier si la fonction deleteDocument existe
+            console.log('deleteDocument est défini:', typeof deleteDocument !== 'undefined');
+            
+            // Vérifier si le fichier main.js est chargé
+            const scripts = document.getElementsByTagName('script');
+            let mainJsLoaded = false;
+            for (let script of scripts) {
+                if (script.src.includes('main.js')) {
+                    mainJsLoaded = true;
+                    script.onerror = function() {
+                        console.error('Erreur de chargement de main.js');
+                    };
+                    break;
+                }
+            }
+            console.log('main.js est chargé:', mainJsLoaded);
+        });
+    </script>
+    <script src="assets/js/main.js" defer></script>
+
     <!-- Script de détection des fonctionnalités -->
     <script>
         // Détection basique des fonctionnalités avant le chargement
