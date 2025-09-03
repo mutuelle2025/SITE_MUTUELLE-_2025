@@ -290,9 +290,11 @@ include 'includes/header.php';
                                     <i class="fas fa-user-circle"></i>
                                     Conversation <?php if ($contact_info) { echo 'avec ' . htmlspecialchars($contact_info['contact_name']); } ?>
                                 </h2>
-                                <div>
-                                    <button class="btn btn-primary" onclick="replyToContact(<?php echo $contact_id; ?>)"><i class="fas fa-reply"></i> Répondre</button>
-                                </div>
+                                <?php if ($contact_info && isset($contact_info['contact_active']) && $contact_info['contact_active'] == 1): ?>
+                                    <div>
+                                        <button class="btn btn-primary" onclick="replyToContact(<?php echo $contact_id; ?>)"><i class="fas fa-reply"></i> Répondre</button>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                             <div class="thread-container" style="max-height: 500px; overflow-y: auto; padding: 1rem;">
@@ -320,13 +322,24 @@ include 'includes/header.php';
                             </div>
 
                             <!-- Répondre rapide dans le fil -->
-                            <div style="border-top: 1px solid var(--border-color); padding: 1rem; display: flex; gap: 0.75rem; align-items: flex-end;">
-                                <textarea id="quickReplyContent" rows="3" placeholder="Votre réponse..." 
-                                          style="flex: 1; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px; resize: vertical;"></textarea>
-                                <button class="btn btn-primary" onclick="sendQuickReply(<?php echo $contact_id; ?>)">
-                                    <i class="fas fa-paper-plane"></i> Envoyer
-                                </button>
-                            </div>
+                            <?php if ($contact_info && isset($contact_info['contact_active']) && $contact_info['contact_active'] == 1): ?>
+                                <div style="border-top: 1px solid var(--border-color); padding: 1rem; display: flex; gap: 0.75rem; align-items: flex-end;">
+                                    <textarea id="quickReplyContent" rows="3" placeholder="Votre réponse..." 
+                                              style="flex: 1; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px; resize: vertical;"></textarea>
+                                    <button class="btn btn-primary" onclick="sendQuickReply(<?php echo $contact_id; ?>)">
+                                        <i class="fas fa-paper-plane"></i> Envoyer
+                                    </button>
+                                </div>
+                            <?php else: ?>
+                                <div style="border-top: 1px solid var(--border-color); padding: 1rem; background: #fff3e0; text-align: center;">
+                                    <div style="color: #f57c00; font-weight: 600; margin-bottom: 0.5rem;">
+                                        <i class="fas fa-exclamation-triangle"></i> Impossible d'envoyer un message
+                                    </div>
+                                    <div style="color: #ef6c00; font-size: 0.9rem;">
+                                        Ce compte a été supprimé par son propriétaire
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         <?php else: ?>
                             <!-- Liste des messages -->
                             <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color);">

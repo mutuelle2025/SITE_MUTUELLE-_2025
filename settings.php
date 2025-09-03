@@ -69,24 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     } elseif ($delete_confirm !== 'SUPPRIMER') {
         $errors['delete'] = 'Veuillez taper "SUPPRIMER" pour confirmer.';
     } else {
-        try {
-            // Marquer le compte comme supprimé au lieu de le supprimer définitivement
-            $sql = "UPDATE users SET 
-                    status = 'deleted', 
-                    deleted_at = NOW(), 
-                    email = CONCAT(email, '_deleted_', id) 
-                    WHERE id = ?";
-            executeQuery($sql, array($_SESSION['user_id']));
-            
-            logAction($_SESSION['user_id'], 'delete_account', 'Suppression du compte utilisateur');
-            
-            // Déconnexion
+        // Utiliser la nouvelle fonction de suppression
+        $result = deleteUserAccount($_SESSION['user_id']);
+        
+        if ($result['success']) {
+            // Déconnexion et redirection
             session_destroy();
             header('Location: index.php?message=account_deleted');
             exit;
-        } catch (Exception $e) {
-            $errors['delete'] = 'Erreur lors de la suppression du compte.';
-            error_log("Erreur suppression compte : " . $e->getMessage());
+        } else {
+            $errors['delete'] = $result['message'];
         }
     }
 }

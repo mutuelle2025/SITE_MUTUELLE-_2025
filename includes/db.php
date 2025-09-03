@@ -93,7 +93,7 @@ function getUserByEmail($email) {
  * Fonction pour récupérer un utilisateur par ID
  */
 function getUserById($id) {
-    $sql = "SELECT * FROM users WHERE id = ? AND active = 1";
+    $sql = "SELECT * FROM users WHERE id = ?";
     $stmt = executeQuery($sql, [$id]);
     return $stmt->fetch();
 }
@@ -680,12 +680,30 @@ function getUserMessages($userId, $type = 'received', $limit = 20, $offset = 0) 
 
     $sql = "SELECT
                 m.*,
-                sender.prenom as sender_prenom,
-                sender.nom as sender_nom,
-                sender.filiere as sender_filiere,
-                sender.niveau as sender_niveau,
-                receiver.prenom as receiver_prenom,
-                receiver.nom as receiver_nom
+                CASE 
+                    WHEN sender.active = 0 THEN 'Utilisateur supprimé'
+                    ELSE sender.prenom
+                END as sender_prenom,
+                CASE 
+                    WHEN sender.active = 0 THEN ''
+                    ELSE sender.nom
+                END as sender_nom,
+                CASE 
+                    WHEN sender.active = 0 THEN ''
+                    ELSE sender.filiere
+                END as sender_filiere,
+                CASE 
+                    WHEN sender.active = 0 THEN ''
+                    ELSE sender.niveau
+                END as sender_niveau,
+                CASE 
+                    WHEN receiver.active = 0 THEN 'Utilisateur supprimé'
+                    ELSE receiver.prenom
+                END as receiver_prenom,
+                CASE 
+                    WHEN receiver.active = 0 THEN ''
+                    ELSE receiver.nom
+                END as receiver_nom
             FROM messages m
             JOIN users sender ON m.sender_id = sender.id
             LEFT JOIN users receiver ON m.receiver_id = receiver.id
@@ -715,6 +733,14 @@ function getUnreadMessagesCount($userId) {
  * Fonction pour envoyer un message
  */
 function sendMessage($senderId, $receiverId, $subject, $message, $isPublic = false) {
+    // Vérifier que le destinataire est actif (pas supprimé)
+    if (!$isPublic && $receiverId) {
+        $receiver = getUserById($receiverId);
+        if (!$receiver || !$receiver['active']) {
+            return false; // Ne pas envoyer de message à un compte supprimé
+        }
+    }
+    
     $sql = "INSERT INTO messages (sender_id, receiver_id, subject, message, is_public, created_at)
             VALUES (?, ?, ?, ?, ?, NOW())";
 
@@ -750,12 +776,30 @@ function markMessageAsRead($messageId, $userId) {
 function getMessageById($messageId, $userId) {
     $sql = "SELECT
                 m.*,
-                sender.prenom as sender_prenom,
-                sender.nom as sender_nom,
-                sender.filiere as sender_filiere,
-                sender.niveau as sender_niveau,
-                receiver.prenom as receiver_prenom,
-                receiver.nom as receiver_nom
+                CASE 
+                    WHEN sender.active = 0 THEN 'Utilisateur supprimé'
+                    ELSE sender.prenom
+                END as sender_prenom,
+                CASE 
+                    WHEN sender.active = 0 THEN ''
+                    ELSE sender.nom
+                END as sender_nom,
+                CASE 
+                    WHEN sender.active = 0 THEN ''
+                    ELSE sender.filiere
+                END as sender_filiere,
+                CASE 
+                    WHEN sender.active = 0 THEN ''
+                    ELSE sender.niveau
+                END as sender_niveau,
+                CASE 
+                    WHEN receiver.active = 0 THEN 'Utilisateur supprimé'
+                    ELSE receiver.prenom
+                END as receiver_prenom,
+                CASE 
+                    WHEN receiver.active = 0 THEN ''
+                    ELSE receiver.nom
+                END as receiver_nom
             FROM messages m
             JOIN users sender ON m.sender_id = sender.id
             LEFT JOIN users receiver ON m.receiver_id = receiver.id
@@ -770,7 +814,7 @@ function getMessageById($messageId, $userId) {
  */
 function deleteMessage($messageId, $userId) {
     // Seul l'expéditeur peut supprimer son message
-    $sql = "DELETE FROM messages WHERE id = ? AND sender_id = ?";
+    $sql = "DELETE FROM messages WHERE id = ? AND sender_id = ? AND is_public = 0";
     return executeQuery($sql, [$messageId, $userId]);
 }
 
@@ -829,24 +873,34 @@ function getRecentConversations($userId, $limit = 5) {
                     ELSE m.sender_id
                 END as contact_id,
                 CASE
-                    WHEN m.sender_id = ? THEN CONCAT(receiver.prenom, ' ', receiver.nom)
-                    ELSE CONCAT(sender.prenom, ' ', sender.nom)
+                    WHEN m.sender_id = ? THEN 
+                        CASE WHEN receiver.active = 0 THEN 'Utilisateur supprimé' 
+                             ELSE CONCAT(receiver.prenom, ' ', receiver.nom) END
+                    ELSE 
+                        CASE WHEN sender.active = 0 THEN 'Utilisateur supprimé' 
+                             ELSE CONCAT(sender.prenom, ' ', sender.nom) END
                 END as contact_name,
                 CASE
-                    WHEN m.sender_id = ? THEN receiver.filiere
-                    ELSE sender.filiere
+                    WHEN m.sender_id = ? THEN 
+                        CASE WHEN receiver.active = 0 THEN '' ELSE receiver.filiere END
+                    ELSE 
+                        CASE WHEN sender.active = 0 THEN '' ELSE sender.filiere END
                 END as contact_filiere,
+                CASE
+                    WHEN m.sender_id = ? THEN receiver.active
+                    ELSE sender.active
+                END as contact_active,
                 MAX(m.created_at) as last_message_date,
                 COUNT(CASE WHEN m.receiver_id = ? AND m.is_read = 0 THEN 1 END) as unread_count
             FROM messages m
             JOIN users sender ON m.sender_id = sender.id
             LEFT JOIN users receiver ON m.receiver_id = receiver.id
             WHERE (m.sender_id = ? OR m.receiver_id = ?) AND m.is_public = 0
-            GROUP BY contact_id, contact_name, contact_filiere
+            GROUP BY contact_id, contact_name, contact_filiere, contact_active
             ORDER BY last_message_date DESC
             LIMIT ?";
 
-    $params = [$userId, $userId, $userId, $userId, $userId, $userId, $limit];
+    $params = [$userId, $userId, $userId, $userId, $userId, $userId, $userId, $limit];
     $stmt = executeQuery($sql, $params);
     return $stmt->fetchAll();
 }
@@ -1012,6 +1066,74 @@ function getRoleStatistics() {
             ORDER BY FIELD(role, 'etudiant', 'moderateur', 'admin', 'super_admin')";
     $stmt = executeQuery($sql);
     return $stmt->fetchAll();
+}
+
+/**
+ * Fonction pour supprimer un compte utilisateur (soft delete)
+ */
+function deleteUserAccount($userId) {
+    global $pdo;
+    
+    try {
+        // Commencer une transaction
+        $pdo->beginTransaction();
+        
+        // Récupérer les infos utilisateur avant suppression
+        $user = getUserById($userId);
+        if (!$user) {
+            throw new Exception("Utilisateur introuvable");
+        }
+        
+        // 1. Marquer le compte comme inactif - utiliser une requête simple
+        $sql = "UPDATE users SET active = 0 WHERE id = ?";
+        executeQuery($sql, [$userId]);
+        
+        // 2. Modifier l'email pour éviter les conflits
+        $timestamp = time();
+        $sql_email = "UPDATE users SET email = CONCAT(?, '_deleted_', ?, '_', ?) WHERE id = ?";
+        executeQuery($sql_email, [$user['email'], $userId, $timestamp, $userId]);
+        
+        // 3. Supprimer les sessions actives si la table existe
+        try {
+            $sql_sessions = "DELETE FROM user_sessions WHERE user_id = ?";
+            executeQuery($sql_sessions, [$userId]);
+        } catch (Exception $e) {
+            // Table user_sessions peut ne pas exister, continuer
+            error_log("Sessions cleanup failed: " . $e->getMessage());
+        }
+        
+        // 4. Marquer les messages comme supprimés (pas d'anonymisation directe car sender_id est une FK)
+        // Les messages resteront liés au compte supprimé mais le compte sera inactif
+        // L'affichage devra gérer les comptes inactifs côté interface
+        
+        // 5. Logger l'action
+        try {
+            logAction($userId, 'delete_account', 'Suppression du compte utilisateur: ' . $user['email']);
+        } catch (Exception $e) {
+            // Logging failed, continuer
+            error_log("Logging failed: " . $e->getMessage());
+        }
+        
+        // Valider la transaction
+        $pdo->commit();
+        
+        return [
+            'success' => true,
+            'message' => 'Compte supprimé avec succès'
+        ];
+        
+    } catch (Exception $e) {
+        // Annuler la transaction en cas d'erreur
+        if ($pdo && $pdo->inTransaction()) {
+            $pdo->rollback();
+        }
+        
+        error_log("Erreur suppression compte: " . $e->getMessage());
+        return [
+            'success' => false,
+            'message' => 'Erreur lors de la suppression du compte: ' . $e->getMessage()
+        ];
+    }
 }
 
 /**

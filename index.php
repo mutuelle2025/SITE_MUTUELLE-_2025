@@ -1,4 +1,18 @@
 <?php
+require_once 'includes/db.php';
+require_once 'includes/cache.php';
+
+// Démarrer la session si elle n'est pas déjà démarrée
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Afficher un message de confirmation si le compte a été supprimé
+$account_deleted_message = '';
+if (isset($_GET['message']) && $_GET['message'] === 'account_deleted') {
+    $account_deleted_message = 'Votre compte a été supprimé avec succès. Merci d\'avoir utilisé nos services.';
+}
+
 $page_title = "Accueil";
 include 'includes/header.php';
 ?>
@@ -131,6 +145,12 @@ include 'includes/header.php';
 </style>
 
 <main class="main-content">
+    <?php if ($account_deleted_message): ?>
+        <div style="background: #e8f5e8; color: #2e7d32; padding: 1rem; border-radius: 5px; margin: 1rem auto; max-width: 800px; border-left: 4px solid #4caf50; text-align: center;">
+            <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($account_deleted_message); ?>
+        </div>
+    <?php endif; ?>
+    
     <!-- Section Hero -->
     <section class="hero"
         style="background-image: url('assets/img/Plan UDM.png'), background-position: center, background-size:contain no-repeat; position: relative;">
