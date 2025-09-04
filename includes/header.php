@@ -157,7 +157,7 @@
                                     <i class="fas fa-cog"></i>
                                     <span class="nav-text">Outils</span>
                                 </a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" id="outils-submenu" style="display: none;">
                                     <?php if (canAccess('dashboard')): ?>
                                         <li><a href="dashboard.php" class="dropdown-link">
                                                 <i class="fas fa-tachometer-alt"></i> Tableau de bord
@@ -216,7 +216,7 @@
                                     ?>
                                 </span>
                             </a>
-                            <ul class="dropdown-menu user-dropdown">
+                            <ul class="dropdown-menu user-dropdown" id="user-submenu" style="display: none;">
                                 <li class="user-info-header">
                                     <div class="user-avatar-large">
                                         <?php echo $initials ?: 'U'; ?>
@@ -285,9 +285,82 @@
             }
         });
 
-        // Fermer le menu mobile quand on clique sur un lien
+        // Gestion des sous-menus
         document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.nav-link').forEach(link => {
+            // Gérer le clic sur le menu Outils
+            const outilsLink = document.querySelector('.dropdown:not(.user-menu) > .nav-link');
+            const outilsSubmenu = document.getElementById('outils-submenu');
+            
+            if (outilsLink && outilsSubmenu) {
+                outilsLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    // Fermer le menu utilisateur s'il est ouvert
+                    const userSubmenu = document.getElementById('user-submenu');
+                    if (userSubmenu) {
+                        userSubmenu.style.display = 'none';
+                        document.querySelector('.user-menu').classList.remove('mobile-active');
+                    }
+                    
+                    // Toggle l'affichage du sous-menu Outils
+                    if (outilsSubmenu.style.display === 'none' || outilsSubmenu.style.display === '') {
+                        outilsSubmenu.style.display = 'block';
+                        this.parentElement.classList.add('mobile-active');
+                    } else {
+                        outilsSubmenu.style.display = 'none';
+                        this.parentElement.classList.remove('mobile-active');
+                    }
+                });
+            }
+
+            // Gérer le clic sur le menu Utilisateur
+            const userLink = document.querySelector('.user-menu > .nav-link');
+            const userSubmenu = document.getElementById('user-submenu');
+            
+            if (userLink && userSubmenu) {
+                userLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    // Fermer le menu outils s'il est ouvert
+                    if (outilsSubmenu) {
+                        outilsSubmenu.style.display = 'none';
+                        document.querySelector('.dropdown:not(.user-menu)').classList.remove('mobile-active');
+                    }
+                    
+                    // Toggle l'affichage du sous-menu Utilisateur
+                    if (userSubmenu.style.display === 'none' || userSubmenu.style.display === '') {
+                        userSubmenu.style.display = 'block';
+                        this.parentElement.classList.add('mobile-active');
+                    } else {
+                        userSubmenu.style.display = 'none';
+                        this.parentElement.classList.remove('mobile-active');
+                    }
+                });
+            }
+
+            // Fermer le menu mobile quand on clique sur un lien de sous-menu
+            document.querySelectorAll('.dropdown-link').forEach(link => {
+                link.addEventListener('click', function () {
+                    const navMenu = document.getElementById('navMenu');
+                    if (navMenu) {
+                        navMenu.classList.remove('active');
+                        // Fermer tous les sous-menus
+                        if (outilsSubmenu) {
+                            outilsSubmenu.style.display = 'none';
+                        }
+                        if (userSubmenu) {
+                            userSubmenu.style.display = 'none';
+                        }
+                        // Retirer toutes les classes active
+                        document.querySelectorAll('.dropdown').forEach(dropdown => {
+                            dropdown.classList.remove('mobile-active');
+                        });
+                    }
+                });
+            });
+
+            // Fermer le menu mobile quand on clique sur un lien normal
+            document.querySelectorAll('.nav-link:not(.dropdown > .nav-link)').forEach(link => {
                 link.addEventListener('click', function () {
                     const navMenu = document.getElementById('navMenu');
                     if (navMenu) {

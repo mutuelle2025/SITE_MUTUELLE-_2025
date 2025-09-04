@@ -1,6 +1,7 @@
 <?php
 require_once 'includes/db.php';
 require_once 'includes/cache.php';
+require_once 'includes/auth_middleware.php';
 
 // Démarrer la session si elle n'est pas déjà démarrée
 if (session_status() == PHP_SESSION_NONE) {
@@ -116,6 +117,10 @@ include 'includes/header.php';
     @media (max-width: 900px) {
         .about .about-content { grid-template-columns: 1fr; }
         .about .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    }
+    @media (max-width: 600px) {
+        .about .about-content { grid-template-columns: 1fr; }
+        .about .about-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     }
     /* Make image tiles responsive with hover */
     .about .about-text > div[style*='position: relative'] {

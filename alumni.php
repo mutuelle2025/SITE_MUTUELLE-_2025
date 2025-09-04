@@ -1,4 +1,13 @@
 <?php
+require_once 'includes/db.php';
+require_once 'includes/cache.php';
+require_once 'includes/auth_middleware.php';
+
+// Démarrer la session si elle n'est pas déjà démarrée
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $page_title = "Alumni - Bureau 2024-2025";
 include 'includes/header.php';
 ?>
