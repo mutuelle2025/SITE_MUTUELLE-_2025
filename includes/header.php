@@ -13,6 +13,68 @@
     <link rel="stylesheet" href="assets/css/animations.css">
     <link rel="stylesheet" href="assets/css/safe-animations.css">
 
+    <!-- Ajout: styles locaux pour garantir contraste visible -->
+    <style>
+        /* Fond clair pour le header / navbar */
+        .header,
+        .navbar,
+        .nav-container {
+            background-color: #ffffff !important;
+            color: #222 !important;
+        }
+
+        /* Liens et icônes : couleur foncée, bien visible */
+        .nav-link,
+        .nav-link .nav-text,
+        .nav-link i,
+        .logo-text,
+        .user-name,
+        .user-email,
+        .dropdown-link {
+            color: #222 !important;
+        }
+
+        /* Avatar (initiales) */
+        .user-avatar,
+        .user-avatar-large {
+            background-color: #f0f0f0 !important;
+            color: #222 !important;
+            border: 1px solid rgba(0, 0, 0, 0.06) !important;
+        }
+
+        /* Bouton menu mobile / icône burger */
+        .mobile-menu-toggle,
+        .mobile-menu-toggle i {
+            color: #222 !important;
+            border: none;
+            background: transparent;
+        }
+
+        /* Badge notifications */
+        .notification-badge {
+            background-color: #d9534f !important;
+            color: #fff !important;
+            border-radius: 12px;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            vertical-align: middle;
+        }
+
+        /* Assurer la lisibilité des dropdowns */
+        .dropdown-menu,
+        .user-dropdown {
+            background-color: #fff !important;
+            color: #222 !important;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Cas mobile : forcer contraste lorsque le menu devient actif */
+        .nav-menu.active,
+        .dropdown.mobile-active> .dropdown-menu {
+            background-color: #fff !important;
+        }
+    </style>
+
     <!-- Font Awesome avec fallback -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"
         onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';">
@@ -33,19 +95,19 @@
     <!-- Fichier JavaScript principal -->
     <script>
         // Script de débogage pour vérifier le chargement de main.js
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', function () {
             console.log('DOM entièrement chargé et analysé');
-            
+
             // Vérifier si la fonction deleteDocument existe
             console.log('deleteDocument est défini:', typeof deleteDocument !== 'undefined');
-            
+
             // Vérifier si le fichier main.js est chargé
             const scripts = document.getElementsByTagName('script');
             let mainJsLoaded = false;
             for (let script of scripts) {
                 if (script.src.includes('main.js')) {
                     mainJsLoaded = true;
-                    script.onerror = function() {
+                    script.onerror = function () {
                         console.error('Erreur de chargement de main.js');
                     };
                     break;
@@ -290,18 +352,18 @@
             // Gérer le clic sur le menu Outils
             const outilsLink = document.querySelector('.dropdown:not(.user-menu) > .nav-link');
             const outilsSubmenu = document.getElementById('outils-submenu');
-            
+
             if (outilsLink && outilsSubmenu) {
                 outilsLink.addEventListener('click', function (e) {
                     e.preventDefault();
-                    
+
                     // Fermer le menu utilisateur s'il est ouvert
                     const userSubmenu = document.getElementById('user-submenu');
                     if (userSubmenu) {
                         userSubmenu.style.display = 'none';
                         document.querySelector('.user-menu').classList.remove('mobile-active');
                     }
-                    
+
                     // Toggle l'affichage du sous-menu Outils
                     if (outilsSubmenu.style.display === 'none' || outilsSubmenu.style.display === '') {
                         outilsSubmenu.style.display = 'block';
@@ -316,17 +378,17 @@
             // Gérer le clic sur le menu Utilisateur
             const userLink = document.querySelector('.user-menu > .nav-link');
             const userSubmenu = document.getElementById('user-submenu');
-            
+
             if (userLink && userSubmenu) {
                 userLink.addEventListener('click', function (e) {
                     e.preventDefault();
-                    
+
                     // Fermer le menu outils s'il est ouvert
                     if (outilsSubmenu) {
                         outilsSubmenu.style.display = 'none';
                         document.querySelector('.dropdown:not(.user-menu)').classList.remove('mobile-active');
                     }
-                    
+
                     // Toggle l'affichage du sous-menu Utilisateur
                     if (userSubmenu.style.display === 'none' || userSubmenu.style.display === '') {
                         userSubmenu.style.display = 'block';
