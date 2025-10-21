@@ -85,7 +85,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;l
 .footer-section ul li{margin-bottom:0.5rem}
 .footer-section a{color:#ccc;text-decoration:none;transition:var(--transition)}
 .footer-section a:hover{color:#fff}
-.social-links{display:flex;gap:1rem}
+.social-links{display:flex;gap:1rem;}
 .social-link{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--primary-color);color:#fff;border-radius:50%;text-decoration:none;transition:var(--transition)}
 .social-link:hover{background:var(--accent-color);transform:translateY(-2px)}
 

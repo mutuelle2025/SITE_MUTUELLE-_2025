@@ -253,7 +253,13 @@ include 'includes/header.php';
                             <option value="gestion" <?php echo (isset($filiere) && $filiere === 'gestion') ? 'selected' : ''; ?>>Gestion</option>
                             <option value="economie" <?php echo (isset($filiere) && $filiere === 'economie') ? 'selected' : ''; ?>>Économie</option>
                             <option value="droit" <?php echo (isset($filiere) && $filiere === 'droit') ? 'selected' : ''; ?>>Droit</option>
-                            <option value="medecine" <?php echo (isset($filiere) && $filiere === 'medecine') ? 'selected' : ''; ?>>Médecine</option>
+                            <!-- <option value="medecine" <?php echo (isset($filiere) && $filiere === 'medecine') ? 'selected' : ''; ?>>Médecine</option> -->
+                            <option value="medecine_humaine" <?php echo (isset($filiere) && $filiere === 'medecine_humaine') ? 'selected' : ''; ?>>Médecine Humaine</option>
+                            <option value="pharmacie" <?php echo (isset($filiere) && $filiere === 'pharmacie') ? 'selected' : ''; ?>>Pharmacie</option>
+                            <option value="sciences_biomedicales" <?php echo (isset($filiere) && $filiere === 'sciences_biomedicales') ? 'selected' : ''; ?>>Sciences Biomédicales</option>
+                            <option value="imagerie_medicale_radiologie" <?php echo (isset($filiere) && $filiere === 'imagerie_medicale_radiologie') ? 'selected' : ''; ?>>Imagerie Médicale et Radiologie</option>
+                            <option value="technologie_laboratoire_medical" <?php echo (isset($filiere) && $filiere === 'technologie_laboratoire_medical') ? 'selected' : ''; ?>>Technologie de Laboratoire Médical</option>
+                            <option value="sante_publique" <?php echo (isset($filiere) && $filiere === 'sante_publique') ? 'selected' : ''; ?>>Santé Publique</option>
                             <option value="ingenierie" <?php echo (isset($filiere) && $filiere === 'ingenierie') ? 'selected' : ''; ?>>Ingénierie</option>
                             <option value="lettres" <?php echo (isset($filiere) && $filiere === 'lettres') ? 'selected' : ''; ?>>Lettres et Sciences Humaines</option>
                             <option value="sciences" <?php echo (isset($filiere) && $filiere === 'sciences') ? 'selected' : ''; ?>>Sciences</option>

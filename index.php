@@ -107,6 +107,7 @@ include 'includes/header.php';
             padding: 1rem;
         }
     }
+
     /* About section responsive layout and tiles */
     .about .about-content {
         display: grid;
@@ -114,28 +115,47 @@ include 'includes/header.php';
         gap: 2rem;
         align-items: start;
     }
+
     @media (max-width: 900px) {
-        .about .about-content { grid-template-columns: 1fr; }
-        .about .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .about .about-content {
+            grid-template-columns: 1fr;
+        }
+
+        .about .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
     }
+
     @media (max-width: 600px) {
-        .about .about-content { grid-template-columns: 1fr; }
-        .about .about-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .about .about-content {
+            grid-template-columns: 1fr;
+        }
+
+        .about .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
     }
+
     /* Make image tiles responsive with hover */
-    .about .about-text > div[style*='position: relative'] {
+    .about .about-text>div[style*='position: relative'] {
         height: auto !important;
         aspect-ratio: 16/9;
         min-height: 120px;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         transition: transform .25s ease;
     }
-    .about .about-text > div[style*='position: relative']:hover {
+
+    .about .about-text>div[style*='position: relative']:hover {
         transform: translateY(-4px);
     }
-    .about .about-text > div > div[style*='background: url'] {
+
+    .about .about-text>div>div[style*='background: url'] {
         transition: transform .3s ease;
         will-change: transform;
         /* Show full image without cropping */
@@ -144,18 +164,20 @@ include 'includes/header.php';
         background-repeat: no-repeat !important;
         background-color: #fff;
     }
-    .about .about-text > div:hover > div[style*='background: url'] {
+
+    .about .about-text>div:hover>div[style*='background: url'] {
         transform: scale(1.05);
     }
 </style>
 
 <main class="main-content">
     <?php if ($account_deleted_message): ?>
-        <div style="background: #e8f5e8; color: #2e7d32; padding: 1rem; border-radius: 5px; margin: 1rem auto; max-width: 800px; border-left: 4px solid #4caf50; text-align: center;">
+        <div
+            style="background: #e8f5e8; color: #2e7d32; padding: 1rem; border-radius: 5px; margin: 1rem auto; max-width: 800px; border-left: 4px solid #4caf50; text-align: center;">
             <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($account_deleted_message); ?>
         </div>
     <?php endif; ?>
-    
+
     <!-- Section Hero -->
     <section class="hero"
         style="background-image: url('assets/img/Plan UDM.png'), background-position: center, background-size:contain no-repeat; position: relative;">
@@ -242,8 +264,8 @@ include 'includes/header.php';
                 </div>
 
                 <!-- <div class="service-card"> -->
-                    <!-- Image de fond pour l'email -->
-                    <!-- <div
+                <!-- Image de fond pour l'email -->
+                <!-- <div
                         style="height: 150px; background: url('https://images.unsplash.com/photo-1596526131083-e8c633c948d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80') center/cover; border-radius: 10px 10px 0 0; position: relative; margin: -2rem -2rem 1rem -2rem;">
                         <div
                             style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(156, 39, 176, 0.8), rgba(186, 104, 200, 0.6)); border-radius: 10px 10px 0 0; display: flex; align-items: center; justify-content: center;">
@@ -264,13 +286,15 @@ include 'includes/header.php';
             <div class="about-content">
                 <div class="about-text">
                     <h2>À propos de la Mutuelle UDM</h2>
-                    <p>La Mutuelle des Étudiants de l'<a href="https://www.google.com/maps/place/Universit%C3%A9+des+Montagnes+(UdM)/@5.1345717,10.5899567,769m/data=!3m1!1e3!4m10!1m2!2m1!1sudm!3m6!1s0x105ff826fac3d22b:0x3166f3a8f1de1dea!8m2!3d5.1350303!4d10.5893208!15sCgN1ZG2SAQZzY2hvb2yqASsQATIeEAEiGkNYI2oyhe28GmccMFdHMiBiJQ5XfDDAexXFMgcQAiIDdWRt4AEA!16s%2Fg%2F11fx_5qp_d?entry=ttu&g_ep=EgoyMDI1MDgxOS4wIKXMDSoASAFQAw%3D%3D"
+                    <p>La Mutuelle des Étudiants de l'<a
+                            href="https://www.google.com/maps/place/Universit%C3%A9+des+Montagnes+(UdM)/@5.1345717,10.5899567,769m/data=!3m1!1e3!4m10!1m2!2m1!1sudm!3m6!1s0x105ff826fac3d22b:0x3166f3a8f1de1dea!8m2!3d5.1350303!4d10.5893208!15sCgN1ZG2SAQZzY2hvb2yqASsQATIeEAEiGkNYI2oyhe28GmccMFdHMiBiJQ5XfDDAexXFMgcQAiIDdWRt4AEA!16s%2Fg%2F11fx_5qp_d?entry=ttu&g_ep=EgoyMDI1MDgxOS4wIKXMDSoASAFQAw%3D%3D"
                             target="_blank" style="color: var(--primary-color); text-decoration: none;">Université des
                             Montagnes</a> est une initiative étudiante visant à créer une communauté solidaire et
                         collaborative.</p>
 
                     <!-- Images illustratives de la vie étudiante -->
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin: 1.5rem 0; align-items: stretch;">
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin: 1.5rem 0; align-items: stretch;">
                         <div style="position: relative; height: 120px; border-radius: 10px; overflow: hidden;">
                             <div
                                 style="background: url('assets/img/Art oratoire et éloquence.jpg') top/cover; width: 100%; height: 100%;">
@@ -448,14 +472,23 @@ include 'includes/header.php';
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
-                            "Grâce à la mutuelle, j'ai pu accéder à tous les anciens examens de ma filière.
-                            Cela m'a énormément aidé à réussir mes partiels !"
+                            "Être étudiant, c’est affronter des défis, mais c’est aussi croire que chaque effort, chaque
+                            sacrifice, nous rapproche de la réussite. La mutuelle est là pour que personne ne marche
+                            seul, pour que chacun trouve une main tendue, une oreille attentive et un appui sincère.
+
+                            ✨ Aujourd’hui, je vous invite à garder confiance en vous, à cultiver la discipline et le
+                            courage. Continuons à bâtir une communauté où l’entraide est une richesse, la solidarité une
+                            fierté, et le savoir notre plus grande arme.
+
+                            🔑 N’oublions jamais :
+
+                            Seul, on va plus vite. Ensemble, on va plus loin."
                         </p>
                         <div style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">Uriche.F
                         </div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en pharmacie 6</div>
                         <div style="margin-top: 1rem;">
-                            <span style="color: #ffc107;">★★★★★</span>
+                            <span style="color: #ffc107;">★★★★</span>★
                         </div>
                     </div>
 
@@ -478,7 +511,7 @@ include 'includes/header.php';
                             "L'entraide entre étudiants est formidable. J'ai trouvé un groupe d'étude
                             grâce à la messagerie et nous nous soutenons mutuellement."
                         </p>
-                        <div style="color: #2196f3; font-weight: bold; font-size: 1.1rem;">Ullrich.W</div>
+                        <div style="color: #2196f3; font-weight: bold; font-size: 1.1rem;">Ulrich.W</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">Étudiante en Informatique M1</div>
                         <div style="margin-top: 1rem;">
                             <span style="color: #ffc107;">★★★★★</span>
@@ -488,15 +521,15 @@ include 'includes/header.php';
                     <div class="testimonial-card">
                         <!-- Décoration de fond -->
                         <div
-                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ff0040ff, #ec6385ff); border-radius: 50%; opacity: 0.1;">
+                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #fbff00ff, #eaec72ff); border-radius: 50%; opacity: 0.1;">
                         </div>
 
                         <!-- Avatar -->
                         <div
-                            style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/Joyce.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #ff0040ff;">
+                            style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/Joyce.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #fbff00ff;">
                         </div>
 
-                        <div style="color: #ff0040ff; font-size: 2rem; margin-bottom: 1rem;">
+                        <div style="color: #fbff00ff; font-size: 2rem; margin-bottom: 1rem;">
                             <i class="fas fa-quote-left"></i>
                         </div>
                         <p
@@ -504,8 +537,32 @@ include 'includes/header.php';
                             "Partager mes cours m'a permis d'aider d'autres étudiants tout en
                             renforçant mes propres connaissances. C'est un cercle vertueux !"
                         </p>
-                        <div style="color: #ff0040ff; font-weight: bold; font-size: 1.1rem;">Joyce.F</div>
+                        <div style="color: #fbff00ff; font-weight: bold; font-size: 1.1rem;">Joyce.F</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en biologie 3</div>
+                        <div style="margin-top: 1rem;">
+                            <span style="color: #ffc107;">★★★★★</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <!-- Décoration de fond -->
+                        <div
+                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ff0040ff, #ec6385ff); border-radius: 50%; opacity: 0.1;">
+                        </div>
+
+                        <!-- Avatar -->
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/igor.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #ff0040ff;">
+                        </div>
+
+                        <div style="color: #ff0040ff; font-size: 2rem; margin-bottom: 1rem;">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p
+                            style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
+                            "La mutuelle m'a aidé à trouver des ressources et des groupes motivés. J'ai gagné en confiance. Recommandé à tous !"
+                        </p>
+                        <div style="color: #ff0040ff; font-weight: bold; font-size: 1.1rem;">Igor.T</div>
+                        <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en génie logiciel M1</div>
                         <div style="margin-top: 1rem;">
                             <span style="color: #ffc107;">★★★★★</span>
                         </div>
@@ -526,12 +583,39 @@ include 'includes/header.php';
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
-                            "Le système mis en place a réellement facilité la communication. Il a ouvert un espace d’échange plus accessible et dynamique."
+                            "Le système mis en place a réellement facilité la communication. Il a ouvert un espace
+                            d’échange plus accessible et dynamique."
                         </p>
                         <div style="color: #ff9800; font-weight: bold; font-size: 1.1rem;">Ivan.N</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en Den 6</div>
                         <div style="margin-top: 1rem;">
                             <span style="color: #ffc107;">★★★★</span>★
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <!-- Décoration de fond -->
+                        <div
+                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ea00ffff, #f1a1f8ff); border-radius: 50%; opacity: 0.1;">
+                        </div>
+
+                        <!-- Avatar -->
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/manu.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #ea00ffff;">
+                        </div>
+
+                        <div style="color: #ea00ffff; font-size: 2rem; margin-bottom: 1rem;">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p
+                            style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
+                            "Cette plate-forme est une véritable aubaine. J’invite chaque étudiant à pleinement
+                            l’exploiter et profiter de tout ce qu’il offre"
+                        </p>
+                        <div style="color: #ea00ffff; font-weight: bold; font-size: 1.1rem;">Manu</div>
+                        <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en Odonto stomatologie 3
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <span style="color: #ffc107;">★★★★★</span>
                         </div>
                     </div>
                     <!-- Répétition des cartes pour effet continu -->
@@ -551,14 +635,23 @@ include 'includes/header.php';
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
-                            "Grâce à la mutuelle, j'ai pu accéder à tous les anciens examens de ma filière.
-                            Cela m'a énormément aidé à réussir mes partiels !"
+                            "Être étudiant, c’est affronter des défis, mais c’est aussi croire que chaque effort, chaque
+                            sacrifice, nous rapproche de la réussite. La mutuelle est là pour que personne ne marche
+                            seul, pour que chacun trouve une main tendue, une oreille attentive et un appui sincère.
+
+                            ✨ Aujourd’hui, je vous invite à garder confiance en vous, à cultiver la discipline et le
+                            courage. Continuons à bâtir une communauté où l’entraide est une richesse, la solidarité une
+                            fierté, et le savoir notre plus grande arme.
+
+                            🔑 N’oublions jamais :
+
+                            Seul, on va plus vite. Ensemble, on va plus loin."
                         </p>
                         <div style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">Uriche.F
                         </div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en pharmacie 6</div>
                         <div style="margin-top: 1rem;">
-                            <span style="color: #ffc107;">★★★★★</span>
+                            <span style="color: #ffc107;">★★★★</span>★
                         </div>
                     </div>
 
@@ -581,7 +674,7 @@ include 'includes/header.php';
                             "L'entraide entre étudiants est formidable. J'ai trouvé un groupe d'étude
                             grâce à la messagerie et nous nous soutenons mutuellement."
                         </p>
-                        <div style="color: #2196f3; font-weight: bold; font-size: 1.1rem;">Ullrich.W</div>
+                        <div style="color: #2196f3; font-weight: bold; font-size: 1.1rem;">Ulrich.W</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">Étudiante en Informatique M1</div>
                         <div style="margin-top: 1rem;">
                             <span style="color: #ffc107;">★★★★★</span>
@@ -591,23 +684,23 @@ include 'includes/header.php';
                     <div class="testimonial-card">
                         <!-- Décoration de fond -->
                         <div
-                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ff0040ff, #ec6385ff); border-radius: 50%; opacity: 0.1;">
+                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #fbff00ff, #eaec72ff); border-radius: 50%; opacity: 0.1;">
                         </div>
 
                         <!-- Avatar -->
                         <div
-                            style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/Joyce.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #ff0040ff;">
+                            style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/Joyce.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #fbff00ff;">
                         </div>
 
-                        <div style="color: #ff0040ff; font-size: 2rem; margin-bottom: 1rem;">
+                        <div style="color: #fbff00ff; font-size: 2rem; margin-bottom: 1rem;">
                             <i class="fas fa-quote-left"></i>
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
                             "Partager mes cours m'a permis d'aider d'autres étudiants tout en
-                            renforçant mes propres connaissances. C'est un cercle vertueux !hxj"
+                            renforçant mes propres connaissances. C'est un cercle vertueux !"
                         </p>
-                        <div style="color: #ff0040ff; font-weight: bold; font-size: 1.1rem;">Joyce.F</div>
+                        <div style="color: #fbff00ff; font-weight: bold; font-size: 1.1rem;">Joyce.F</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en biologie 3</div>
                         <div style="margin-top: 1rem;">
                             <span style="color: #ffc107;">★★★★★</span>
@@ -616,7 +709,31 @@ include 'includes/header.php';
                     <div class="testimonial-card">
                         <!-- Décoration de fond -->
                         <div
-                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ff0040ff, #ff004077); border-radius: 50%; opacity: 0.1;">
+                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ff0040ff, #ec6385ff); border-radius: 50%; opacity: 0.1;">
+                        </div>
+
+                        <!-- Avatar -->
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/igor.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #ff0040ff;">
+                        </div>
+
+                        <div style="color: #ff0040ff; font-size: 2rem; margin-bottom: 1rem;">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p
+                            style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
+                            "La mutuelle m'a aidé à trouver des ressources et des groupes motivés. J'ai gagné en confiance. Recommandé à tous. Recommandé à tous !"
+                        </p>
+                        <div style="color: #ff0040ff; font-weight: bold; font-size: 1.1rem;">Igor.T</div>
+                        <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en génie logiciel M1</div>
+                        <div style="margin-top: 1rem;">
+                            <span style="color: #ffc107;">★★★★★</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <!-- Décoration de fond -->
+                        <div
+                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ff9800, #ffb74d); border-radius: 50%; opacity: 0.1;">
                         </div>
 
                         <!-- Avatar -->
@@ -624,17 +741,44 @@ include 'includes/header.php';
                             style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/Nkamwa Nouhan Marc Ivan.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #ff9800;">
                         </div>
 
-                        <div style="color: #ff000dff; font-size: 2rem; margin-bottom: 1rem;">
+                        <div style="color: #ff9800; font-size: 2rem; margin-bottom: 1rem;">
                             <i class="fas fa-quote-left"></i>
                         </div>
                         <p
                             style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
-                            "Le système mis en place a réellement facilité la communication. Il a ouvert un espace d’échange plus accessible et dynamique."
+                            "Le système mis en place a réellement facilité la communication. Il a ouvert un espace
+                            d’échange plus accessible et dynamique."
                         </p>
                         <div style="color: #ff9800; font-weight: bold; font-size: 1.1rem;">Ivan.N</div>
                         <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en Den 6</div>
                         <div style="margin-top: 1rem;">
                             <span style="color: #ffc107;">★★★★</span>★
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <!-- Décoration de fond -->
+                        <div
+                            style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: linear-gradient(135deg, #ea00ffff, #f1a1f8ff); border-radius: 50%; opacity: 0.1;">
+                        </div>
+
+                        <!-- Avatar -->
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: url('assets/img/manu.jpg') center/cover; margin: 0 auto 1rem; border: 4px solid #ea00ffff;">
+                        </div>
+
+                        <div style="color: #ea00ffff; font-size: 2rem; margin-bottom: 1rem;">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p
+                            style="color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">
+                            "Cette plate-forme est une véritable aubaine. J’invite chaque étudiant à pleinement
+                            l’exploiter et profiter de tout ce qu’il offre"
+                        </p>
+                        <div style="color: #ea00ffff; font-weight: bold; font-size: 1.1rem;">Manu</div>
+                        <div style="color: var(--text-light); font-size: 0.9rem;">Étudiant en Odonto stomatologie 3
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <span style="color: #ffc107;">★★★★★</span>
                         </div>
                     </div>
                 </div>
@@ -669,8 +813,7 @@ include 'includes/header.php';
                 <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
-                    <div
-                        style="background: url('assets/img/amphi.jpg') center/cover; width: 100%; height: 100%;">
+                    <div style="background: url('assets/img/amphi.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -685,8 +828,7 @@ include 'includes/header.php';
                 <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
-                    <div
-                        style="background: url('assets/img/labo.jpg') center/cover; width: 100%; height: 100%;">
+                    <div style="background: url('assets/img/labo.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -729,8 +871,7 @@ include 'includes/header.php';
                 <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
-                    <div
-                        style="background: url('assets/img/conference.jpg') center/cover; width: 100%; height: 100%;">
+                    <div style="background: url('assets/img/conference.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -738,18 +879,18 @@ include 'includes/header.php';
                         <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Conférences et activités</p>
                     </div>
                 </div>
-                
+
                 <!-- Image 7: stade -->
                 <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
-                    <div
-                        style="background: url('assets/img/stade.jpg') center/cover; width: 100%; height: 100%;">
+                    <div style="background: url('assets/img/stade.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
                         <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-futbol"></i> Stade Sportif</h4>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Football et activités sportives</p>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Football et activités
+                            sportives</p>
                         <!-- <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Activités sportives</p> -->
                     </div>
                 </div>
@@ -757,8 +898,7 @@ include 'includes/header.php';
                 <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
-                    <div
-                        style="background: url('assets/img/diplome.jpg') center/cover; width: 100%; height: 100%;">
+                    <div style="background: url('assets/img/diplome.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -771,8 +911,7 @@ include 'includes/header.php';
                 <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
-                    <div
-                        style="background: url('assets/img/fst.jpg') center/cover; width: 100%; height: 100%;">
+                    <div style="background: url('assets/img/fst.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -790,8 +929,10 @@ include 'includes/header.php';
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
-                        <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-project-diagram"></i> Projets d'étude</h4>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Participez à des projets d'etude</p>
+                        <h4 style="margin: 0; font-size: 1.1rem;"><i class="fas fa-project-diagram"></i> Projets d'étude
+                        </h4>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Participez à des projets
+                            d'etude</p>
                         <!-- <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Activités sportives</p> -->
                     </div>
                 </div>
@@ -799,8 +940,7 @@ include 'includes/header.php';
                 <div style="position: relative; height: 200px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
                     onmouseover="this.style.transform='translateY(-5px)'"
                     onmouseout="this.style.transform='translateY(0)'">
-                    <div
-                        style="background: url('assets/img/patriotisme.jpg') center/cover; width: 100%; height: 100%;">
+                    <div style="background: url('assets/img/patriotisme.jpg') center/cover; width: 100%; height: 100%;">
                     </div>
                     <div
                         style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 1rem;">
@@ -828,57 +968,83 @@ include 'includes/header.php';
     <section class="sponsors" style="padding: 3rem 0; background: #f8f9fa; border-top: 1px solid var(--border-color);">
         <div class="container">
             <h2 class="section-title" style="margin-bottom: 1.5rem;">Nos Sponsors</h2>
-            <p style="text-align:center; color: var(--text-light); margin-bottom: 2rem;">Ils soutiennent notre communauté</p>
+            <p style="text-align:center; color: var(--text-light); margin-bottom: 2rem;">Ils soutiennent notre
+                communauté</p>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; align-items: center;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; align-items: center;">
                 <!-- YABA -->
-                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
-                    <img src="assets/img/YABA.png" alt="YABA" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Yaba-In</div>
+                <div class="sponsor-card"
+                    style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <img src="assets/img/YABA.png" alt="YABA"
+                        style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">
+                        Yaba-In</div>
                 </div>
 
                 <!-- Les Different Global -->
-                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <div class="sponsor-card"
+                    style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
                     <!-- Remplacer par: assets/img/les-different-global.png -->
-                    <img src="assets/img/global connect consulting.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Global connect consulting</div>
+                    <img src="assets/img/global connect consulting.jpg" alt=""
+                        style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">
+                        Global connect consulting</div>
                 </div>
-                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <div class="sponsor-card"
+                    style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
                     <!-- Remplacer par: assets/img/les-different-global.png -->
-                    <img src="assets/img/global connect food.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Global connect food</div>
+                    <img src="assets/img/global connect food.jpg" alt=""
+                        style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">
+                        Global connect food</div>
                 </div>
-                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <div class="sponsor-card"
+                    style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
                     <!-- Remplacer par: assets/img/les-different-global.png -->
-                    <img src="assets/img/global connect sarl.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;"> AUTO École universitaire</div>
+                    <img src="assets/img/global connect sarl.jpg" alt=""
+                        style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;"> AUTO
+                        École universitaire</div>
                 </div>
 
                 <!-- Moussa -->
-                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <div class="sponsor-card"
+                    style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
                     <!-- Remplacer par: assets/img/moussa.png -->
-                    <img src="assets/img/mousan.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Mousan</div>
+                    <img src="assets/img/mousan.jpg" alt=""
+                        style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">
+                        Mousan</div>
                 </div>
 
                 <!-- Your's -->
-                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <div class="sponsor-card"
+                    style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
                     <!-- Remplacer par: assets/img/yours.png -->
-                    <img src="assets/img/your's.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">Your's</div>
+                    <img src="assets/img/your's.jpg" alt=""
+                        style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">
+                        Your's</div>
                 </div>
 
                 <!-- TK-MEX -->
-                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <div class="sponsor-card"
+                    style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
                     <!-- Remplacer par: assets/img/tk-mex.png -->
-                    <img src="assets/img/tk-mex.jpg" alt="" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">TK-MEX</div>
+                    <img src="assets/img/tk-mex.jpg" alt=""
+                        style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">
+                        TK-MEX</div>
                 </div>
 
                 <!-- UDM -->
-                <div class="sponsor-card" style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
-                    <img src="assets/img/udm.jpg" alt="UDM" style="max-width: 120px; max-height: 50px; object-fit: contain;" />
-                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">UDM</div>
+                <div class="sponsor-card"
+                    style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                    <img src="assets/img/udm.jpg" alt="UDM"
+                        style="max-width: 120px; max-height: 50px; object-fit: contain;" />
+                    <div style="font-weight: 600; color: var(--text-dark); font-size: 0.95rem; text-align:center;">UDM
+                    </div>
                 </div>
             </div>
         </div>

@@ -7,7 +7,7 @@
                         <h3 style="margin: 0;">Mutuelle des Étudiants de UDM</h3>
                     </div>
                     <p>Une ouïe attentive au cri des Udmois</p>
-                    <div class="social-links">
+                    <div class="social-links"style="justify-content: center">
                         <a href="https://www.facebook.com/share/1C5sStZrhq/" target="_blank" class="social-link" title="Facebook"><i class="fab fa-facebook"></i></a>
                         <a href="https://www.instagram.com/la_mutuelle_des_etudiants_udm?igsh=bXVhNnpoMjkxM3d6&utm_source=ig_contact_invite" target="_blank" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="https://www.linkedin.com/company/la-mutuelle-des-%C3%A9tudiants-de-l-universit%C3%A9-des-montagnes-camerooun/" target="_blank" class="social-link" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
