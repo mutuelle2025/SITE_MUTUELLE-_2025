@@ -186,8 +186,8 @@
                         </li>
                         <li class="nav-item">
                             <a href="results.php" class="nav-link">
-                                <i class="fas fa-chart-bar"></i>
-                                <span class="nav-text">Résultats</span>
+                                <i class="fas fa-user-check"></i>
+                                <span class="nav-text">Admission</span>
                             </a>
                         </li>
                         <li class="nav-item">
