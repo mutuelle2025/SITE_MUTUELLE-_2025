@@ -210,7 +210,7 @@ include 'includes/header.php';
                 </form>
 
                 <!-- Section d'aide pour les tests -->
-                <div style="margin-top: 2rem; padding: 1rem; background-color: #f0f8ff; border-radius: 5px; border-left: 4px solid #2196f3;">
+                <!-- <div style="margin-top: 2rem; padding: 1rem; background-color: #f0f8ff; border-radius: 5px; border-left: 4px solid #2196f3;">
                     <h4 style="color: #1565c0; margin-bottom: 0.5rem;">
                         <i class="fas fa-info-circle"></i> Compte de test
                     </h4>
@@ -218,7 +218,7 @@ include 'includes/header.php';
                         <strong>Email :</strong> test@udm.ma<br>
                         <strong>Mot de passe :</strong> Test123!
                     </p>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
